@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1b464782886a4a39acc50431c746ff1b" Name="Diagram1">
+        <EntityTypeShape EntityType="Team5ADProjectModel.Department" Width="1.5" PointX="1.5" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Discrepancy" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Item" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Order" Width="1.5" PointX="6" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.OrderDetail" Width="1.5" PointX="8.25" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Request" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.RequestDetail" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Staff" Width="1.5" PointX="1.5" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Supplier" Width="1.5" PointX="6" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.SupplyDetail" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.sysdiagram" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_Staff_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_Discrepancy_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_Order_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_RequestDetails_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_SupplyDetails_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_Order_Staff" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_OrderDetails_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_OrderDetails_Supplier" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_Request_Staff" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_RequestDetails_Request" ManuallyRouted="false" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_SupplyDetails_Supplier" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
