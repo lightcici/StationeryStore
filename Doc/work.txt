@@ -1,4 +1,17 @@
-test-AL
+Welcome to Team5, this is our AD Project~
 
-public Item getItem(string itemId)
-//To get an Item with some itemId
+Here we will write all the method need from back end.
+
+For example: I need a method to retrieve a request by RequestID,
+then I will find if there is any existing method with same function.
+
+If you find there is no such method, please add the method and signature here:
+
+// new method
+// description of the method
+public ArrayList<Request> findRequestByID(string RequestID);
+
+That's it. Make sure you have spicified:
+	1. return type (ArrayList<Request> in the example)
+	2. parameters (string RequestID in the example)
+	3. method name (findRequestByID in the example)
