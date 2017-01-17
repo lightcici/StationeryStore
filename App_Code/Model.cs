@@ -10,11 +10,25 @@
 using System;
 using System.Collections.Generic;
 
+public partial class Delegation
+{
+    public string DelegationID { get; set; }
+    public string DepartmentHeadID { get; set; }
+    public string CoveringHeadID { get; set; }
+    public System.DateTime StartDate { get; set; }
+    public System.DateTime EndDate { get; set; }
+
+    public virtual Staff Staff { get; set; }
+    public virtual Staff Staff1 { get; set; }
+}
+
 public partial class Department
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
     public Department()
     {
+        this.DisbursementLogs = new HashSet<DisbursementLog>();
+        this.OutstandingRequests = new HashSet<OutstandingRequest>();
         this.Staffs = new HashSet<Staff>();
     }
 
@@ -27,7 +41,24 @@ public partial class Department
     public string RepresentativeName { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<DisbursementLog> DisbursementLogs { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<OutstandingRequest> OutstandingRequests { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Staff> Staffs { get; set; }
+}
+
+public partial class DisbursementLog
+{
+    public string ItemID { get; set; }
+    public string DepartmentID { get; set; }
+    public System.DateTime DateTime { get; set; }
+    public int NeededNumber { get; set; }
+    public int RetrivedNumber { get; set; }
+    public int GivenNumber { get; set; }
+
+    public virtual Department Department { get; set; }
+    public virtual Item Item { get; set; }
 }
 
 public partial class Discrepancy
@@ -37,6 +68,8 @@ public partial class Discrepancy
     public int Quantity { get; set; }
     public string Reason { get; set; }
     public string Status { get; set; }
+    public string Comment { get; set; }
+    public string RequestLog { get; set; }
 
     public virtual Item Item { get; set; }
 }
@@ -46,8 +79,10 @@ public partial class Item
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
     public Item()
     {
+        this.DisbursementLogs = new HashSet<DisbursementLog>();
         this.Discrepancies = new HashSet<Discrepancy>();
         this.Orders = new HashSet<Order>();
+        this.OutstandingRequests = new HashSet<OutstandingRequest>();
         this.RequestDetails = new HashSet<RequestDetail>();
         this.SupplyDetails = new HashSet<SupplyDetail>();
     }
@@ -62,13 +97,29 @@ public partial class Item
     public int ReorderQuantity { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<DisbursementLog> DisbursementLogs { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Discrepancy> Discrepancies { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Order> Orders { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<OutstandingRequest> OutstandingRequests { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<RequestDetail> RequestDetails { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<SupplyDetail> SupplyDetails { get; set; }
+}
+
+public partial class Notification
+{
+    public string NotificationID { get; set; }
+    public string UserID { get; set; }
+    public string Subject { get; set; }
+    public string Message { get; set; }
+    public string Status { get; set; }
+    public System.DateTime Date { get; set; }
+
+    public virtual Staff Staff { get; set; }
 }
 
 public partial class Order
@@ -86,6 +137,8 @@ public partial class Order
     public string Status { get; set; }
     public System.DateTime OrderDate { get; set; }
     public string UserID { get; set; }
+    public string Comment { get; set; }
+    public string RequestLog { get; set; }
 
     public virtual Item Item { get; set; }
     public virtual Staff Staff { get; set; }
@@ -105,6 +158,17 @@ public partial class OrderDetail
     public virtual Supplier Supplier { get; set; }
 }
 
+public partial class OutstandingRequest
+{
+    public string ItemID { get; set; }
+    public string DepartmentID { get; set; }
+    public int DisbursementQty { get; set; }
+    public int ActualGivenQty { get; set; }
+
+    public virtual Department Department { get; set; }
+    public virtual Item Item { get; set; }
+}
+
 public partial class Request
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -115,9 +179,9 @@ public partial class Request
 
     public string RequestID { get; set; }
     public System.DateTime RequestDate { get; set; }
-    public string Status { get; set; }
     public string UserID { get; set; }
     public string RequestLog { get; set; }
+    public string Comment { get; set; }
 
     public virtual Staff Staff { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -130,7 +194,7 @@ public partial class RequestDetail
     public string ItemID { get; set; }
     public int RequestQuantity { get; set; }
     public int RetrievedQuantity { get; set; }
-    public int ReceivedQuantity { get; set; }
+    public string Status { get; set; }
 
     public virtual Item Item { get; set; }
     public virtual Request Request { get; set; }
@@ -141,6 +205,9 @@ public partial class Staff
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
     public Staff()
     {
+        this.Delegations = new HashSet<Delegation>();
+        this.Delegations1 = new HashSet<Delegation>();
+        this.Notifications = new HashSet<Notification>();
         this.Orders = new HashSet<Order>();
         this.Requests = new HashSet<Request>();
     }
@@ -148,8 +215,15 @@ public partial class Staff
     public string UserID { get; set; }
     public string DepartmentID { get; set; }
     public string Name { get; set; }
+    public string Email { get; set; }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<Delegation> Delegations { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<Delegation> Delegations1 { get; set; }
     public virtual Department Department { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<Notification> Notifications { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Order> Orders { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -167,7 +241,12 @@ public partial class Supplier
 
     public string SupplierID { get; set; }
     public string Phone { get; set; }
-    public string Emain { get; set; }
+    public string Email { get; set; }
+    public string SupplierName { get; set; }
+    public string GSTRegistrationNo { get; set; }
+    public string ContactName { get; set; }
+    public string FaxNo { get; set; }
+    public string Address { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<OrderDetail> OrderDetails { get; set; }
@@ -184,13 +263,4 @@ public partial class SupplyDetail
 
     public virtual Item Item { get; set; }
     public virtual Supplier Supplier { get; set; }
-}
-
-public partial class sysdiagram
-{
-    public string name { get; set; }
-    public int principal_id { get; set; }
-    public int diagram_id { get; set; }
-    public Nullable<int> version { get; set; }
-    public byte[] definition { get; set; }
 }

@@ -10,8 +10,6 @@ public class Work
 {
     public Work()
     {
-        //
-        // TODO: Add constructor logic here
-        //
+        
     }
 }
