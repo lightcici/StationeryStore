@@ -16,4 +16,3 @@ That's it. Make sure you have spicified:
 	2. parameters (string RequestID in the example)
 	3. method name (findRequestByID in the example)
 
-Qumengying makes changes
