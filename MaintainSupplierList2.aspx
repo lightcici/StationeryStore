@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="MaintainSupplierList2.aspx.cs" Inherits="MaintainSupplierList2" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MaintainSupplierList2.aspx.cs" Inherits="WebApplication23.WebForm2" %>
 
 <!DOCTYPE html>
 
@@ -11,7 +11,7 @@
     <div>
     Supplier Code:&nbsp;&nbsp; <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
         <br />
-        Supplier Name:&nbsp; <asp:TextBox ID="TextBox2" runat="server" OnTextChanged="TextBox2_TextChanged"></asp:TextBox>
+        Supplier Name:&nbsp; <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
         <br />
         Contact Name:&nbsp;&nbsp;&nbsp; <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
         <br />
@@ -23,9 +23,10 @@
         <br />
         GST No.:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
 
+
     </div>
-        <asp:Button ID="Button1" runat="server" Text="Save" />
-        <asp:Button ID="Button2" runat="server" Text="Cancel" />
+        <asp:Button ID="Button1" runat="server" Text="Save" OnClick="Button1_Click" />
+        <asp:Button ID="Button2" runat="server" Text="Cancel" OnClick="Button2_Click" />
     </form>
 </body>
 </html>
