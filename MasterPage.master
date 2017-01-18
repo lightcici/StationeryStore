@@ -1,0 +1,125 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<%@ Register Src="~/footer.ascx" TagPrefix="uc1" TagName="footer" %>
+
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <link href="Stylesheet/simple-sidebar.css" rel="stylesheet" />
+    <link href="Stylesheet/StyleSheet.css" rel="stylesheet" />
+    
+    <style type="text/css">
+        .auto-style2 {
+            width: 88px;
+            height: 500px;
+            background-color:#558C89; color: white;
+        }
+        .auto-style3 {
+            width: 10%;
+            height: 93px;
+            vertical-align:top;
+            background-color:#558C89; color: white;
+        }
+        .auto-style4 {
+            width: 88px;
+            height: 93px;
+            background-color:#558C89; color: white;
+        }
+        .auto-style5 {
+            height: 93px;
+            width: 70%;
+            background-color:#558C89; color: white;
+            font-family: 'Comic Sans MS';
+        }
+        .auto-style6 {
+            height: 335px;
+            vertical-align: top;
+            width: 493px;
+        }
+        .auto-style7 {
+            height: 93px;
+            background-color:#558C89; color: white;
+            width: 10%;
+        }
+
+        .auto-style8 {
+            width: 100%;
+        }
+           .newStyle1 {
+         font-family: Arial;
+         font-size: 12px;
+         color: #FFFFFF;
+         text-decoration:none;
+         font-weight: 700;
+     }
+     
+        .newStyle2 {
+         width: 17%;
+         font-family: Arial;
+         font-size: 12px;
+         color: #FFFFFF;
+     }
+
+    </style>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <table class="auto-style8">
+            <tr>
+                <td class="auto-style4">
+                    
+                    <img src="images/icon1.gif" />
+                </td>
+                <td class="auto-style5">STATIONERY STORE <br />
+                    INVENTORY SYSTEM</td>
+                <td class="auto-style7" > 
+                      <asp:Label ID="lblusername" runat="server" Text=" " CssClass="newStyle2"></asp:Label>
+                      <asp:LoginName ID="LoginName1" runat="server" FormatString="Welcome {0}" />
+                </td>
+
+                <td class="auto-style3" > 
+                    <asp:LoginStatus ID="LoginStatus1" runat="server" LogoutAction="Redirect" LogoutPageUrl="~/Home.aspx" CssClass="newStyle1" />
+                </td>
+            </tr>
+
+            <tr>
+                <td class="auto-style2">
+                    <asp:ContentPlaceHolder runat="server" ID="FeaturedContent">
+                        <nav>
+                            <ul id= "navbar";  style="text-align: left;">
+                                <li id="menuModerator" runat="server"><a href="~/">Moderator</a></li>
+                                <li id="menuSupervisor" runat="server"><a href="~/About.aspx">Supervisor</a></li>
+                                <li id="menuStudent" runat="server"><a href="~/Contact.aspx">Student</a></li>
+                            </ul>
+                        </nav>
+</asp:ContentPlaceHolder>
+
+
+
+                </td>
+                <td class="auto-style6">
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+                    </td>
+            </tr>
+        </table>
+    </div>
+        <div> 
+           <uc1:footer ID="footer1" runat="server" />
+        </div>
+        
+
+    </form>
+</body>
+
+</html>

@@ -1,21 +1,23 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="MaintainSupplierList1.aspx.cs" Inherits="MaintainSupplierList1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MaintainSupplierList1.aspx.cs" Inherits="WebApplication23.WebForm1" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-</head>
+</head> 
 <body>
     <form id="form1" runat="server">
     <div>
     
     </div>
         Supplier List
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" Height="242px"  onrowcancelingedit="GridView1_RowCancelingEdit" 
+        
+        <asp:GridView ID="GridView1"  runat="server" AutoGenerateColumns="False" Height="242px"  onrowcancelingedit="GridView1_RowCancelingEdit" 
    onrowediting="GridView1_RowEditing" onrowupdating="GridView1_RowUpdating" Width="985px">
+            
             <Columns>
-                <asp:BoundField HeaderText="Supplier ID" ReadOnly="true" />
+                <asp:BoundField DataField="SupplierID" HeaderText="SupplierID" ReadOnly="true" />
                 
                 <asp:TemplateField HeaderText="Supplier Name">
           <ItemTemplate>
@@ -27,10 +29,10 @@
       </asp:TemplateField>
                  <asp:TemplateField HeaderText="GST Registration No.">
           <ItemTemplate>
-              <%# Eval("GST Registration No.")%>
+              <%# Eval("GSTRegistrationNo")%> 
           </ItemTemplate>
           <EditItemTemplate>
-              <asp:TextBox runat="server" ID="txtGSTRegistrationNo" Text='<%# Eval("GST Registration No.")%>' />
+              <asp:TextBox runat="server" ID="txtGSTRegistrationNo" Text='<%# Eval("GSTRegistrationNo")%>' />
           </EditItemTemplate>
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Contact Name">
@@ -43,10 +45,10 @@
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Phone">
           <ItemTemplate>
-              <%# Eval("Phone")%>
+              <%# Eval("PhoneNo")%>
           </ItemTemplate>
           <EditItemTemplate>
-              <asp:TextBox runat="server" ID="txtPhone" Text='<%# Eval("Phone")%>' />
+              <asp:TextBox runat="server" ID="txtPhone" Text='<%# Eval("PhoneNo")%>' />
           </EditItemTemplate>
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Fax">
