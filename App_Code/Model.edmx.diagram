@@ -4,19 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c6f006d24e33456681b6b03f8d25f375" Name="Diagram1">
+      <Diagram DiagramId="7976725f3a614a2598e0c242d8d54395" Name="Diagram1">
         <EntityTypeShape EntityType="Team5ADProjectModel.Delegation" Width="1.5" PointX="5.25" PointY="13.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Department" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Team5ADProjectModel.DisbursementLog" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.DisbursementLog" Width="1.5" PointX="3" PointY="9.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Discrepancy" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Item" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Notification" Width="1.5" PointX="5.25" PointY="16.25" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Order" Width="1.5" PointX="8.25" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.OrderDetail" Width="1.5" PointX="10.5" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Team5ADProjectModel.OutstandingRequest" Width="1.5" PointX="6" PointY="10.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Team5ADProjectModel.Request" Width="1.5" PointX="5.25" PointY="21.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Team5ADProjectModel.RequestDetail" Width="1.5" PointX="7.5" PointY="21.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Team5ADProjectModel.Staff" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.OutstandingRequest" Width="1.5" PointX="6" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Request" Width="1.5" PointX="5.25" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.RequestDetail" Width="1.5" PointX="7.5" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Staff" Width="1.5" PointX="3" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Supplier" Width="1.5" PointX="8.25" PointY="12" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.SupplyDetail" Width="1.5" PointX="10.5" PointY="8.5" IsExpanded="true" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Delegation_Staff" ManuallyRouted="false" />

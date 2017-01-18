@@ -29,9 +29,9 @@
         </EntityType>
         <EntityType Name="DisbursementLog">
           <Key>
-            <PropertyRef Name="ItemID" />
-            <PropertyRef Name="DepartmentID" />
+            <PropertyRef Name="DisbursementID" />
           </Key>
+          <Property Name="DisbursementID" Type="int" Nullable="false" />
           <Property Name="ItemID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DepartmentID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DateTime" Type="datetime" Nullable="false" />
@@ -62,7 +62,7 @@
           <Property Name="BinNumber" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="UOM" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="ReorderLevel" Type="int" Nullable="false" />
-          <Property Name="ReorderQuantity" Type="int" Nullable="false" />
+          <Property Name="ReorderQty" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -81,7 +81,7 @@
           </Key>
           <Property Name="OrderID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ItemID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="TotalQuantity" Type="int" Nullable="false" />
+          <Property Name="TotalQty" Type="int" Nullable="false" />
           <Property Name="Justification" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="OrderDate" Type="datetime" Nullable="false" />
@@ -97,8 +97,8 @@
           <Property Name="OrderID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PurchaseOrderID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SupplierID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="OrderQuantity" Type="int" Nullable="false" />
-          <Property Name="ReceivedQuantity" Type="int" Nullable="false" />
+          <Property Name="OrderQty" Type="int" Nullable="false" />
+          <Property Name="ReceivedQty" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OutstandingRequest">
           <Key>
@@ -107,8 +107,7 @@
           </Key>
           <Property Name="ItemID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DepartmentID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="DisbursementQty" Type="int" Nullable="false" />
-          <Property Name="ActualGivenQty" Type="int" Nullable="false" />
+          <Property Name="OutstandingQty" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Request">
           <Key>
@@ -127,8 +126,8 @@
           </Key>
           <Property Name="RequestID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ItemID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="RequestQuantity" Type="int" Nullable="false" />
-          <Property Name="RetrievedQuantity" Type="int" Nullable="false" />
+          <Property Name="RequestQty" Type="int" Nullable="false" />
+          <Property Name="RetrievedQty" Type="int" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Staff">
@@ -139,6 +138,8 @@
           <Property Name="DepartmentID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Supplier">
           <Key>
@@ -160,7 +161,7 @@
           </Key>
           <Property Name="SupplierID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ItemID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Priority" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Delegation_Staff">
@@ -535,9 +536,9 @@
         </EntityType>
         <EntityType Name="DisbursementLog">
           <Key>
-            <PropertyRef Name="ItemID" />
-            <PropertyRef Name="DepartmentID" />
+            <PropertyRef Name="DisbursementID" />
           </Key>
+          <Property Name="DisbursementID" Type="Int32" Nullable="false" />
           <Property Name="ItemID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DepartmentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -571,7 +572,7 @@
           <Property Name="BinNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="UOM" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="ReorderLevel" Type="Int32" Nullable="false" />
-          <Property Name="ReorderQuantity" Type="Int32" Nullable="false" />
+          <Property Name="ReorderQty" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DisbursementLogs" Relationship="Self.FK_DisbursementLog_DisbursementLog" FromRole="Item" ToRole="DisbursementLog" />
           <NavigationProperty Name="Discrepancies" Relationship="Self.FK_Discrepancy_Item" FromRole="Item" ToRole="Discrepancy" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Item" FromRole="Item" ToRole="Order" />
@@ -597,7 +598,7 @@
           </Key>
           <Property Name="OrderID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ItemID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TotalQuantity" Type="Int32" Nullable="false" />
+          <Property Name="TotalQty" Type="Int32" Nullable="false" />
           <Property Name="Justification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -616,8 +617,8 @@
           <Property Name="OrderID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PurchaseOrderID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SupplierID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="OrderQuantity" Type="Int32" Nullable="false" />
-          <Property Name="ReceivedQuantity" Type="Int32" Nullable="false" />
+          <Property Name="OrderQty" Type="Int32" Nullable="false" />
+          <Property Name="ReceivedQty" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Order" Relationship="Self.FK_OrderDetails_Order" FromRole="OrderDetails" ToRole="Order" />
           <NavigationProperty Name="Supplier" Relationship="Self.FK_OrderDetails_Supplier" FromRole="OrderDetails" ToRole="Supplier" />
         </EntityType>
@@ -628,8 +629,7 @@
           </Key>
           <Property Name="ItemID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DepartmentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DisbursementQty" Type="Int32" Nullable="false" />
-          <Property Name="ActualGivenQty" Type="Int32" Nullable="false" />
+          <Property Name="OutstandingQty" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Department" Relationship="Self.FK_OutstandingRequest_Department" FromRole="OutstandingRequest" ToRole="Department" />
           <NavigationProperty Name="Item" Relationship="Self.FK_OutstandingRequest_OutstandingRequest" FromRole="OutstandingRequest" ToRole="Item" />
         </EntityType>
@@ -652,8 +652,8 @@
           </Key>
           <Property Name="RequestID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ItemID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RequestQuantity" Type="Int32" Nullable="false" />
-          <Property Name="RetrievedQuantity" Type="Int32" Nullable="false" />
+          <Property Name="RequestQty" Type="Int32" Nullable="false" />
+          <Property Name="RetrievedQty" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Item" Relationship="Self.FK_RequestDetails_Item" FromRole="RequestDetails" ToRole="Item" />
           <NavigationProperty Name="Request" Relationship="Self.FK_RequestDetails_Request" FromRole="RequestDetails" ToRole="Request" />
@@ -666,6 +666,8 @@
           <Property Name="DepartmentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Delegations" Relationship="Self.FK_Delegation_Staff" FromRole="Staff" ToRole="Delegation" />
           <NavigationProperty Name="Delegations1" Relationship="Self.FK_Delegation_Staff1" FromRole="Staff" ToRole="Delegation" />
           <NavigationProperty Name="Department" Relationship="Self.FK_Staff_Department" FromRole="Staff" ToRole="Department" />
@@ -695,7 +697,7 @@
           </Key>
           <Property Name="SupplierID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ItemID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Item" Relationship="Self.FK_SupplyDetails_Item" FromRole="SupplyDetails" ToRole="Item" />
           <NavigationProperty Name="Supplier" Relationship="Self.FK_SupplyDetails_Supplier" FromRole="SupplyDetails" ToRole="Supplier" />
@@ -1071,6 +1073,7 @@
           <EntitySetMapping Name="DisbursementLogs">
             <EntityTypeMapping TypeName="Team5ADProjectModel.DisbursementLog">
               <MappingFragment StoreEntitySet="DisbursementLog">
+                <ScalarProperty Name="DisbursementID" ColumnName="DisbursementID" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
@@ -1103,7 +1106,7 @@
                 <ScalarProperty Name="BinNumber" ColumnName="BinNumber" />
                 <ScalarProperty Name="UOM" ColumnName="UOM" />
                 <ScalarProperty Name="ReorderLevel" ColumnName="ReorderLevel" />
-                <ScalarProperty Name="ReorderQuantity" ColumnName="ReorderQuantity" />
+                <ScalarProperty Name="ReorderQty" ColumnName="ReorderQty" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1124,7 +1127,7 @@
               <MappingFragment StoreEntitySet="Order">
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="TotalQty" ColumnName="TotalQty" />
                 <ScalarProperty Name="Justification" ColumnName="Justification" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
@@ -1140,8 +1143,8 @@
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
                 <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
-                <ScalarProperty Name="OrderQuantity" ColumnName="OrderQuantity" />
-                <ScalarProperty Name="ReceivedQuantity" ColumnName="ReceivedQuantity" />
+                <ScalarProperty Name="OrderQty" ColumnName="OrderQty" />
+                <ScalarProperty Name="ReceivedQty" ColumnName="ReceivedQty" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1150,8 +1153,7 @@
               <MappingFragment StoreEntitySet="OutstandingRequest">
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
-                <ScalarProperty Name="DisbursementQty" ColumnName="DisbursementQty" />
-                <ScalarProperty Name="ActualGivenQty" ColumnName="ActualGivenQty" />
+                <ScalarProperty Name="OutstandingQty" ColumnName="OutstandingQty" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1171,8 +1173,8 @@
               <MappingFragment StoreEntitySet="RequestDetails">
                 <ScalarProperty Name="RequestID" ColumnName="RequestID" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="RequestQuantity" ColumnName="RequestQuantity" />
-                <ScalarProperty Name="RetrievedQuantity" ColumnName="RetrievedQuantity" />
+                <ScalarProperty Name="RequestQty" ColumnName="RequestQty" />
+                <ScalarProperty Name="RetrievedQty" ColumnName="RetrievedQty" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1184,6 +1186,8 @@
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

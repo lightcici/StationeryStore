@@ -50,6 +50,7 @@ public partial class Department
 
 public partial class DisbursementLog
 {
+    public int DisbursementID { get; set; }
     public string ItemID { get; set; }
     public string DepartmentID { get; set; }
     public System.DateTime DateTime { get; set; }
@@ -94,7 +95,7 @@ public partial class Item
     public string BinNumber { get; set; }
     public string UOM { get; set; }
     public int ReorderLevel { get; set; }
-    public int ReorderQuantity { get; set; }
+    public int ReorderQty { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<DisbursementLog> DisbursementLogs { get; set; }
@@ -132,7 +133,7 @@ public partial class Order
 
     public string OrderID { get; set; }
     public string ItemID { get; set; }
-    public int TotalQuantity { get; set; }
+    public int TotalQty { get; set; }
     public string Justification { get; set; }
     public string Status { get; set; }
     public System.DateTime OrderDate { get; set; }
@@ -151,8 +152,8 @@ public partial class OrderDetail
     public string OrderID { get; set; }
     public string PurchaseOrderID { get; set; }
     public string SupplierID { get; set; }
-    public int OrderQuantity { get; set; }
-    public int ReceivedQuantity { get; set; }
+    public int OrderQty { get; set; }
+    public int ReceivedQty { get; set; }
 
     public virtual Order Order { get; set; }
     public virtual Supplier Supplier { get; set; }
@@ -162,8 +163,7 @@ public partial class OutstandingRequest
 {
     public string ItemID { get; set; }
     public string DepartmentID { get; set; }
-    public int DisbursementQty { get; set; }
-    public int ActualGivenQty { get; set; }
+    public int OutstandingQty { get; set; }
 
     public virtual Department Department { get; set; }
     public virtual Item Item { get; set; }
@@ -192,8 +192,8 @@ public partial class RequestDetail
 {
     public string RequestID { get; set; }
     public string ItemID { get; set; }
-    public int RequestQuantity { get; set; }
-    public int RetrievedQuantity { get; set; }
+    public int RequestQty { get; set; }
+    public int RetrievedQty { get; set; }
     public string Status { get; set; }
 
     public virtual Item Item { get; set; }
@@ -216,6 +216,8 @@ public partial class Staff
     public string DepartmentID { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
+    public string Password { get; set; }
+    public string Role { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Delegation> Delegations { get; set; }
