@@ -89,6 +89,10 @@ public partial class RequestDetailPage : System.Web.UI.Page
     protected void ButtonApprove_Click(object sender, EventArgs e)
     {
         string comment = TextBox1.Text;
+        if (comment == "")
+        {
+            comment = "NA";
+        }
         Work.ApproveRequest(rqId,comment);
         Response.Redirect("ViewSubmission.aspx");
     }
@@ -96,6 +100,10 @@ public partial class RequestDetailPage : System.Web.UI.Page
     protected void ButtonReject_Click(object sender, EventArgs e)
     {
         string comment = TextBox1.Text;
+        if (comment == "")
+        {
+            comment = "NA";
+        }
         Work.RejecteRequest(rqId, comment);
         Response.Redirect("ViewSubmission.aspx");
     }

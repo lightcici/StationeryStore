@@ -1,20 +1,18 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MaintainSupplierList1.aspx.cs" Inherits="WebApplication23.WebForm1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="MaintainSupplierList1.aspx.cs" Inherits="MaintainSupplierList1" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-</head> 
+</head>
 <body>
     <form id="form1" runat="server">
     <div>
-    
-    </div>
-        Supplier List
+     Supplier List
         
         <asp:GridView ID="GridView1"  runat="server" AutoGenerateColumns="False" Height="242px"  onrowcancelingedit="GridView1_RowCancelingEdit" 
-   onrowediting="GridView1_RowEditing" onrowupdating="GridView1_RowUpdating" Width="985px">
+   onrowediting="GridView1_RowEditing" onrowupdating="GridView1_RowUpdating" onrowdeleting="GridView1_OnRowDeleting" Width="1115px">
             
             <Columns>
                 <asp:BoundField DataField="SupplierID" HeaderText="SupplierID" ReadOnly="true" />
@@ -45,18 +43,18 @@
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Phone">
           <ItemTemplate>
-              <%# Eval("PhoneNo")%>
+              <%# Eval("Phone")%>
           </ItemTemplate>
           <EditItemTemplate>
-              <asp:TextBox runat="server" ID="txtPhone" Text='<%# Eval("PhoneNo")%>' />
+              <asp:TextBox runat="server" ID="txtPhone" Text='<%# Eval("Phone")%>' />
           </EditItemTemplate>
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Fax">
           <ItemTemplate>
-              <%# Eval("Fax")%>
+              <%# Eval("FaxNo")%>
           </ItemTemplate>
           <EditItemTemplate>
-              <asp:TextBox runat="server" ID="txtFax" Text='<%# Eval("Fax")%>' />
+              <asp:TextBox runat="server" ID="txtFax" Text='<%# Eval("FaxNo")%>' />
           </EditItemTemplate>
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Address">
@@ -66,15 +64,18 @@
           <EditItemTemplate>
               <asp:TextBox runat="server" ID="txtAddress" Text='<%# Eval("Address")%>' />
           </EditItemTemplate>
+                        
       </asp:TemplateField>
 
                 
                 <asp:CommandField ButtonType="Button" ShowEditButton="true" ShowCancelButton="true" />
                 
                 <asp:CommandField ShowDeleteButton="true" ButtonType="Button"  />
+                    
             </Columns>
         </asp:GridView>
         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Add Supplier" />
+    </div>
     </form>
 </body>
 </html>

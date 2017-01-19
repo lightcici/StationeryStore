@@ -5,7 +5,46 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <asp:GridView ID="GridView1" runat="server">
+    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" AllowSorting="True">
+         <Columns>
+            <asp:TemplateField HeaderText="Item Description">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("description") %>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Requester">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("userName") %>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+             <asp:TemplateField HeaderText="Request Date">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("date") %>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+             <asp:TemplateField HeaderText="Needed">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("neededQty")%>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+             <asp:TemplateField HeaderText="UOM">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("uom")%>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Allocated">
+                <ItemTemplate>
+                    <asp:TextBox ID="allocated" runat="server" TextMode="Number" min="0" ></asp:TextBox>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+        </Columns>
     </asp:GridView>
+    <asp:Button ID="Button1" runat="server" Text="Submit" OnClick="Button1_Click1" />
 </asp:Content>
 

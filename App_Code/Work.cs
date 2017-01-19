@@ -167,6 +167,21 @@ public class Work
         
     }
 
+    public static void AllocateItems(string rqId, string itemId, int qty)
+    {
+        RequestDetail rd = ctx.RequestDetails.Where(x => x.RequestID == rqId && x.ItemID == itemId).ToList().FirstOrDefault();
+        int result = rd.RetrievedQty + qty;
+        if (result == rd.RequestQty)
+        {
+            rd.Status = "Completed";
+        }
+        else
+        {
+            rd.Status = "Unfulfilled";
+        }
+        rd.RetrievedQty = result;
+        ctx.SaveChanges();
+    }
 
 
 }

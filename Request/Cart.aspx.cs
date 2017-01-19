@@ -129,6 +129,7 @@ public partial class Cart : System.Web.UI.Page
 
 
         }
+        Session["cart"] = null;
         Response.Redirect("RequestHistory.aspx");
     }
 }
