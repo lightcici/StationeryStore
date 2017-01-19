@@ -14,6 +14,15 @@ public class Work
 
     }
 
+    public static bool Authenticate(string userId, string pwd)
+    {
+        Staff s = ctx.Staffs.Where(x => x.UserID == userId && x.Password == pwd).ToList().FirstOrDefault();
+        if (s != null)
+        {
+            return true;
+        }
+        else return false;
+    }
     public static List<Item> getAllItems()
     {
         return ctx.Items.ToList();
@@ -79,16 +88,15 @@ public class Work
 
     public static List<Request> getRequest(string userId)
     {
-        string deptId = getUser(userId).DepartmentID;
-        if(getUser(userId).Role != "Department Rep")
-        {
-            return ctx.Requests.Where(x => x.UserID == userId).ToList();
-        }
-        else
-        {
-            return ctx.Requests.Where(x => x.Staff.DepartmentID==deptId).ToList();
+      
+            return ctx.Requests.Where(x => x.UserID == userId).OrderByDescending(y=>y.RequestDate).ToList();
+  
+    }
 
-        }
+    public static List<Request> getDeptRequests(string userId)
+    {
+        string deptId = getUser(userId).DepartmentID;
+        return ctx.Requests.Where(x => x.Staff.DepartmentID == deptId).OrderByDescending(y => y.RequestDate).ToList();
     }
 
     public static List<RequestDetail> getRequestDetail(string id)
@@ -109,8 +117,56 @@ public class Work
         foreach(RequestDetail rd in list)
         {
             rd.Status = "Cancelled";
+            ctx.SaveChanges();
         }
+        
+    }
+
+    public static void DeleteRequestItem(string rqId, string itemId)
+    {
+        RequestDetail rd = ctx.RequestDetails.Where(x => x.RequestID == rqId && x.ItemID == itemId).ToList().First();
+        ctx.RequestDetails.Remove(rd);
         ctx.SaveChanges();
     }
+
+    public static void UpdateRqQty(string rqId,string itemId,int qty)
+    {
+        RequestDetail rd = ctx.RequestDetails.Where(x => x.RequestID == rqId && x.ItemID == itemId).ToList().First();
+        rd.RequestQty = qty;
+        ctx.SaveChanges();
+
+    }
+
+    public static void ApproveRequest(string rqId, string comment)
+    {
+        Request rq = ctx.Requests.Where(x => x.RequestID == rqId).ToList().First();
+        rq.Comment = comment;
+        List <RequestDetail> list  = Work.getRequestDetail(rqId);
+        foreach (RequestDetail rd in list)
+        {
+            rd.Status = "InProgress";
+            ctx.SaveChanges();
+            string deptId = rq.Staff.DepartmentID;
+            Work.updateOutstangQty(deptId, rd.ItemID, rd.RequestQty);
+
+        }
+    }
+
+    public static void RejecteRequest(string rqId, string comment)
+    {
+        Request rq = ctx.Requests.Where(x => x.RequestID == rqId).ToList().First();
+        rq.Comment = comment;
+        List<RequestDetail> list = Work.getRequestDetail(rqId);
+        foreach (RequestDetail rd in list)
+        {
+            rd.Status = "Rejected";
+            ctx.SaveChanges();
+
+        }
+
+        
+    }
+
+
 
 }

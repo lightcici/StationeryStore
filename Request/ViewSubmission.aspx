@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="RequestHistory.aspx.cs" Inherits="RequestHistory" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="ViewSubmission.aspx.cs" Inherits="RequestHistory" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
@@ -6,10 +6,14 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <p>
-        <asp:Label ID="Label1" runat="server" Text="Request History"></asp:Label>
+        <asp:Label ID="Label1" runat="server" Text="View Submission"></asp:Label>
     </p>
     <p>
         <asp:DropDownList ID="DropDownList1" runat="server" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged" AutoPostBack="True">
+            <asp:ListItem>All</asp:ListItem>
+            <asp:ListItem>PendingApproval</asp:ListItem>
+            <asp:ListItem>Approved</asp:ListItem>
+            <asp:ListItem>Rejected</asp:ListItem>
         </asp:DropDownList>
     </p>
     <p>
@@ -18,7 +22,7 @@
 
                 <asp:TemplateField HeaderText="Request ID">
                     <ItemTemplate>
-                        <asp:HyperLink ID="rqId" runat="server" NavigateUrl='<%#Eval("rqId", "~/RequestDetailPage.aspx?id={0}") %>'><%#Eval("rqId") %></asp:HyperLink>
+                        <asp:HyperLink ID="rqId" runat="server" NavigateUrl='<%#Eval("rqId", "ApproveRequest.aspx?id={0}") %>'><%#Eval("rqId") %></asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
 
@@ -41,12 +45,7 @@
                     </ItemTemplate>
                     <HeaderStyle HorizontalAlign="Center" />
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="Comment">
-                    <ItemTemplate>
-                        <asp:Label runat="server" Text='<%#Eval("comment") %>'></asp:Label>
-                    </ItemTemplate>
-                    <HeaderStyle HorizontalAlign="Center" />
-                </asp:TemplateField>
+
 
             </Columns>
         </asp:GridView>

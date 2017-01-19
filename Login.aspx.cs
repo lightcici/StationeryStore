@@ -13,14 +13,21 @@ public partial class Login : System.Web.UI.Page
 
     }
 
-    protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
-    {
-        if (Membership.ValidateUser(Login1.UserName, Login1.Password))
-        {
-            Session["UserName"] = Login1.UserName;
-            FormsAuthentication.SetAuthCookie(Login1.UserName, false);
-            Response.Redirect("");
 
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        string userId = TextBox1.Text;
+        string pwd = TextBox2.Text;
+        bool isMatch = Work.Authenticate(userId, pwd);
+        if (isMatch)
+        {
+            Session["user"] = userId;
+            FormsAuthentication.SetAuthCookie(userId, false);
+            Response.Redirect("");
+        }
+        else
+        {
+            Label3.Text = "Worng UserName or Password. Please try again.";
         }
     }
 }

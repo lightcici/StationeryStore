@@ -22,7 +22,7 @@
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Quantity">
                 <ItemTemplate>
-                    <asp:TextBox runat="server" TextMode="Number" min="0" Text='<%#Eval("quantity") %>'></asp:TextBox>
+                    <asp:TextBox ID="quantity" runat="server" TextMode="Number" min="0" Text='<%#Eval("quantity") %>'></asp:TextBox>
                 </ItemTemplate>
                 <HeaderStyle HorizontalAlign="Center" />
             </asp:TemplateField>

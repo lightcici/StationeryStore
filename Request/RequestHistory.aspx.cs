@@ -33,9 +33,13 @@ public partial class RequestHistory : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        userId = "00281";
-        //string userId = (string)Session["user"];
-        
+
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
+
 
         if (!IsPostBack)
         {

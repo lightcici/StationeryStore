@@ -27,6 +27,12 @@ public partial class Cart : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
+
         cart = (Dictionary<string, int>)Session["cart"];
         if (!IsPostBack)
         {
@@ -42,8 +48,9 @@ public partial class Cart : System.Web.UI.Page
         }
         else
         {
-            cartGridView.DataSource = Session["cartItemDisplay"];
-            cartGridView.DataBind();
+            cartItemList = (List<CartItem>)Session["cartItemDisplay"];
+
+
         }
     }
 
@@ -66,27 +73,32 @@ public partial class Cart : System.Web.UI.Page
         CartItem c = cartItemList[e.RowIndex];
         cart.Remove(c.itemId);
         cartItemList.RemoveAt(e.RowIndex);
+        cartGridView.DataSource = cartItemList;
         cartGridView.DataBind();
+        if (cart.Count() == 0)
+        {
+            Response.Redirect("MakeRequest.aspx");
+        }
     }
 
     protected void Button3_Click(object sender, EventArgs e)
     {
-        //string userid = (string) Session["user"];
-        string userid = "00281";
+        string userid = (string) Session["user"];
+        
         DateTime date = DateTime.Now;
-        //string deptId = Work.getUser(userid).DepartmentID;
-        //string id = Work.getRequestId(depId);
-        string deptId = "COMM";
-        string id = Work.getRequestId("COMM");
+        string deptId = Work.getUser(userid).DepartmentID;
+        string id = Work.getRequestId(deptId);
+        
+        
         string newId = null; ;
         if (id == null)
         {
-            newId = deptId + "00001";
+            newId = deptId + "/00001";
 
         }
         else
         {
-            newId = deptId + (String.Format("{0:D5}", Convert.ToInt32(id.Substring(id.Length - 2)) + 1));
+            newId = deptId + "/"+(String.Format("{0:D5}", Convert.ToInt32(id.Substring(id.Length - 2)) + 1));
         }
         Request rq = new Request();
         rq.RequestID = newId;
@@ -94,17 +106,27 @@ public partial class Cart : System.Web.UI.Page
         rq.UserID = userid;
         Work.createRequest(rq);
 
-        foreach (CartItem ci in cartItemList)
+        for (int i=0;i<cartItemList.Count();i++) 
         {
+          
+            TextBox quantity = cartGridView.Rows[i].FindControl("quantity") as TextBox;
+            int qty = 0;
+            if (!String.IsNullOrEmpty(quantity.Text))
+            {
+                bool isInt = int.TryParse(quantity.Text, out qty);
+            }
+  
+            
             RequestDetail rd = new RequestDetail();
             rd.RequestID = newId;
-            rd.ItemID = ci.itemId;
-            rd.RequestQty = ci.quantity;
-            rd.Status = "Pending Approval";
+            rd.ItemID = cartItemList[i].itemId;
+            rd.RequestQty = qty;
+            rd.Status = "PendingApproval";
             Work.createRequestDetail(rd);
 
-            //Work.updateOutstangQty(deptId, ci.item.ItemID, ci.quantity);
-            //Work.updateOutstangQty("COMM", ci.item.ItemID, ci.quantity);
+            
+            
+
 
         }
         Response.Redirect("RequestHistory.aspx");
