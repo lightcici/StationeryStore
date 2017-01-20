@@ -14,7 +14,7 @@
         Catalogue List
         
         <asp:GridView ID="GridView1"  runat="server" AutoGenerateColumns="False" Height="242px"  onrowcancelingedit="GridView1_RowCancelingEdit" 
-   onrowediting="GridView1_RowEditing" onrowupdating="GridView1_RowUpdating" onrowdeleting="GridView1_OnRowDeleting" Width="1115px">
+   onrowediting="GridView1_RowEditing" onrowupdating="GridView1_RowUpdating" onrowdeleting="GridView1_OnRowDeleting" Width="1115px" AllowPaging="True">
             
             <Columns>
                 <asp:BoundField DataField="ItemID" HeaderText="ItemID" ReadOnly="true" />
