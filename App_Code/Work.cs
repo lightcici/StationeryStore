@@ -283,7 +283,13 @@ public class Work
         return newli.Max().ToString();
     }
 
-  
+    public Item getItem(string itemId)
+    {
+        var sql = from i in ctx.Items
+                  where i.ItemID == itemId
+                  select i;
+        return sql.FirstOrDefault();
+    }
 
     public int saveDiscrepancy(string discrepancyId, int quantity, string reason, string status, Item item)
     {
