@@ -5,15 +5,15 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" AllowSorting="True">
+    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" AllowSorting="True" OnSorting="GridView1_Sorting">
          <Columns>
-            <asp:TemplateField HeaderText="Item Description">
+            <asp:TemplateField HeaderText="Item Description" SortExpression ="Item">
                 <ItemTemplate>
                     <asp:Label runat="server" Text='<%#Eval("description") %>'></asp:Label>
                 </ItemTemplate>
                 <HeaderStyle HorizontalAlign="Center" />
             </asp:TemplateField>
-            <asp:TemplateField HeaderText="Requester">
+            <asp:TemplateField HeaderText="Requester" SortExpression ="Requester">
                 <ItemTemplate>
                     <asp:Label runat="server" Text='<%#Eval("userName") %>'></asp:Label>
                 </ItemTemplate>

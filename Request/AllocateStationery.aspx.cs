@@ -36,9 +36,11 @@ public partial class Request_AllocateStationery : System.Web.UI.Page
         }
     }
     List<AlloItem> list;
+    Team5ADProjectEntities ctx;
+    string userId;
     protected void Page_Load(object sender, EventArgs e)
     {
-        string userId = (string)Session["user"];
+        userId = (string)Session["user"];
         if (userId == null)
         {
             Response.Redirect("~/login.aspx");
@@ -46,10 +48,10 @@ public partial class Request_AllocateStationery : System.Web.UI.Page
 
         if (!IsPostBack)
         {
-            Team5ADProjectEntities ctx = new Team5ADProjectEntities();
+            ctx = new Team5ADProjectEntities();
             string deptId = Work.getUser(userId).DepartmentID;
             var q = from r in ctx.RequestDetails
-                    orderby r.ItemID
+                    orderby r.Item.Description
                     where (r.Status == "InProgress" || r.Status == "Unfulfilled") && r.Request.Staff.DepartmentID == deptId
                     select new { r.ItemID, r.Item.Description, r.RequestID, r.Request.RequestDate, r.Request.UserID, r.Request.Staff.Name, r.RequestQty, r.RetrievedQty, r.Status,r.Item.UOM };
             list = new List<AlloItem>();
@@ -83,4 +85,58 @@ public partial class Request_AllocateStationery : System.Web.UI.Page
 
         Response.Redirect("AllocateStationery.aspx");
     }
+
+    protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
+    {
+        list = (List<AlloItem>)Session["AllocateList"];
+
+        if(this.ViewState["ItemSort"] == null)
+        {
+            this.ViewState["ItemSort"] = SortDirection.Descending;
+        }
+        if (this.ViewState["RequesterSort"] == null)
+        {
+            this.ViewState["RequesterSort"] = SortDirection.Descending;
+        }
+
+        switch (e.SortExpression)
+        {
+            case "Item":
+                if ((SortDirection)this.ViewState["ItemSort"] == SortDirection.Ascending)
+                {
+                    list = list.OrderBy(x => x.description).ToList();
+                    GridView1.DataSource = list;
+                    GridView1.DataBind();
+                    this.ViewState["ItemSort"] = SortDirection.Descending;
+                }
+                else
+                {
+                    list = list.OrderByDescending(x => x.description).ToList();
+                    GridView1.DataSource = list;
+                    GridView1.DataBind();
+                    this.ViewState["ItemSort"] = SortDirection.Ascending;
+                }
+                break;
+            case "Requester":
+
+                if ((SortDirection)this.ViewState["RequesterSort"] == SortDirection.Ascending)
+                {
+                    list = list.OrderBy(x => x.userName).ToList();
+                    GridView1.DataSource = list;
+                    GridView1.DataBind();
+                    this.ViewState["RequesterSort"] = SortDirection.Descending;
+
+                }
+                else
+                {
+                    list = list.OrderByDescending(x => x.userName).ToList();
+                    GridView1.DataSource = list;
+                    GridView1.DataBind();
+                    this.ViewState["RequesterSort"] = SortDirection.Ascending;
+                }
+                break;
+        }
+
+    }
+
 }
