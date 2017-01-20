@@ -17,12 +17,13 @@ public class SupplierDetail1
 
    
 
-    public static void UpdateSupplierDetail(string SupplierCode, decimal price, int priority)
+    public static void UpdateSupplierDetail(string SupplierCode, string itemid, decimal price, int priority)
     {
+
         
         List<SupplyDetail> supplydetaillist = new List<SupplyDetail>();
 
-        supplydetaillist = model.SupplyDetails.Where(sup => sup.SupplierID == SupplierCode).ToList<SupplyDetail>();
+        supplydetaillist = model.SupplyDetails.Where(sup => sup.SupplierID == SupplierCode && sup.ItemID == itemid).ToList<SupplyDetail>();
         foreach (SupplyDetail suptdetail in supplydetaillist)
         {
             suptdetail.Price = price;
@@ -45,6 +46,33 @@ public class SupplierDetail1
             }
         }
         model.SaveChanges();
+    }
+
+    public static void CreateSupplierDetail(string SupplierCode, string ItemID, string Price, string priority)
+    {
+        
+
+        SupplyDetail toAddSupplyDetail = new SupplyDetail();
+
+        toAddSupplyDetail.SupplierID = SupplierCode;
+        toAddSupplyDetail.ItemID = ItemID;
+        toAddSupplyDetail.Price = Convert.ToDecimal(Price);
+        toAddSupplyDetail.Priority = Convert.ToInt32(priority);
+
+        model.SupplyDetails.Add(toAddSupplyDetail);
+        try
+        {
+            model.SaveChanges();
+        }
+
+        catch (DbEntityValidationException ex)
+        {
+            string errorMessages = string.Join("; ", ex.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage));
+            throw new DbEntityValidationException(errorMessages);
+        }
+
+
+
     }
 
 

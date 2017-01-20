@@ -28,9 +28,12 @@
             <asp:ListItem Value="2"></asp:ListItem>
             <asp:ListItem>3</asp:ListItem>
         </asp:DropDownList>
-    </div>
+    
+        <p>
+    
         <asp:Button ID="Button1" runat="server" Text="Save" OnClick="Button1_Click" />
         <asp:Button ID="Button2" runat="server" Text="Cancel" OnClick="Button2_Click" />
+        </p>
     </form>
 </body>
 </html>

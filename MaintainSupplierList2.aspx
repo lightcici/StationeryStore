@@ -33,7 +33,7 @@
         <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="TextBox7"  ErrorMessage="RequiredFieldValidator">please enter address</asp:RequiredFieldValidator>
     </div>
  <asp:Button ID="Button1" runat="server" Text="Save" OnClick="Button1_Click" />
-        <asp:Button ID="Button2" runat="server" Text="Cancel" OnClick="Button2_Click" />
+        <asp:Button ID="Button2" runat="server" Text="Cancel" CausesValidation="false" OnClick="Button2_Click" />
         <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
     </form>
 </body>

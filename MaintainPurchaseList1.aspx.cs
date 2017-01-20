@@ -15,6 +15,13 @@ public partial class MaintainPurchaseList1 : System.Web.UI.Page
             DropDownList1.DataTextField = "SupplierName";
             DropDownList1.DataValueField = "SupplierID";
             DropDownList1.DataBind();
+            string supplierID = Request.QueryString["field1"];
+            if (supplierID !=null)
+            {
+                DropDownList1.SelectedValue = supplierID;
+            }
+
+
             string chosenSupplier = DropDownList1.SelectedValue;
             Team5ADProjectEntities model = new Team5ADProjectEntities();
             var q = from x in model.SupplyDetails.Where(s => s.SupplierID == chosenSupplier)
@@ -90,7 +97,7 @@ public partial class MaintainPurchaseList1 : System.Web.UI.Page
 
         Decimal Price = Convert.ToDecimal(txtPrice.Text);
         int Priority = Convert.ToInt32(txtPriority.Text);
-
+        string itemid = row.Cells[0].Text;
         //string SupplierCode = GridView1.DataKeys[e.RowIndex].Value.ToString();
         string SupplierID = DropDownList1.SelectedValue;
 
@@ -99,7 +106,7 @@ public partial class MaintainPurchaseList1 : System.Web.UI.Page
 
 
         GridView1.EditIndex = -1;
-        SupplierDetail1.UpdateSupplierDetail(SupplierID, Price, Priority);
+        SupplierDetail1.UpdateSupplierDetail(SupplierID, itemid, Price, Priority);
         string chosenSupplier = DropDownList1.SelectedValue;
         Team5ADProjectEntities model = new Team5ADProjectEntities();
         var q = from x in model.SupplyDetails.Where(s => s.SupplierID == chosenSupplier)
@@ -148,7 +155,9 @@ public partial class MaintainPurchaseList1 : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        Response.Redirect("MaintainPurchaseList2.aspx");
+        
+        string chosenSupplierID = DropDownList1.SelectedValue;
+        Response.Redirect("MaintainPurchaseList2.aspx?field1=" + chosenSupplierID);
     }
 
     protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
