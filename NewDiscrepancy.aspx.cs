@@ -28,19 +28,27 @@ public partial class NewDiscrepancy : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        int i = work.saveDiscrepancy(String.Format("{0:d5}", (Convert.ToInt32(work.getMaxDiscrepancyId()) + 1)), Convert.ToInt32(TextBox4.Text), TextBox5.Text, "Pending Approval", Work.getItem(TextBox1.Text));
-        if (i > 0)
+        if (!work.isNormalStockNumber(TextBox1.Text, TextBox4.Text).Equals(""))
         {
-            //Email.SendEmail("New Message","Hello");
-            //bool flag = SendMail();
-            //if (flag)
-            //{
-            //    Response.Write("<script>alert('Success !');</script>");
-            //}
-            DialogResult dr = MessageBox.Show("Updated Successfully!", "New Discrepancy", MessageBoxButtons.OK, MessageBoxIcon.Question);
-            if (dr == DialogResult.OK)
+            Label7.Visible = true;
+            Label7.Text = work.isNormalStockNumber(TextBox1.Text, TextBox4.Text);
+        }
+        else
+        {
+            int i = work.saveDiscrepancy(String.Format("{0:d5}", (Convert.ToInt32(work.getMaxDiscrepancyId()) + 1)), Convert.ToInt32(TextBox4.Text), TextBox5.Text, "Pending Approval", Work.getItem(TextBox1.Text));
+            if (i > 0)
             {
-                Response.Redirect("/ViewDiscrepancy.aspx");
+                //Email.SendEmail("New Message", "Hello");
+                //bool flag = SendMail();
+                //if (flag)
+                //{
+                //    Response.Write("<script>alert('Success !');</script>");
+                //}
+                DialogResult dr = MessageBox.Show("Updated Successfully!", "New Discrepancy", MessageBoxButtons.OK, MessageBoxIcon.Question);
+                if (dr == DialogResult.OK)
+                {
+                    Response.Redirect("/ViewDiscrepancy.aspx");
+                }
             }
         }
     }
