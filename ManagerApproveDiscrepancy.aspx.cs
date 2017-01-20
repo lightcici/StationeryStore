@@ -31,7 +31,7 @@ public partial class ApproveDiscrepancy : System.Web.UI.Page
             DialogResult dr = MessageBox.Show("Successful Operation!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
             if (dr == DialogResult.OK)
             {
-                Response.Redirect("/ApproveDiscrepancy.aspx");
+                Response.Redirect("/ManagerApproveDiscrepancy.aspx");
             }
         }
     }
