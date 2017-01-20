@@ -11,7 +11,7 @@ public partial class MaintainCatalogueList1 : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            GridView1.DataSource = Item1.GetItem();
+            GridView1.DataSource = Work.GetItems();
 
             GridView1.DataBind();
         }
@@ -19,7 +19,7 @@ public partial class MaintainCatalogueList1 : System.Web.UI.Page
     protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e)
     {
         GridView1.EditIndex = e.NewEditIndex;
-        GridView1.DataSource = Item1.GetItem();
+        GridView1.DataSource = Work.GetItems();
 
         GridView1.DataBind();
 
@@ -30,7 +30,7 @@ public partial class MaintainCatalogueList1 : System.Web.UI.Page
     {
         e.Cancel = true;
         GridView1.EditIndex = -1;
-        GridView1.DataSource = Item1.GetItem();
+        GridView1.DataSource = Work.GetItems();
 
         GridView1.DataBind();
 
@@ -59,9 +59,9 @@ public partial class MaintainCatalogueList1 : System.Web.UI.Page
 
 
 
-        Item1.UpdateItem(itemCode, Description, Category, ReorderLevel, ReorderQty, UOM);
+        Work.UpdateItem(itemCode, Description, Category, ReorderLevel, ReorderQty, UOM);
         GridView1.EditIndex = -1;
-        GridView1.DataSource = Item1.GetItem();
+        GridView1.DataSource = Work.GetItems();
 
         GridView1.DataBind();
 
@@ -79,9 +79,9 @@ public partial class MaintainCatalogueList1 : System.Web.UI.Page
         //GridView1.DeleteRow(index);
         GridViewRow row = GridView1.Rows[e.RowIndex];
         string ItemCode = row.Cells[0].Text;
-        Item1.DeleteItem(ItemCode);
+        Work.DeleteItem(ItemCode);
 
-        GridView1.DataSource = Item1.GetItem();
+        GridView1.DataSource = Work.GetItems();
 
         GridView1.DataBind();
 

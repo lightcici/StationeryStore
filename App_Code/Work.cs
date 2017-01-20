@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 
@@ -47,8 +48,8 @@ public class Work
 
         ctx.Requests.Add(rq);
         ctx.SaveChanges();
-       
-        
+
+
     }
 
     public static string getRequestId(string deptId)
@@ -93,9 +94,9 @@ public class Work
 
     public static List<Request> getRequest(string userId)
     {
-      
-            return ctx.Requests.Where(x => x.UserID == userId).OrderByDescending(y=>y.RequestDate).ToList();
-  
+
+        return ctx.Requests.Where(x => x.UserID == userId).OrderByDescending(y => y.RequestDate).ToList();
+
     }
 
     public static List<Request> getDeptRequests(string userId)
@@ -106,25 +107,25 @@ public class Work
 
     public static List<RequestDetail> getRequestDetail(string id)
     {
-        return ctx.RequestDetails.Where(x => x.RequestID == id).OrderByDescending(y=>y.Request.RequestDate).ToList();
+        return ctx.RequestDetails.Where(x => x.RequestID == id).OrderByDescending(y => y.Request.RequestDate).ToList();
     }
 
     public static List<String> getRequestSatus()
     {
-        var list= ctx.RequestDetails.GroupBy(y => y.Status).Select(x => x.FirstOrDefault()).ToList();
+        var list = ctx.RequestDetails.GroupBy(y => y.Status).Select(x => x.FirstOrDefault()).ToList();
         return list.Select(o => o.Status).ToList();
     }
 
-   
+
     public static void CancelRequest(string id)
     {
         List<RequestDetail> list = ctx.RequestDetails.Where(x => x.RequestID == id).ToList();
-        foreach(RequestDetail rd in list)
+        foreach (RequestDetail rd in list)
         {
             rd.Status = "Cancelled";
             ctx.SaveChanges();
         }
-        
+
     }
 
     public static void DeleteRequestItem(string rqId, string itemId)
@@ -134,7 +135,7 @@ public class Work
         ctx.SaveChanges();
     }
 
-    public static void UpdateRqQty(string rqId,string itemId,int qty)
+    public static void UpdateRqQty(string rqId, string itemId, int qty)
     {
         RequestDetail rd = ctx.RequestDetails.Where(x => x.RequestID == rqId && x.ItemID == itemId).ToList().First();
         rd.RequestQty = qty;
@@ -146,7 +147,7 @@ public class Work
     {
         Request rq = ctx.Requests.Where(x => x.RequestID == rqId).ToList().First();
         rq.Comment = comment;
-        List <RequestDetail> list  = Work.getRequestDetail(rqId);
+        List<RequestDetail> list = Work.getRequestDetail(rqId);
         foreach (RequestDetail rd in list)
         {
             rd.Status = "InProgress";
@@ -169,7 +170,7 @@ public class Work
 
         }
 
-        
+
     }
 
     public static void AllocateItems(string rqId, string itemId, int qty)
@@ -334,6 +335,392 @@ public class Work
                   where s.Price > 250 && d.Status == "Pending Approval"
                   select d;
         return sql.ToList();
+    }
+
+    //method
+    public static List<Department> GetDepartment()
+    {
+
+        List<Department> departmentlist = new List<Department>();
+        ////foreach(Supplier sup in model.Supplier)
+        ////{
+
+        ////    supplierlist.Add(sup);
+        ////}
+
+        departmentlist = ctx.Departments.ToList<Department>();
+
+        return departmentlist;
+
+
+    }
+    public static List<Department> GetCollectionPoint()
+    {
+
+        List<Department> departmentlist = new List<Department>();
+        ////foreach(Supplier sup in model.Supplier)
+        ////{
+
+        ////    supplierlist.Add(sup);
+        ////}
+
+        departmentlist = ctx.Departments.GroupBy(x => new { x.Collection_Point }).Select(x => x.FirstOrDefault()).ToList<Department>();
+
+        return departmentlist;
+
+
+    }
+
+
+
+
+    public static void UpdateDepartment(string DepartmentCode, string departmentname, string contact,
+        string telephone, string headname, string collectionPoint, string repName)
+    {
+
+
+        List<Department> departmentlist = new List<Department>();
+        departmentlist = ctx.Departments.Where(department => department.DepartmentID == DepartmentCode).ToList<Department>();
+        foreach (Department dept in departmentlist)
+        {
+            dept.DepartmentName = departmentname;
+            dept.ContactName = contact;
+            dept.Telephone = telephone;
+            dept.HeadName = headname;
+            dept.Collection_Point = collectionPoint;
+            dept.RepresentativeName = repName;
+
+        }
+        ctx.SaveChanges();
+    }
+
+    public static void DeleteDepartment(string departmentCode)
+    {
+
+        List<Department> departmentlist = new List<Department>();
+        departmentlist = ctx.Departments.Where(department => department.DepartmentID == departmentCode).ToList<Department>();
+
+        foreach (Department dept in departmentlist)
+        {
+            if (dept.DepartmentID == departmentCode)
+            {
+                ctx.Departments.Remove(dept);
+            }
+        }
+        ctx.SaveChanges();
+    }
+
+    //Method name: CreateSupplier
+    //CreateSupplier(SupplierCode, SupplierName, ContactName, PhoneNo, FaxNo, Address, GSTNo); 
+    //input arguments are SupplierCode, SupplierName, ContactName, PhoneNo, FaxNo, Address, GSTNo
+    //return type: void
+
+    public static void CreateDepartment(string DepartmentCode, string departmentname, string contact,
+        string telephone, string headname, string collectionPoint, string repName)
+    {
+
+        //List<Supplier> currentList = GetSupplier();
+        //foreach(Supplier sup in currentList)
+        //{
+        //    if (sup.SupplierID==SupplierCode)
+        //    {
+
+        //        break; 
+        //    }
+
+
+        Department toAddDepartment = new Department();
+
+
+        toAddDepartment.DepartmentID = DepartmentCode;
+        toAddDepartment.DepartmentName = departmentname;
+        toAddDepartment.ContactName = contact;
+        toAddDepartment.Telephone = telephone;
+
+        toAddDepartment.HeadName = headname;
+        toAddDepartment.Collection_Point = collectionPoint;
+        toAddDepartment.RepresentativeName = repName;
+
+        ctx.Departments.Add(toAddDepartment);
+        try
+        {
+            ctx.SaveChanges();
+        }
+
+        catch (DbEntityValidationException ex)
+        {
+            string errorMessages = string.Join("; ", ex.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage));
+            throw new DbEntityValidationException(errorMessages);
+        }
+
+    }
+    //method
+    public static List<Item> GetItems()
+    {
+
+        List<Item> itemlist = new List<Item>();
+        ////foreach(Supplier sup in model.Supplier)
+        ////{
+
+        ////    supplierlist.Add(sup);
+        ////}
+
+        itemlist = ctx.Items.ToList<Item>();
+
+        return itemlist;
+
+
+    }
+
+    public static List<Item> GetCategory()
+    {
+
+        List<Item> itemlist = new List<Item>();
+        ////foreach(Supplier sup in model.Supplier)
+        ////{
+
+        ////    supplierlist.Add(sup);
+        ////}
+
+        itemlist = ctx.Items.GroupBy(x => new { x.Category }).Select(x => x.FirstOrDefault()).ToList<Item>();
+
+        return itemlist;
+
+
+    }
+
+
+
+    public static void UpdateItem(string ItemCode, string description, string category,
+        string reorderLevel, string reorderQty, string uom)
+    {
+
+        List<Item> itemlist = new List<Item>();
+
+        itemlist = ctx.Items.Where(item => item.ItemID == ItemCode).ToList<Item>();
+        foreach (Item item in itemlist)
+        {
+            item.Description = description;
+            item.Category = category;
+            item.ReorderLevel = Convert.ToInt32(reorderLevel);
+            item.ReorderQty = Convert.ToInt32(reorderQty);
+            item.UOM = uom;
+
+        }
+        ctx.SaveChanges();
+    }
+
+    public static void DeleteItem(string itemCode)
+    {
+
+        List<Item> itemlist = new List<Item>();
+        itemlist = ctx.Items.Where(item => item.ItemID == itemCode).ToList<Item>();
+
+        foreach (Item item in itemlist)
+        {
+            if (item.ItemID == itemCode)
+            {
+                ctx.Items.Remove(item);
+            }
+        }
+        ctx.SaveChanges();
+    }
+
+    //Method name: CreateSupplier
+    //CreateSupplier(SupplierCode, SupplierName, ContactName, PhoneNo, FaxNo, Address, GSTNo); 
+    //input arguments are SupplierCode, SupplierName, ContactName, PhoneNo, FaxNo, Address, GSTNo
+    //return type: void
+
+    public static void CreateItem(string ItemCode, string description,
+        string Category, string ReorderLevel, string ReorderQty, string UOM, string binNo)
+    {
+
+        //List<Supplier> currentList = GetSupplier();
+        //foreach(Supplier sup in currentList)
+        //{
+        //    if (sup.SupplierID==SupplierCode)
+        //    {
+
+        //        break; 
+        //    }
+
+
+
+        Item toAddItem = new Item();
+
+        toAddItem.ItemID = ItemCode;
+        toAddItem.Description = description;
+        toAddItem.Category = Category;
+        toAddItem.ReorderLevel = Convert.ToInt32(ReorderLevel);
+
+        toAddItem.ReorderQty = Convert.ToInt32(ReorderQty);
+        toAddItem.UOM = UOM;
+        toAddItem.BinNumber = binNo;
+
+        ctx.Items.Add(toAddItem);
+        try
+        {
+            ctx.SaveChanges();
+        }
+
+        catch (DbEntityValidationException ex)
+        {
+            string errorMessages = string.Join("; ", ex.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage));
+            throw new DbEntityValidationException(errorMessages);
+        }
+    }
+    //method
+    public static List<Supplier> GetSupplier()
+    {
+
+        List<Supplier> supplierlist = new List<Supplier>();
+        ////foreach(Supplier sup in model.Supplier)
+        ////{
+
+        ////    supplierlist.Add(sup);
+        ////}
+
+        supplierlist = ctx.Suppliers.ToList<Supplier>();
+
+        return supplierlist;
+
+
+    }
+
+    public static void UpdateSupplier(string SupplierCode, string SupplierName, string GSTRegistrationNo, string ContactName, string Phone, string Fax, string Address)
+    {
+
+        List<Supplier> supplierlist = new List<Supplier>();
+
+        supplierlist = ctx.Suppliers.Where(sup => sup.SupplierID == SupplierCode).ToList<Supplier>();
+        foreach (Supplier supt in supplierlist)
+        {
+            supt.SupplierName = SupplierName;
+            supt.GSTRegistrationNo = GSTRegistrationNo;
+            supt.ContactName = ContactName;
+            supt.Phone = Phone;
+            supt.Address = Address;
+            supt.FaxNo = Fax;
+
+        }
+        ctx.SaveChanges();
+    }
+
+    public static void DeleteSupplier(string SupplierCode)
+    {
+
+        List<Supplier> supplierlist = new List<Supplier>();
+        supplierlist = ctx.Suppliers.Where(sup => sup.SupplierID == SupplierCode).ToList<Supplier>();
+
+        foreach (Supplier supt in supplierlist)
+        {
+            if (supt.SupplierID == SupplierCode)
+            {
+                ctx.Suppliers.Remove(supt);
+            }
+        }
+        ctx.SaveChanges();
+    }
+
+    //Method name: CreateSupplier
+    //CreateSupplier(SupplierCode, SupplierName, ContactName, PhoneNo, FaxNo, Address, GSTNo); 
+    //input arguments are SupplierCode, SupplierName, ContactName, PhoneNo, FaxNo, Address, GSTNo
+    //return type: void
+
+    public static void CreateSupplier(string SupplierCode, string SupplierName, string ContactName, string PhoneNo, string FaxNo, string Address, string GSTNo)
+    {
+
+        //List<Supplier> currentList = GetSupplier();
+        //foreach(Supplier sup in currentList)
+        //{
+        //    if (sup.SupplierID==SupplierCode)
+        //    {
+
+        //        break; 
+        //    }
+
+
+
+        Supplier toAddSupplier = new Supplier();
+
+        toAddSupplier.SupplierID = SupplierCode;
+        toAddSupplier.SupplierName = SupplierName;
+        toAddSupplier.GSTRegistrationNo = GSTNo;
+        toAddSupplier.ContactName = ContactName;
+        toAddSupplier.Phone = PhoneNo;
+        toAddSupplier.FaxNo = FaxNo;
+        toAddSupplier.Address = Address;
+        ctx.Suppliers.Add(toAddSupplier);
+        try
+        {
+            ctx.SaveChanges();
+        }
+
+        catch (DbEntityValidationException ex)
+        {
+            string errorMessages = string.Join("; ", ex.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage));
+            throw new DbEntityValidationException(errorMessages);
+        }
+
+
+    }
+
+    public static void UpdateSupplierDetail(string SupplierCode, string itemid, decimal price, int priority)
+    {
+
+
+        List<SupplyDetail> supplydetaillist = new List<SupplyDetail>();
+
+        supplydetaillist = ctx.SupplyDetails.Where(sup => sup.SupplierID == SupplierCode && sup.ItemID == itemid).ToList<SupplyDetail>();
+        foreach (SupplyDetail suptdetail in supplydetaillist)
+        {
+            suptdetail.Price = price;
+            suptdetail.Priority = priority;
+        }
+        ctx.SaveChanges();
+    }
+
+    public static void DeleteSupplierDetail(string SupplierCode, string ItemID)
+    {
+
+        List<SupplyDetail> supplierdetaillist = new List<SupplyDetail>();
+        supplierdetaillist = ctx.SupplyDetails.Where(sup => sup.SupplierID == SupplierCode && sup.ItemID == ItemID).ToList<SupplyDetail>();
+
+        foreach (SupplyDetail suptdetail in supplierdetaillist)
+        {
+            if (suptdetail.SupplierID == SupplierCode && suptdetail.ItemID == ItemID)
+            {
+                ctx.SupplyDetails.Remove(suptdetail);
+            }
+        }
+        ctx.SaveChanges();
+    }
+
+    public static void CreateSupplierDetail(string SupplierCode, string ItemID, string Price, string priority)
+    {
+
+
+        SupplyDetail toAddSupplyDetail = new SupplyDetail();
+
+        toAddSupplyDetail.SupplierID = SupplierCode;
+        toAddSupplyDetail.ItemID = ItemID;
+        toAddSupplyDetail.Price = Convert.ToDecimal(Price);
+        toAddSupplyDetail.Priority = Convert.ToInt32(priority);
+
+        ctx.SupplyDetails.Add(toAddSupplyDetail);
+        try
+        {
+            ctx.SaveChanges();
+        }
+
+        catch (DbEntityValidationException ex)
+        {
+            string errorMessages = string.Join("; ", ex.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage));
+            throw new DbEntityValidationException(errorMessages);
+        }
+
+
+
     }
 
 }

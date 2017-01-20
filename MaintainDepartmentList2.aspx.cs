@@ -11,7 +11,7 @@ public partial class MaintainDepartmentList2 : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            DropDownList1.DataSource = Department1.GetCollectionPoint();
+            DropDownList1.DataSource = Work.GetCollectionPoint();
             DropDownList1.DataTextField = "Collection_Point";
             DropDownList1.DataValueField = "Collection_Point";
 
@@ -31,7 +31,7 @@ public partial class MaintainDepartmentList2 : System.Web.UI.Page
         string headname = TextBox6.Text;
         string repName = TextBox7.Text;
 
-        Department1.CreateDepartment(DeptID, departmentname, contact,
+        Work.CreateDepartment(DeptID, departmentname, contact,
         tel, headname, collectionpoint, repName);
 
 
