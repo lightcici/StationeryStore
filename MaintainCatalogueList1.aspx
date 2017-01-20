@@ -1,16 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="MaintainCatalogueList1.aspx.cs" Inherits="MaintainCatalogueList1" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="MaintainCatalogueList1.aspx.cs" Inherits="MaintainCatalogueList1" %>
 
-<!DOCTYPE html>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <div>
-    
-    </div>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+
         Catalogue List
         
         <asp:GridView ID="GridView1"  runat="server" AutoGenerateColumns="False" Height="242px"  onrowcancelingedit="GridView1_RowCancelingEdit" 
@@ -68,6 +62,4 @@
             </Columns>
         </asp:GridView>
         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Add Item" />
-    </form>
-</body>
-</html>
+</asp:Content>

@@ -1,58 +1,42 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
 
-<!DOCTYPE html>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
     <style type="text/css">
-        .auto-style1 {
-            width: 114px;
-        }
-        .auto-style2 {
-            width: 114px;
-            height: 35px;
-        }
-        .auto-style3 {
-            height: 35px;
-        }
-        .auto-style4 {
-            width: 114px;
-            height: 29px;
-        }
-        .auto-style5 {
-            height: 29px;
+        .auto-style10 {
+            width: 45px;
         }
     </style>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <div>
+
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Image ID="Image1" runat="server" ImageUrl="~/Image/User Filled.png" />
         <br />
         <table style="width:100%;">
             <tr>
-                <td class="auto-style4">
+                <td class="auto-style10">
                     <asp:Label ID="Label1" runat="server" Text="Username:"></asp:Label>
                 </td>
-                <td class="auto-style5">
+                <td class="auto-style9">
                     <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
                 </td>
-                <td class="auto-style5"></td>
+                <td class="auto-style8"></td>
             </tr>
             <tr>
-                <td class="auto-style2">
+                <td class="auto-style10">
                     <asp:Label ID="Label2" runat="server" Text="Password:"></asp:Label>
                 </td>
-                <td class="auto-style3">
+                <td class="auto-style9">
                     <asp:TextBox ID="TextBox2" runat="server" TextMode="Password"></asp:TextBox>
                 </td>
-                <td class="auto-style3"></td>
+                <td class="auto-style9"></td>
             </tr>
             <tr>
-                <td class="auto-style1">&nbsp;</td>
-                <td>
+                <td class="auto-style10">&nbsp;</td>
+                <td class="auto-style10" colspan =" 3">
                     <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Login" />
                     <asp:Label ID="Label3" runat="server" ForeColor="Red"></asp:Label>
                 </td>
@@ -62,7 +46,4 @@
 
         </table>
     
-    </div>
-    </form>
-</body>
-</html>
+</asp:Content>

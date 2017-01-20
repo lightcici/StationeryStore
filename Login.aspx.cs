@@ -27,7 +27,7 @@ public partial class Login : System.Web.UI.Page
         }
         else
         {
-            Label3.Text = "Worng UserName or Password. Please try again.";
+            Label3.Text = "Wrong UserName or Password. Please try again.";
         }
     }
 }
