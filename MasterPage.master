@@ -135,7 +135,7 @@
 
 
                 </td>
-                <td class="auto-style6">
+                <td class="auto-style6" colspan="3">
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         
         </asp:ContentPlaceHolder>
