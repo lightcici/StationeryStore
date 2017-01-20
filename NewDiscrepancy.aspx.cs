@@ -14,6 +14,11 @@ public partial class NewDiscrepancy : System.Web.UI.Page
     Work work;
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         work = new Work();
         TextBox1.Text = Request.QueryString["id"];
         TextBox2.Text = Request.QueryString["description"];
@@ -23,10 +28,10 @@ public partial class NewDiscrepancy : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        int i = work.saveDiscrepancy(String.Format("{0:d5}", (Convert.ToInt32(work.getMaxDiscrepancyId()) + 1)), Convert.ToInt32(TextBox4.Text), TextBox5.Text, "Pending Approval", work.getItem(TextBox1.Text));
+        int i = work.saveDiscrepancy(String.Format("{0:d5}", (Convert.ToInt32(work.getMaxDiscrepancyId()) + 1)), Convert.ToInt32(TextBox4.Text), TextBox5.Text, "Pending Approval", Work.getItem(TextBox1.Text));
         if (i > 0)
         {
-            Email.SendEmail("New Message","Hello");
+            //Email.SendEmail("New Message","Hello");
             //bool flag = SendMail();
             //if (flag)
             //{

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ApproveDiscrepancy.aspx.cs" Inherits="ApproveDiscrepancy" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ManagerApproveDiscrepancy.aspx.cs" Inherits="ApproveDiscrepancy" %>
 
 <!DOCTYPE html>
 

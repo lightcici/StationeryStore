@@ -11,6 +11,11 @@ public partial class ApproveDiscrepancy : System.Web.UI.Page
     Work work;
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         work = new Work();
         if (work.getSpecificDiscrepancies().Count == 0)
         {

@@ -9,7 +9,11 @@ public partial class ViewNotification : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
     }
 
     protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
