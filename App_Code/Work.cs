@@ -722,19 +722,5 @@ public class Work
 
 
     }
-    public string isNormalStockNumber(string itemID, string quantity)
-    {
-        int result;
-        string returnMessage = "";
-        var sql = from i in ctx.Items where i.ItemID == itemID select i.InStock;
-        if (!int.TryParse(quantity, out result))
-        {
-            return "Please enter positive/negative number!";
-        }
-        else if (Convert.ToInt32(quantity) > sql.FirstOrDefault())
-        {
-            return "Out range of stock!Please key in correct number!";
-        }
-        return returnMessage;
-    }
+
 }

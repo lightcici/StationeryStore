@@ -21,11 +21,9 @@
             <asp:TextBox ID="TextBox3" runat="server" ReadOnly="true"></asp:TextBox>
             per item<br />
             <br />
-            <asp:Label ID="Label6" runat="server" ForeColor="Red" Text="*Negative: decrease stock number ,positive: increase stock number."></asp:Label>
-            <br />
             <asp:Label ID="Label5" runat="server" Text="Quantity:"></asp:Label>
             <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
-            <asp:Label ID="Label7" runat="server" ForeColor="Red" Text="Label" Visible="False"></asp:Label>
+            <asp:Label ID="Label6" runat="server" ForeColor="Red" Text="*Negative: decrease stock number ,positive: increase stock number."></asp:Label>
             &nbsp;
             <br />
             <br />
