@@ -35,6 +35,22 @@ public class Department1
 
 
     }
+    public static List<Department> GetCollectionPoint()
+    {
+        
+        List<Department> departmentlist = new List<Department>();
+        ////foreach(Supplier sup in model.Supplier)
+        ////{
+
+        ////    supplierlist.Add(sup);
+        ////}
+
+        departmentlist = model.Departments.GroupBy(x => new { x.Collection_Point }).Select(x => x.FirstOrDefault()).ToList<Department>();
+
+        return departmentlist;
+
+
+    }
 
 
 
