@@ -9,6 +9,11 @@ using System.Web;
 public class Work
 {
     static Team5ADProjectEntities ctx = new Team5ADProjectEntities();
+    List<ItemDiscrepancyModel> idlist;
+    List<ItemModel> ilist;
+    List<Decimal> pricelist;
+    Discrepancy discrepancy;
+    Item item;
     public Work()
     {
 
@@ -183,5 +188,152 @@ public class Work
         ctx.SaveChanges();
     }
 
+    public Decimal getMaxPrice(string itemId)
+    {
+        var sql = from s in ctx.SupplyDetails where s.ItemID == itemId select s.Price;
+        pricelist = sql.ToList();
+        Decimal maxPrice = pricelist[0];
+        for (int i = 0; i < 3; i++)
+        {
+            if (pricelist[0] < pricelist[1])
+            {
+                maxPrice = pricelist[1];
+                if (maxPrice < pricelist[2])
+                {
+                    maxPrice = pricelist[2];
+                }
+            }
+        }
+        return maxPrice;
+    }
+    public List<ItemModel> showAllItems()
+    {
+        var sql = from i in ctx.Items
+                  select new ItemModel
+                  {
+                      ItemID = i.ItemID,
+                      Category = i.Category,
+                      Description = i.Description,
+                      ReorderLevel = i.ReorderLevel,
+                      InStock = i.InStock,
+                      GUOM = i.UOM,
+                  };
+        ilist = sql.ToList();
+        return ilist;
+    }
+
+    public List<ItemModel> searchItems(string category)
+    {
+        var sql = from i in ctx.Items
+                  where i.Category == category
+                  select new ItemModel
+                  {
+                      ItemID = i.ItemID,
+                      Category = i.Category,
+                      Description = i.Description,
+                      ReorderLevel = i.ReorderLevel,
+                      InStock = i.InStock,
+                      GUOM = i.UOM,
+                  };
+        ilist = sql.ToList();
+        return ilist;
+    }
+    public List<ItemDiscrepancyModel> getAllDiscrepancies(string selectedValue)
+    {
+        if (!selectedValue.Equals("ShowAll"))
+        {
+            var sql = from i in ctx.Items
+                      join d in ctx.Discrepancies on i.ItemID equals d.ItemID
+                      where d.Status == selectedValue
+                      select new ItemDiscrepancyModel
+                      {
+                          DiscrepancyId = d.DiscrepancyID,
+                          ItemCode = d.ItemID,
+                          Description = i.Description,
+                          Quantity = d.Quantity,
+                          Reason = d.Reason,
+                          Status = d.Status,
+                      };
+            idlist = sql.ToList();
+        }
+        else if (selectedValue.Equals("ShowAll"))
+        {
+            var sql = from i in ctx.Items
+                      join d in ctx.Discrepancies on i.ItemID equals d.ItemID
+                      select new ItemDiscrepancyModel
+                      {
+                          DiscrepancyId = d.DiscrepancyID,
+                          ItemCode = d.ItemID,
+                          Description = i.Description,
+                          Quantity = d.Quantity,
+                          Reason = d.Reason,
+                          Status = d.Status,
+                      };
+            idlist = sql.ToList();
+        }
+        return idlist;
+    }
+
+    public string getMaxDiscrepancyId()
+    {
+        var sql = from d in ctx.Discrepancies orderby d.DiscrepancyID select d.DiscrepancyID;
+        List<string> li = sql.ToList();
+        List<int> newli = li.Select(x => int.Parse(x)).ToList();
+        return newli.Max().ToString();
+    }
+
+    public Item getItem(string itemId)
+    {
+        var sql = from i in ctx.Items
+                  where i.ItemID == itemId
+                  select i;
+        return sql.FirstOrDefault();
+    }
+
+    public int saveDiscrepancy(string discrepancyId, int quantity, string reason, string status, Item item)
+    {
+        Discrepancy discrepancy = new Discrepancy();
+        discrepancy.DiscrepancyID = discrepancyId;
+        discrepancy.Quantity = quantity;
+        discrepancy.Reason = reason;
+        discrepancy.Status = status;
+        discrepancy.Item = item;
+        ctx.Discrepancies.Add(discrepancy);
+        return ctx.SaveChanges();
+    }
+
+    public Discrepancy getDiscrepancy(string id)
+    {
+        var sql = from d in ctx.Discrepancies where d.DiscrepancyID == id select d;
+        discrepancy = sql.FirstOrDefault();
+        return discrepancy;
+    }
+
+    public int updateDiscrepancy(string id, string status)
+    {
+        discrepancy = getDiscrepancy(id);
+        var sql = from i in ctx.Items where i.ItemID == discrepancy.ItemID select i;
+        item = sql.FirstOrDefault();
+        if (status.Equals("Approved"))
+        {
+            discrepancy.Status = "Approved";
+            item.InStock = item.InStock + discrepancy.Quantity;
+        }
+        else if (status.Equals("Rejected"))
+        {
+            discrepancy.Status = "Rejected";
+        }
+        return ctx.SaveChanges();
+    }
+
+    public List<Discrepancy> getSpecificDiscrepancies()
+    {
+        var sql = from d in ctx.Discrepancies
+                  join i in ctx.Items on d.ItemID equals i.ItemID
+                  join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
+                  where s.Price > 250 && d.Status == "Pending Approval"
+                  select d;
+        return sql.ToList();
+    }
 
 }
