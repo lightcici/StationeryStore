@@ -283,14 +283,11 @@ namespace UnitTestForCoreLogic.CoreLayer
         {
             ctx = new Team5ADProjectEntities();
 
-            DisbursementLog currentRetrieve = (from x in ctx.DisbursementLogs
-                                            where ((x.ItemID == itemID) && (x.DepartmentID == departmentID) && (x.GivenNumber == -1))
-                                            select x).ToList().LastOrDefault();
-
             // * actualGivenQty should <= GivenQty of this log
             DisbursementLog currentGiven = (from x in ctx.DisbursementLogs
-                                               where ((x.ItemID == itemID) && (x.DepartmentID == departmentID) && (x.RetrivedNumber == -1))
-                                               select x).ToList().LastOrDefault();
+                                            where ((x.ItemID == itemID) && (x.DepartmentID == departmentID) && (x.RetrivedNumber == -1))
+                                            select x).ToList().LastOrDefault();
+
             if (currentGiven == null)
                 return -11;     // cannot find return -11
             if (receiveQty > currentGiven.GivenNumber)
@@ -330,12 +327,17 @@ namespace UnitTestForCoreLogic.CoreLayer
             newGiveLog.GivenNumber = -100;          // GivenNumber equals -100 means this is a new give log
             newGiveLog.Flag = "New Give";
 
+            DisbursementLog lastGiven = (from x in ctx.DisbursementLogs
+                                            where ((x.ItemID == itemID) && (x.DepartmentID == departmentID) && (x.RetrivedNumber == -1))
+                                            select x).ToList().LastOrDefault();
+            DisbursementLog lastRetrieve = (from x in ctx.DisbursementLogs
+                                               where ((x.ItemID == itemID) && (x.DepartmentID == departmentID) && (x.GivenNumber == -1))
+                                               select x).ToList().LastOrDefault();
+            lastRetrieve.Flag = "Confirmed";
+            lastGiven.Flag = "Confirmed";
+
             ctx.DisbursementLogs.Add(newRetrieveLog);
             ctx.DisbursementLogs.Add(newGiveLog);
-
-            // close current Retrieve and Give
-            currentRetrieve.Flag = "Confirmed";
-            currentGiven.Flag = "Confirmed";
 
             // SaveChanges
             int res = -100;
@@ -344,6 +346,7 @@ namespace UnitTestForCoreLogic.CoreLayer
                 // returns the number of state entries written to the underlying database
                 // normally should be 4
                 res = ctx.SaveChanges();
+                // close current Retrieve and Give
                 return res;
             }
             catch (Exception e)
