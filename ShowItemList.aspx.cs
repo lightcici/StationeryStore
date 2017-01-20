@@ -59,4 +59,13 @@ public partial class ShowItemList : System.Web.UI.Page
     {
         Response.Redirect("NewDiscrepancy.aspx?id=1&description=2");
     }
+    protected void display()
+    {
+        GridView1.DataBind();
+    }
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView1.PageIndex = e.NewPageIndex;
+    }
 }

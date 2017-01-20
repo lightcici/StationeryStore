@@ -4,6 +4,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 
+
 /// <summary>
 /// Summary description for Work
 /// </summary>
@@ -281,14 +282,6 @@ public class Work
         List<string> li = sql.ToList();
         List<int> newli = li.Select(x => int.Parse(x)).ToList();
         return newli.Max().ToString();
-    }
-
-    public Item getItem(string itemId)
-    {
-        var sql = from i in ctx.Items
-                  where i.ItemID == itemId
-                  select i;
-        return sql.FirstOrDefault();
     }
 
     public int saveDiscrepancy(string discrepancyId, int quantity, string reason, string status, Item item)
@@ -721,6 +714,21 @@ public class Work
 
 
 
+    }
+    public string isNormalStockNumber(string itemID, string quantity)
+    {
+        int result;
+        string returnMessage = "";
+        var sql = from i in ctx.Items where i.ItemID == itemID select i.InStock;
+        if (!int.TryParse(quantity, out result))
+        {
+            return "Please enter positive/negative number!";
+        }
+        else if (Convert.ToInt32(quantity) > sql.FirstOrDefault())
+        {
+            return "Out range of stock!Please key in correct number!";
+        }
+        return returnMessage;
     }
 
 }

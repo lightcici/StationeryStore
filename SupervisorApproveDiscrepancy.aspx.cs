@@ -31,4 +31,13 @@ public partial class SupervisorApproveDiscrepancy : System.Web.UI.Page
             }
         }
     }
+    protected void display()
+    {
+        GridView1.DataBind();
+    }
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView1.PageIndex = e.NewPageIndex;
+    }
 }

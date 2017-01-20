@@ -20,4 +20,13 @@ public partial class ViewNotification : System.Web.UI.Page
     {
         Response.Redirect("MakeNewOrder.aspx?ItemID=1&Description=2");
     }
+    protected void display()
+    {
+        GridView1.DataBind();
+    }
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView1.PageIndex = e.NewPageIndex;
+    }
 }
