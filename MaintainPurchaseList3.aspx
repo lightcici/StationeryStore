@@ -32,7 +32,7 @@
         <p>
     
         <asp:Button ID="Button1" runat="server" Text="Save" OnClick="Button1_Click" />
-        <asp:Button ID="Button2" runat="server" Text="Cancel" OnClick="Button2_Click" />
+        <asp:Button ID="Button2" runat="server" Text="Cancel" CausesValidation="false" OnClick="Button2_Click" />
         </p>
     </form>
 </body>

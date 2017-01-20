@@ -11,7 +11,7 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            GridView1.DataSource = Department1.GetDepartment();
+            GridView1.DataSource = Work.GetDepartment();
 
             GridView1.DataBind();
         }
@@ -20,7 +20,7 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
     protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e)
     {
         GridView1.EditIndex = e.NewEditIndex;
-        GridView1.DataSource = Department1.GetDepartment();
+        GridView1.DataSource = Work.GetDepartment();
 
         GridView1.DataBind();
 
@@ -31,7 +31,7 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
     {
         e.Cancel = true;
         GridView1.EditIndex = -1;
-        GridView1.DataSource = Department1.GetDepartment();
+        GridView1.DataSource = Work.GetDepartment();
 
         GridView1.DataBind();
 
@@ -62,9 +62,9 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
 
 
 
-        Department1.UpdateDepartment(departmentCode, DepartmentName, ContactName, Telephone, HeadName, Collection_Point, RepresentativeName);
+        Work.UpdateDepartment(departmentCode, DepartmentName, ContactName, Telephone, HeadName, Collection_Point, RepresentativeName);
         GridView1.EditIndex = -1;
-        GridView1.DataSource = Department1.GetDepartment();
+        GridView1.DataSource = Work.GetDepartment();
 
         GridView1.DataBind();
 
@@ -83,8 +83,8 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
         GridViewRow row = GridView1.Rows[e.RowIndex];
         string departmentcode = row.Cells[0].Text;
 
-        Department1.DeleteDepartment(departmentcode);
-        GridView1.DataSource = Department1.GetDepartment();
+        Work.DeleteDepartment(departmentcode);
+        GridView1.DataSource = Work.GetDepartment();
         GridView1.DataBind();
 
 

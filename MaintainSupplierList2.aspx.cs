@@ -22,7 +22,7 @@ public partial class MaintainSupplierList2 : System.Web.UI.Page
         String Address = TextBox6.Text;
         String GSTNo = TextBox7.Text;
 
-        Supplier1.CreateSupplier(SupplierCode, SupplierName, ContactName, PhoneNo,
+        Work.CreateSupplier(SupplierCode, SupplierName, ContactName, PhoneNo,
             FaxNo, Address, GSTNo);
 
         Response.Redirect("MaintainSupplierList1.aspx");

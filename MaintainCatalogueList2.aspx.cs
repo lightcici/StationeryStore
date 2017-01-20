@@ -11,7 +11,7 @@ public partial class MaintainCatalogueList2 : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            DropDownList1.DataSource = Item1.GetCategory();
+            DropDownList1.DataSource = Work.GetCategory();
             DropDownList1.DataTextField = "Category";
             DropDownList1.DataValueField = "Category";
 
@@ -30,7 +30,7 @@ public partial class MaintainCatalogueList2 : System.Web.UI.Page
         string uom = TextBox6.Text;
         string binNo = TextBox7.Text;
 
-        Item1.CreateItem(itemID, description, category, reorderlevel, reorderQty, uom, binNo);
+        Work.CreateItem(itemID, description, category, reorderlevel, reorderQty, uom, binNo);
 
         Response.Redirect("MaintainCatalogueList1.aspx");
     }

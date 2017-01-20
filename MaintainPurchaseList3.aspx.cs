@@ -25,7 +25,7 @@ public partial class MaintainPurchaseList3 : System.Web.UI.Page
         string ItemID = TextBox1.Text;
         string price = TextBox3.Text;
         string priority = DropDownList1.SelectedValue;
-        SupplierDetail1.CreateSupplierDetail(supplierID, ItemID, price, priority);
+        Work.CreateSupplierDetail(supplierID, ItemID, price, priority);
         string chosenSupplierID = Request.QueryString["field4"];
         Response.Redirect("MaintainPurchaseList1.aspx?field1=" + chosenSupplierID);
         

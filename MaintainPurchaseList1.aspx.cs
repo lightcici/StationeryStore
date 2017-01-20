@@ -11,7 +11,7 @@ public partial class MaintainPurchaseList1 : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            DropDownList1.DataSource = Supplier1.GetSupplier();
+            DropDownList1.DataSource = Work.GetSupplier();
             DropDownList1.DataTextField = "SupplierName";
             DropDownList1.DataValueField = "SupplierID";
             DropDownList1.DataBind();
@@ -106,7 +106,7 @@ public partial class MaintainPurchaseList1 : System.Web.UI.Page
 
 
         GridView1.EditIndex = -1;
-        SupplierDetail1.UpdateSupplierDetail(SupplierID, itemid, Price, Priority);
+        Work.UpdateSupplierDetail(SupplierID, itemid, Price, Priority);
         string chosenSupplier = DropDownList1.SelectedValue;
         Team5ADProjectEntities model = new Team5ADProjectEntities();
         var q = from x in model.SupplyDetails.Where(s => s.SupplierID == chosenSupplier)
@@ -133,7 +133,7 @@ public partial class MaintainPurchaseList1 : System.Web.UI.Page
         string description = row.Cells[1].Text;
         string ItemID = row.Cells[0].Text;
         string SupplierCode = DropDownList1.SelectedValue;
-        SupplierDetail1.DeleteSupplierDetail(SupplierCode, ItemID);
+        Work.DeleteSupplierDetail(SupplierCode, ItemID);
 
         Team5ADProjectEntities model = new Team5ADProjectEntities();
         var q = from x in model.SupplyDetails.Where(s => s.SupplierID == SupplierCode)
