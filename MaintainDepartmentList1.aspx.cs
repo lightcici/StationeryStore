@@ -203,22 +203,31 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
     protected void GridView1_OnRowDeleting(object sender, GridViewDeleteEventArgs e)
     {
         int index = Convert.ToInt32(e.RowIndex);
-
+        Team5ADProjectEntities model = new Team5ADProjectEntities();
         //GridView1.DeleteRow(index);
         GridViewRow row = GridView1.Rows[e.RowIndex];
         string departmentcode = row.Cells[0].Text;
 
         Work.DeleteDepartment(departmentcode);
-        GridView1.DataSource = Work.GetDepartment();
+        var query = from head in model.Staffs.Where(head => head.Role == "DeptHead")
+                    join rep in model.Staffs.Where(rep => rep.Role == "DeptRep")
+                    on head.DepartmentID equals rep.DepartmentID
+                    join
+                    department in model.Departments
+                    on head.DepartmentID equals department.DepartmentID
+                    select new
+                    {
+                        ID = department.DepartmentID,
+                        DepartmentName = department.DepartmentName,
+                        ContactName = department.ContactName,
+                        Telephone = department.Telephone,
+                        DeptHead = head.Name,
+                        CollectionPoint = department.Collection_Point,
+                        DeptRep = rep.Name,
+
+                    };
+        GridView1.DataSource = query.ToList();
         GridView1.DataBind();
-
-
-
-        //GridView1.DataSource = GetSuppliers();
-        //no input argument
-        //return type is list of suppliers (select * from suppliers)
-
-
     }
 
 
