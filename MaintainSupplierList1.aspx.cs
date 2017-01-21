@@ -14,6 +14,7 @@ public partial class MaintainSupplierList1 : System.Web.UI.Page
             GridView1.DataSource = Work.GetSupplier();
 
             GridView1.DataBind();
+            
         }
 
 
@@ -107,4 +108,15 @@ public partial class MaintainSupplierList1 : System.Web.UI.Page
     //    Team5ADProjectEntities model = new Team5ADProjectEntities();
     //    return model.Suppliers.ToList<Supplier>();
     //}
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView1.PageIndex = e.NewPageIndex;
+
+        GridView1.DataSource = Work.GetSupplier();
+
+        GridView1.DataBind();
+    }
+
+
 }
