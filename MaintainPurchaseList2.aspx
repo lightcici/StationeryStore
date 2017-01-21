@@ -20,7 +20,8 @@
         <br />
         <asp:GridView ID="GridView1" runat="server" DataKeyNames="ItemID" 
             onselectedindexchanged="GridView1_SelectedIndexChanged"
-              OnRowDataBound="GridView1_RowDataBound"  ViewStateMode="Enabled">
+              OnRowDataBound="GridView1_RowDataBound"  AllowPaging="True" 
+            OnPageIndexChanging="GridView1_PageIndexChanging" ViewStateMode="Enabled" PageSize="30">
        
 
         </asp:GridView>

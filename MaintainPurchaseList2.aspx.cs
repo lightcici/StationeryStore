@@ -92,5 +92,14 @@ public partial class MaintainPurchaseList2 : System.Web.UI.Page
 
     }
 
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GridView1.PageIndex = e.NewPageIndex;
+
+        GridView1.DataSource = Work.GetItems();
+
+        GridView1.DataBind();
+    }
+
 
 }
