@@ -19,7 +19,7 @@
             <asp:ListItem Value="Pending Approval">PendingApproval</asp:ListItem>
         </asp:DropDownList>
         <br />
-        <asp:GridView ID="GridView1" runat="server"AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging">
+        <asp:GridView ID="GridView1" runat="server" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging">
         </asp:GridView>
     
     </div>

@@ -33,7 +33,7 @@ public class Work
     public static List<Item> getAllItems()
     {
         return ctx.Items.ToList();
-    }
+    } 
     public static List<Item> getFoundItems(string text)
     {
         return ctx.Items.Where(x => x.Category.Contains(text) || x.Description.Contains(text)).ToList();
@@ -106,6 +106,8 @@ public class Work
         return ctx.Requests.Where(x => x.Staff.DepartmentID == deptId).OrderByDescending(y => y.RequestDate).ToList();
     }
 
+
+
     public static List<RequestDetail> getRequestDetail(string id)
     {
         return ctx.RequestDetails.Where(x => x.RequestID == id).OrderByDescending(y => y.Request.RequestDate).ToList();
@@ -117,6 +119,47 @@ public class Work
         return list.Select(o => o.Status).ToList();
     }
 
+    public static List<RqHistory> getRqHistory(string userId)
+    {
+        List<RqHistory> hList = new List<RqHistory>();
+        List<Request> rqList = Work.getDeptRequests(userId);
+
+        foreach (Request rq in rqList)
+        {
+            string status = null;
+            List<RequestDetail> rdList = Work.getRequestDetail(rq.RequestID);
+            if (rdList[0].Status != "Cancelled")
+            {
+                if (rdList[0].Status == "InProgress" || rdList[0].Status == "Completed" || rdList[0].Status == "Unfulfilled")
+                {
+                    status = "Approved";
+                }
+                else
+                {
+                    status = rdList[0].Status;
+                }
+                RqHistory h = new RqHistory(rq.RequestID, rq.RequestDate, Work.getUser(rq.UserID).Name, status);
+                hList.Add(h);
+            }
+
+        }
+        return hList;
+    }
+
+    public static List<RqDetail> getRqDetail(string rqId)
+    {
+        List<RequestDetail> rdList = Work.getRequestDetail(rqId);
+
+        List<RqDetail> deList = new List<RqDetail>();
+        foreach (RequestDetail rd in rdList)
+        {
+
+            RqDetail de = new RqDetail(rqId, rd.ItemID, rd.Request.RequestDate, rd.Item.Description, rd.Item.UOM, rd.RequestQty, rd.Status, rd.Request.Comment);
+            deList.Add(de);
+
+        }
+        return deList;
+    }
 
     public static void CancelRequest(string id)
     {
@@ -227,7 +270,7 @@ public class Work
     public List<ItemModel> searchItems(string category)
     {
         var sql = from i in ctx.Items
-                  where i.Category == category
+                  where i.Category.Contains(category) || i.Description.Contains(category)
                   select new ItemModel
                   {
                       ItemID = i.ItemID,

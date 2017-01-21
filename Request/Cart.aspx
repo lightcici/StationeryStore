@@ -2,9 +2,8 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="Server">
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:Button ID="Button1" runat="server" Text="Add Item" OnClick="Button1_Click" />
     <asp:GridView ID="cartGridView" runat="server" AutoGenerateColumns="False" OnRowDeleting="GridView1_RowCommand">
         <Columns>

@@ -8,25 +8,6 @@ using System.Web.UI.WebControls;
 public partial class RequestHistory : System.Web.UI.Page
 {
     static String ALL = "All";
-    class RqHistory
-    {
-        public string rqId { get; set; }
-        public DateTime date { get; set; }
-        public string requester { get; set; }
-        public string status{ get; set; }
-        public string comment { get; set; }
-
-
-        public RqHistory(string rqId, DateTime date,string requester,string status)
-        {
-            this.rqId = rqId;
-            this.date = date;
-            this.requester = requester;
-            this.status = status;
-        }
-
-    }
-
     string userId;
    
     protected void Page_Load(object sender, EventArgs e)
@@ -42,30 +23,7 @@ public partial class RequestHistory : System.Web.UI.Page
 
         if (!IsPostBack)
         {
-
-
-            List<RqHistory> hList = new List<RqHistory>();
-            List<Request> rqList = Work.getDeptRequests(userId);
-                   
-            foreach (Request rq in rqList)
-            {
-                string status = null;
-                List<RequestDetail> rdList = Work.getRequestDetail(rq.RequestID);
-                if (rdList[0].Status != "Cancelled")
-                {
-                    if (rdList[0].Status == "InProgress" || rdList[0].Status == "Completed" || rdList[0].Status == "Unfulfilled")
-                    {
-                        status = "Approved";
-                    }
-                    else
-                    {
-                        status = rdList[0].Status;
-                    }
-                    RqHistory h = new RqHistory(rq.RequestID, rq.RequestDate, Work.getUser(rq.UserID).Name, status);
-                    hList.Add(h);
-                }
-                
-            }
+            List<RqHistory> hList = Work.getRqHistory(userId);
             Session["history"] = hList;
             GridView1.DataSource = hList;
             GridView1.DataBind();
