@@ -14,7 +14,7 @@
    onrowediting="GridView1_RowEditing" onrowupdating="GridView1_RowUpdating" onrowdeleting="GridView1_OnRowDeleting" Width="1115px">
             
             <Columns>
-                <asp:BoundField DataField="DepartmentID" HeaderText="DepartmentID" ReadOnly="true" />
+                <asp:BoundField DataField="ID" HeaderText="DepartmentID" ReadOnly="true" />
                 
                 <asp:TemplateField HeaderText="Department">
           <ItemTemplate>
@@ -42,26 +42,26 @@
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Head">
           <ItemTemplate>
-              <%# Eval("HeadName")%>
+              <%# Eval("DeptHead")%>
           </ItemTemplate>
           <EditItemTemplate>
-              <asp:TextBox runat="server" ID="txtHeadName" Text='<%# Eval("HeadName")%>' />
+              <asp:TextBox runat="server" ID="txtHeadName" Text='<%# Eval("DeptHead")%>' />
           </EditItemTemplate>
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Collection Point">
           <ItemTemplate>
-              <%# Eval("Collection_Point")%>
+              <%# Eval("CollectionPoint")%>
           </ItemTemplate>
           <EditItemTemplate>
-              <asp:TextBox runat="server" ID="txtCollection_Point" Text='<%# Eval("Collection_Point")%>' />
+              <asp:TextBox runat="server" ID="txtCollection_Point" Text='<%# Eval("CollectionPoint")%>' />
           </EditItemTemplate>
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Rep Name">
           <ItemTemplate>
-              <%# Eval("RepresentativeName")%>
+              <%# Eval("DeptRep")%>
           </ItemTemplate>
           <EditItemTemplate>
-              <asp:TextBox runat="server" ID="txtRepresentativeName" Text='<%# Eval("RepresentativeName")%>' />
+              <asp:TextBox runat="server" ID="txtRepresentativeName" Text='<%# Eval("DeptRep")%>' />
           </EditItemTemplate>
       </asp:TemplateField>
                 

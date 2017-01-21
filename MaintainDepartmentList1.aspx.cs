@@ -9,10 +9,30 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        Team5ADProjectEntities model = new Team5ADProjectEntities();
         if (!IsPostBack)
         {
-            GridView1.DataSource = Work.GetDepartment();
 
+            var query = from head in model.Staffs.Where(head => head.Role == "DeptHead")
+                        join rep in model.Staffs.Where(rep => rep.Role == "DeptRep")
+                        on head.DepartmentID equals rep.DepartmentID
+                        join
+                        department in model.Departments
+                        on head.DepartmentID equals department.DepartmentID
+                        select new
+                        {
+                            ID = department.DepartmentID,
+                            DepartmentName = department.DepartmentName,
+                            ContactName = department.ContactName,
+                            Telephone = department.Telephone,
+                            DeptHead = head.Name,
+                            CollectionPoint = department.Collection_Point,
+                            DeptRep = rep.Name,
+
+                        };
+
+
+            GridView1.DataSource = query.ToList();
             GridView1.DataBind();
         }
     }
@@ -20,10 +40,30 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
     protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e)
     {
         GridView1.EditIndex = e.NewEditIndex;
-        GridView1.DataSource = Work.GetDepartment();
+
+        Team5ADProjectEntities model = new Team5ADProjectEntities();
+        var query = from head in model.Staffs.Where(head => head.Role == "DeptHead")
+                    join rep in model.Staffs.Where(rep => rep.Role == "DeptRep")
+                    on head.DepartmentID equals rep.DepartmentID
+                    join
+                    department in model.Departments
+                    on head.DepartmentID equals department.DepartmentID
+                    select new
+                    {
+                        ID = department.DepartmentID,
+                        DepartmentName = department.DepartmentName,
+                        ContactName = department.ContactName,
+                        Telephone = department.Telephone,
+                        DeptHead = head.Name,
+                        CollectionPoint = department.Collection_Point,
+                        DeptRep = rep.Name,
+
+                    };
+
+
+        GridView1.DataSource = query.ToList();
 
         GridView1.DataBind();
-
 
     }
 
@@ -31,9 +71,31 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
     {
         e.Cancel = true;
         GridView1.EditIndex = -1;
-        GridView1.DataSource = Work.GetDepartment();
+
+        Team5ADProjectEntities model = new Team5ADProjectEntities();
+        var query = from head in model.Staffs.Where(head => head.Role == "DeptHead")
+                    join rep in model.Staffs.Where(rep => rep.Role == "DeptRep")
+                    on head.DepartmentID equals rep.DepartmentID
+                    join
+                    department in model.Departments
+                    on head.DepartmentID equals department.DepartmentID
+                    select new
+                    {
+                        ID = department.DepartmentID,
+                        DepartmentName = department.DepartmentName,
+                        ContactName = department.ContactName,
+                        Telephone = department.Telephone,
+                        DeptHead = head.Name,
+                        CollectionPoint = department.Collection_Point,
+                        DeptRep = rep.Name,
+
+                    };
+
+
+        GridView1.DataSource = query.ToList();
 
         GridView1.DataBind();
+
 
 
     }
@@ -60,13 +122,76 @@ public partial class MaintainDepartmentList1 : System.Web.UI.Page
         //string SupplierCode = GridView1.DataKeys[e.RowIndex].Value.ToString();
         string departmentCode = row.Cells[0].Text;
 
+        Team5ADProjectEntities model = new Team5ADProjectEntities();
+        //List<Department> departmentlist = new List<Department>();
+        Department affectedDepartment = new Department();
+        affectedDepartment = model.Departments.Where(department => department.DepartmentID == departmentCode).First();
+
+        affectedDepartment.DepartmentName = DepartmentName;
+        affectedDepartment.ContactName = ContactName;
+        affectedDepartment.Telephone = Telephone;
+
+        affectedDepartment.Collection_Point = Collection_Point;
 
 
-        Work.UpdateDepartment(departmentCode, DepartmentName, ContactName, Telephone, HeadName, Collection_Point, RepresentativeName);
+        List<Staff> stafflistofdeptHead = new List<Staff>();
+        stafflistofdeptHead = model.Staffs.Where(staff => staff.Role == "DeptHead" &&
+        staff.DepartmentID == departmentCode).ToList();
+        foreach (Staff c in stafflistofdeptHead)
+        {
+            c.Role = "Employee";
+            stafflistofdeptHead.Remove(c);
+
+        }
+        Staff toAddtoList = new Staff();
+        toAddtoList = model.Staffs.Where(staff => staff.Name == HeadName).First();
+
+        toAddtoList.Role = "DeptHead";
+        stafflistofdeptHead.Add(toAddtoList);
+
+        List<Staff> stafflistofdeptRep = new List<Staff>();
+        stafflistofdeptHead = model.Staffs.Where(staff => staff.Role == "DeptRep" &&
+        staff.DepartmentID == departmentCode).ToList();
+        foreach (Staff c in stafflistofdeptRep)
+        {
+            c.Role = "Employee";
+            stafflistofdeptRep.Remove(c);
+
+        }
+        Staff toAddtoListofRep = new Staff();
+        toAddtoListofRep = model.Staffs.Where(staff => staff.Name == RepresentativeName).First();
+        toAddtoListofRep.Role = "DeptRep";
+        stafflistofdeptHead.Add(toAddtoList);
+        model.SaveChanges();
+
+        //Work.UpdateDepartment(departmentCode, DepartmentName, ContactName, Telephone, HeadName, Collection_Point, RepresentativeName);
+
+
+        var query = from head in model.Staffs.Where(head => head.Role == "DeptHead")
+                    join rep in model.Staffs.Where(rep => rep.Role == "DeptRep")
+                    on head.DepartmentID equals rep.DepartmentID
+                    join
+                    department in model.Departments
+                    on head.DepartmentID equals department.DepartmentID
+                    select new
+                    {
+                        ID = department.DepartmentID,
+                        DepartmentName = department.DepartmentName,
+                        ContactName = department.ContactName,
+                        Telephone = department.Telephone,
+                        DeptHead = head.Name,
+                        CollectionPoint = department.Collection_Point,
+                        DeptRep = rep.Name,
+
+                    };
+
         GridView1.EditIndex = -1;
-        GridView1.DataSource = Work.GetDepartment();
-
+        GridView1.DataSource = query.ToList();
         GridView1.DataBind();
+
+
+       
+       
 
 
         //UpdateSupplier(SupplierCode,SupplierName,GSTRegistrationNo,ContactName,Phone,Fax,Address);
