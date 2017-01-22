@@ -18,5 +18,8 @@ public class DiscrepancyModel
     public string Comment { get; set; }
     public string RequestLog { get; set; }
 
-    
+    public DiscrepancyModel()
+    {
+
+    }
 }

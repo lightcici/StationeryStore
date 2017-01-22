@@ -233,6 +233,49 @@ public class Work
         ctx.SaveChanges();
     }
 
+    public static List<DisbursementModel> viewRequestSummary()
+    {
+        List<DisbursementModel> list = new List<DisbursementModel>();
+        var q = from O in ctx.OutstandingRequests
+                join I in ctx.Items on O.ItemID equals I.ItemID
+                group O by new { O.ItemID, I.Description,I.InStock,I.BinNumber } into g
+                select new {
+                    ItemID = g.Key.ItemID,
+                    Description = g.Key.Description,
+                    Needed = g.Sum(o=>o.OutstandingQty),
+                    InStock = g.Key.InStock,
+                    g.Key.BinNumber
+                };
+        foreach(var a in q.ToList())
+        {
+            DisbursementModel dm = new DisbursementModel(a.ItemID,a.Description,a.Needed,a.InStock,a.BinNumber);
+            list.Add(dm);
+        }
+        return list;
+    }
+
+    public static List<DisbursementModel> viewRequestByDept()
+    {
+        List<DisbursementModel> list = new List<DisbursementModel>();
+        var q = from O in ctx.OutstandingRequests
+                orderby O.Department.DepartmentName
+                select new
+                {
+                    DepartmentID = O.DepartmentID,
+                    Department = O.Department.DepartmentName,
+                    ItemID = O.ItemID,
+                    Description = O.Item.Description,
+                    Needed = O.OutstandingQty
+
+                };
+        foreach (var a in q.ToList())
+        {
+            DisbursementModel dm = new DisbursementModel(a.DepartmentID,a.Department, a.ItemID, a.Description, a.Needed);
+            list.Add(dm);
+        }
+        return list;
+    }
+
     public Decimal getMaxPrice(string itemId)
     {
         var sql = from s in ctx.SupplyDetails where s.ItemID == itemId select s.Price;
