@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net.Mail;
 
 public partial class Cart : System.Web.UI.Page
 {
@@ -130,6 +131,20 @@ public partial class Cart : System.Web.UI.Page
 
         }
         Session["cart"] = null;
+
+        MailMessage mail = new MailMessage("e0046825@u.nus.edu", "e0046825@u.nus.edu");
+        SmtpClient client = new SmtpClient();
+        client.EnableSsl = true;
+        client.Port = 25;
+        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+        client.UseDefaultCredentials = false;
+        client.Host = "lynx.class.iss.nus.edu.sg";
+        client.UseDefaultCredentials = false;
+        client.Credentials = new System.Net.NetworkCredential("e0046825@u.nus.edu", "");
+        mail.Subject = "this is a test email.";
+        mail.Body = "this is my test email body";
+        client.Send(mail);
+
         Response.Redirect("RequestHistory.aspx");
     }
 }
