@@ -44,7 +44,7 @@ public interface IService
 
     [OperationContract]
     [WebGet(UriTemplate = "/GetDiscrepancy/{id}", ResponseFormat = WebMessageFormat.Json)]
-    DiscrepancyModel GetDiscrepancy(string id);
+    ItemDiscrepancyModel GetDiscrepancy(string id);
 
     [OperationContract]
     [WebGet(UriTemplate = "/UpdateDiscrepancy/{id}/{status}", ResponseFormat = WebMessageFormat.Json)]

@@ -49,11 +49,11 @@ public class Service : IService
         return work.getMaxDiscrepancyId();
     }
 
-    public DiscrepancyModel GetDiscrepancy(string id)
+    public ItemDiscrepancyModel GetDiscrepancy(string id)
     {
         Discrepancy dis = work.getDiscrepancy(id);
-        DiscrepancyModel dm = new DiscrepancyModel();
-        dm.DiscrepancyID = dis.DiscrepancyID;
+        ItemDiscrepancyModel dm = new ItemDiscrepancyModel();
+        dm.DiscrepancyId = dis.DiscrepancyID;
         dm.Description = Work.getItem(dis.ItemID).Description;
         dm.Quantity = dis.Quantity;
         dm.Reason = dis.Reason;
