@@ -19,7 +19,6 @@ public partial class Delegation
     public System.DateTime EndDate { get; set; }
 
     public virtual Staff Staff { get; set; }
-    public virtual Staff Staff1 { get; set; }
 }
 
 public partial class Department
@@ -30,6 +29,7 @@ public partial class Department
         this.DisbursementLogs = new HashSet<DisbursementLog>();
         this.OutstandingRequests = new HashSet<OutstandingRequest>();
         this.Staffs = new HashSet<Staff>();
+        this.TransactionLogs = new HashSet<TransactionLog>();
     }
 
     public string DepartmentID { get; set; }
@@ -37,8 +37,6 @@ public partial class Department
     public string DepartmentName { get; set; }
     public string ContactName { get; set; }
     public string Telephone { get; set; }
-    public string HeadName { get; set; }
-    public string RepresentativeName { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<DisbursementLog> DisbursementLogs { get; set; }
@@ -46,6 +44,8 @@ public partial class Department
     public virtual ICollection<OutstandingRequest> OutstandingRequests { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Staff> Staffs { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<TransactionLog> TransactionLogs { get; set; }
 }
 
 public partial class DisbursementLog
@@ -57,9 +57,12 @@ public partial class DisbursementLog
     public int NeededNumber { get; set; }
     public int RetrivedNumber { get; set; }
     public int GivenNumber { get; set; }
+    public string Flag { get; set; }
+    public string ClerkID { get; set; }
 
     public virtual Department Department { get; set; }
     public virtual Item Item { get; set; }
+    public virtual Staff Staff { get; set; }
 }
 
 public partial class Discrepancy
@@ -71,8 +74,11 @@ public partial class Discrepancy
     public string Status { get; set; }
     public string Comment { get; set; }
     public string RequestLog { get; set; }
+    public System.DateTime Date { get; set; }
+    public string UserID { get; set; }
 
     public virtual Item Item { get; set; }
+    public virtual Staff Staff { get; set; }
 }
 
 public partial class Item
@@ -86,6 +92,7 @@ public partial class Item
         this.OutstandingRequests = new HashSet<OutstandingRequest>();
         this.RequestDetails = new HashSet<RequestDetail>();
         this.SupplyDetails = new HashSet<SupplyDetail>();
+        this.TransactionLogs = new HashSet<TransactionLog>();
     }
 
     public string ItemID { get; set; }
@@ -109,6 +116,8 @@ public partial class Item
     public virtual ICollection<RequestDetail> RequestDetails { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<SupplyDetail> SupplyDetails { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<TransactionLog> TransactionLogs { get; set; }
 }
 
 public partial class Notification
@@ -149,8 +158,8 @@ public partial class Order
 
 public partial class OrderDetail
 {
-    public string OrderID { get; set; }
     public string PurchaseOrderID { get; set; }
+    public string OrderID { get; set; }
     public string SupplierID { get; set; }
     public int OrderQty { get; set; }
     public int ReceivedQty { get; set; }
@@ -206,7 +215,8 @@ public partial class Staff
     public Staff()
     {
         this.Delegations = new HashSet<Delegation>();
-        this.Delegations1 = new HashSet<Delegation>();
+        this.DisbursementLogs = new HashSet<DisbursementLog>();
+        this.Discrepancies = new HashSet<Discrepancy>();
         this.Notifications = new HashSet<Notification>();
         this.Orders = new HashSet<Order>();
         this.Requests = new HashSet<Request>();
@@ -221,9 +231,11 @@ public partial class Staff
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Delegation> Delegations { get; set; }
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-    public virtual ICollection<Delegation> Delegations1 { get; set; }
     public virtual Department Department { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<DisbursementLog> DisbursementLogs { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<Discrepancy> Discrepancies { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Notification> Notifications { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -258,11 +270,25 @@ public partial class Supplier
 
 public partial class SupplyDetail
 {
-    public string SupplierID { get; set; }
     public string ItemID { get; set; }
+    public string SupplierID { get; set; }
     public decimal Price { get; set; }
     public int Priority { get; set; }
 
     public virtual Item Item { get; set; }
     public virtual Supplier Supplier { get; set; }
+}
+
+public partial class TransactionLog
+{
+    public int TransactionID { get; set; }
+    public string DepartmentID { get; set; }
+    public string ItemID { get; set; }
+    public Nullable<System.DateTime> DateTime { get; set; }
+    public Nullable<int> RequestQty { get; set; }
+    public Nullable<int> ReceiveQty { get; set; }
+    public string Flag { get; set; }
+
+    public virtual Department Department { get; set; }
+    public virtual Item Item { get; set; }
 }

@@ -37,4 +37,5 @@ public partial class Team5ADProjectEntities : DbContext
     public virtual DbSet<Staff> Staffs { get; set; }
     public virtual DbSet<Supplier> Suppliers { get; set; }
     public virtual DbSet<SupplyDetail> SupplyDetails { get; set; }
+    public virtual DbSet<TransactionLog> TransactionLogs { get; set; }
 }
