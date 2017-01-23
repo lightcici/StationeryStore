@@ -850,4 +850,75 @@ public class Work
         ctx.SaveChanges();
     }
 
+    public List<DiscrepancySupplyDetailsModel> listPendingDiscrepancies(string userId)
+    {
+        DateTime now = DateTime.Now;
+        var sql1 = from d in ctx.Delegations select d;
+        var sql2 = from s in ctx.Staffs where s.UserID == userId select s.Role;
+        List<string> role = sql2.ToList();
+        List<Delegation> li1 = sql1.ToList();
+        List<DiscrepancySupplyDetailsModel> li2 = new List<DiscrepancySupplyDetailsModel>();
+        for (int j = 0; j < li1.Count; j++)
+        {
+            if (userId.Equals(li1[j].CoveringHeadID) && li1[j].StartDate < now && li1[j].EndDate > now)
+            {
+                var sql3 = from d in ctx.Discrepancies
+                           join i in ctx.Items on d.ItemID equals i.ItemID
+                           join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
+                           where d.Status == "Pending Approval"
+                           group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                           select new DiscrepancySupplyDetailsModel
+                           {
+                               DiscrepancyId = a.Key.DiscrepancyID,
+                               ItemCode = a.Key.ItemID,
+                               Description = a.Key.Description,
+                               Quantity = a.Key.Quantity,
+                               Reason = a.Key.Reason,
+                               Price = a.Max(s => s.Price),
+                           };
+                return sql3.ToList();
+
+                // && li1[j].EndDate >= time && time >= li1[j].StartDate
+            }
+        }
+        if (role[0].Equals("Manager"))
+        {
+            DialogResult dr = MessageBox.Show("Manager", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
+            var sql3 = from d in ctx.Discrepancies
+                       join i in ctx.Items on d.ItemID equals i.ItemID
+                       join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
+                       where s.Price >= 250 && d.Status == "Pending Approval"
+                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                       select new DiscrepancySupplyDetailsModel
+                       {
+                           DiscrepancyId = a.Key.DiscrepancyID,
+                           ItemCode = a.Key.ItemID,
+                           Description = a.Key.Description,
+                           Quantity = a.Key.Quantity,
+                           Reason = a.Key.Reason,
+                           Price = a.Max(s => s.Price),
+                       };
+            li2 = sql3.ToList();
+        }
+        else if (role[0].Equals("Supervisor"))
+        {
+            DialogResult dr = MessageBox.Show("Supervisor", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
+            var sql3 = from d in ctx.Discrepancies
+                       join i in ctx.Items on d.ItemID equals i.ItemID
+                       join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
+                       where s.Price < 250 && d.Status == "Pending Approval"
+                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                       select new DiscrepancySupplyDetailsModel
+                       {
+                           DiscrepancyId = a.Key.DiscrepancyID,
+                           ItemCode = a.Key.ItemID,
+                           Description = a.Key.Description,
+                           Quantity = a.Key.Quantity,
+                           Reason = a.Key.Reason,
+                           Price = a.Max(s => s.Price),
+                       };
+            li2 = sql3.ToList();
+        }
+        return li2;
+    }
 }
