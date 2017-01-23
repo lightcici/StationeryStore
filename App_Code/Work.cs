@@ -883,7 +883,6 @@ public class Work
         }
         if (role[0].Equals("Manager"))
         {
-            DialogResult dr = MessageBox.Show("Manager", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
             var sql3 = from d in ctx.Discrepancies
                        join i in ctx.Items on d.ItemID equals i.ItemID
                        join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
@@ -902,7 +901,6 @@ public class Work
         }
         else if (role[0].Equals("Supervisor"))
         {
-            DialogResult dr = MessageBox.Show("Supervisor", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
             var sql3 = from d in ctx.Discrepancies
                        join i in ctx.Items on d.ItemID equals i.ItemID
                        join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
