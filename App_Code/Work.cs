@@ -381,7 +381,13 @@ public class Work
         return newli.Max().ToString();
     }
 
-    public int saveDiscrepancy(string discrepancyId, int quantity, string reason, string status, Item item)
+    public Staff getSpecificStaff(string staffId)
+    {
+        var sql = from s in ctx.Staffs where s.UserID == staffId select s;
+        return sql.FirstOrDefault();
+    }
+
+    public int saveDiscrepancy(string discrepancyId, int quantity, string reason, string status, Item item, Staff staff, DateTime now)
     {
         Discrepancy discrepancy = new Discrepancy();
         discrepancy.DiscrepancyID = discrepancyId;
@@ -389,6 +395,8 @@ public class Work
         discrepancy.Reason = reason;
         discrepancy.Status = status;
         discrepancy.Item = item;
+        discrepancy.Staff = staff;
+        discrepancy.Date = now;
         ctx.Discrepancies.Add(discrepancy);
         return ctx.SaveChanges();
     }
