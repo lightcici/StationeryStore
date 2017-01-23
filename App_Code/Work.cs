@@ -919,4 +919,129 @@ public class Work
         }
         return li2;
     }
+
+    public static OrderDetail InsertOrderDetails(string supplier, string qty, string orderid)
+    {
+        OrderDetail o = new OrderDetail();
+        OrderDetail od = ctx.OrderDetails.OrderByDescending(x => x.PurchaseOrderID).FirstOrDefault();
+        if (od == null)
+        {
+            o.PurchaseOrderID = "PO0000001";
+        }
+        else
+        {
+            string a = od.PurchaseOrderID.Substring(0, 2);
+            int b = Convert.ToInt32(od.PurchaseOrderID.Substring(2, 7));
+            int x = b + 1;
+            string newID = String.Format("{0:0000000}", x);
+            newID = newID.Insert(0, a);
+            o.PurchaseOrderID = newID;
+        }
+        o.OrderID = orderid;
+        o.SupplierID = supplier;
+        o.OrderQty = Convert.ToInt32(qty);
+        o.ReceivedQty = 0;
+
+        return o;
+    }
+
+    public static string GetSupplierDetails(decimal price, string supplierLabel)
+    {
+        
+        var q = from a in ctx.Suppliers
+                where a.SupplierID == supplierLabel
+                select a;
+        Supplier sd = q.First();
+        string result = "<ul><li> Contact name: <b>" + sd.ContactName + "</b></li><br/><li> Contact No: <b>" + sd.Phone + "</b></li><br/><li> Fax No : <b>" + sd.FaxNo + "</b></li><br/><li> Price: <b>" + price + "</b></li></ul>";
+        return result;
+    }
+
+    public static SupplyDetail GetSupplier(int priority, string itemid)
+    {
+        
+        var qry = from x in ctx.SupplyDetails
+                  where x.ItemID == itemid && x.Priority == priority
+                  select x;
+        SupplyDetail s = qry.First();
+        return s;
+    }
+
+    public static string ShowComment(string orderID)
+    {
+        string cmt = "";
+        var q = from x in ctx.Orders
+                where x.OrderID == orderID
+                select x;
+        Order com = q.First();
+        cmt = com.Comment;
+        return cmt;
+    }
+
+    public static Order InsertNewOrder(string itemid, string quantity, string justification)
+    {
+        Order o = new Order();
+        Order od = ctx.Orders.OrderByDescending(x => x.OrderID).FirstOrDefault();
+        if (od == null)
+        {
+            o.OrderID = "DO0000001";
+        }
+        else
+        {
+            string a = od.OrderID.Substring(0, 2);
+            int b = Convert.ToInt32(od.OrderID.Substring(2, 7));
+            int x = b + 1;
+            string newID = String.Format("{0:0000000}", x);
+            newID = newID.Insert(0, a);
+            o.OrderID = newID;
+        }
+        o.ItemID = itemid;
+        o.TotalQty = Convert.ToInt32(quantity);
+        o.Justification = justification;
+        o.Status = "PendingApproval";
+        o.OrderDate = DateTime.Now;
+        o.UserID = "00242"; //temporarily hardcode
+
+        return o;
+    }
+
+    public static void UpdateOrder(string orderid, string qty, string justification)
+    {
+        Order o = ctx.Orders.Where(x => x.OrderID == orderid).First();
+        o.TotalQty = Convert.ToInt32(qty);
+        if (justification != String.Empty)
+        {
+            o.Justification = justification;
+        }
+        ctx.SaveChanges();
+    }
+
+    public static void UpdateOrderStatus(string orderid, string stt)
+    {
+        Order o = ctx.Orders.Where(x => x.OrderID == orderid).First();
+        o.Status = stt;
+        ctx.SaveChanges();
+    }
+
+    public static void UpdateComment(string orderID, string comment)
+    {
+        Order o = ctx.Orders.Where(x => x.OrderID == orderID).First();
+        o.Comment = comment;
+        ctx.SaveChanges();
+    }
+
+    public static void UpdateOrderDetails(string poNumber)
+    {
+        OrderDetail od = ctx.OrderDetails.Where(x => x.PurchaseOrderID == poNumber).First();
+        od.ReceivedQty = od.OrderQty;
+        ctx.SaveChanges();
+    }
+
+    public static void UpdateItemStock(string orderID, string itemID)
+    {
+        Order o = ctx.Orders.Where(x => x.OrderID == orderID).First();
+        Item i = ctx.Items.Where(x => x.ItemID == itemID).First();
+        int updatedStock = i.InStock + o.TotalQty;
+        i.InStock = updatedStock;
+        ctx.SaveChanges();
+    }
 }
