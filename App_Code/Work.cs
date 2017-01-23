@@ -43,7 +43,7 @@ public class Work
     public static List<Item> getAllItems()
     {
         return ctx.Items.ToList();
-    } 
+    }
     public static List<Item> getFoundItems(string text)
     {
         return ctx.Items.Where(x => x.Category.Contains(text) || x.Description.Contains(text)).ToList();
@@ -248,17 +248,18 @@ public class Work
         List<DisbursementModel> list = new List<DisbursementModel>();
         var q = from O in ctx.OutstandingRequests
                 join I in ctx.Items on O.ItemID equals I.ItemID
-                group O by new { O.ItemID, I.Description,I.InStock,I.BinNumber } into g
-                select new {
+                group O by new { O.ItemID, I.Description, I.InStock, I.BinNumber } into g
+                select new
+                {
                     ItemID = g.Key.ItemID,
                     Description = g.Key.Description,
-                    Needed = g.Sum(o=>o.OutstandingQty),
+                    Needed = g.Sum(o => o.OutstandingQty),
                     InStock = g.Key.InStock,
                     g.Key.BinNumber
                 };
-        foreach(var a in q.ToList())
+        foreach (var a in q.ToList())
         {
-            DisbursementModel dm = new DisbursementModel(a.ItemID,a.Description,a.Needed,a.InStock,a.BinNumber);
+            DisbursementModel dm = new DisbursementModel(a.ItemID, a.Description, a.Needed, a.InStock, a.BinNumber);
             list.Add(dm);
         }
         return list;
@@ -280,7 +281,7 @@ public class Work
                 };
         foreach (var a in q.ToList())
         {
-            DisbursementModel dm = new DisbursementModel(a.DepartmentID,a.Department, a.ItemID, a.Description, a.Needed);
+            DisbursementModel dm = new DisbursementModel(a.DepartmentID, a.Department, a.ItemID, a.Description, a.Needed);
             list.Add(dm);
         }
         return list;
@@ -866,10 +867,11 @@ public class Work
                            join i in ctx.Items on d.ItemID equals i.ItemID
                            join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
                            where d.Status == "Pending Approval"
-                           group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                           group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.UserID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
                            select new DiscrepancySupplyDetailsModel
                            {
                                DiscrepancyId = a.Key.DiscrepancyID,
+                               Requester = a.Key.UserID,
                                ItemCode = a.Key.ItemID,
                                Description = a.Key.Description,
                                Quantity = a.Key.Quantity,
@@ -883,14 +885,16 @@ public class Work
         }
         if (role[0].Equals("Manager"))
         {
+            //DialogResult dr = MessageBox.Show("Manager", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
             var sql3 = from d in ctx.Discrepancies
                        join i in ctx.Items on d.ItemID equals i.ItemID
                        join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
                        where s.Price >= 250 && d.Status == "Pending Approval"
-                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.UserID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
                        select new DiscrepancySupplyDetailsModel
                        {
                            DiscrepancyId = a.Key.DiscrepancyID,
+                           Requester = a.Key.UserID,
                            ItemCode = a.Key.ItemID,
                            Description = a.Key.Description,
                            Quantity = a.Key.Quantity,
@@ -901,14 +905,16 @@ public class Work
         }
         else if (role[0].Equals("Supervisor"))
         {
+            //DialogResult dr = MessageBox.Show("Supervisor", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
             var sql3 = from d in ctx.Discrepancies
                        join i in ctx.Items on d.ItemID equals i.ItemID
                        join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
                        where s.Price < 250 && d.Status == "Pending Approval"
-                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.UserID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
                        select new DiscrepancySupplyDetailsModel
                        {
                            DiscrepancyId = a.Key.DiscrepancyID,
+                           Requester = a.Key.UserID,
                            ItemCode = a.Key.ItemID,
                            Description = a.Key.Description,
                            Quantity = a.Key.Quantity,

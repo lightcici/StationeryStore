@@ -39,14 +39,9 @@ public partial class ShowItemList : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            e.Row.Attributes.Add("onmouseover", "if(this!=prevselitem){this.style.backgroundColor='#Efefef'}");//当鼠标停留时更改背景色
-            e.Row.Attributes.Add("onmouseout", "if(this!=prevselitem){this.style.backgroundColor='#ffffff'}");//当鼠标移开时还原背景色
-            e.Row.Attributes.Add("onclick", e.Row.ClientID.ToString() + ".checked=true;selectx(this)");//点击行变色
-            //e.Row.Attributes["style"] = "Cursor:hand"; //设置悬浮鼠标指针形状为"小手"
-            //GridView1.HeaderRow.Cells[10].Visible = false;
-            //e.Row.Cells[10].Visible = false;//隐藏选择按钮
-            //String evt = Page.ClientScript.GetPostBackClientHyperlink(sender as System.Web.UI.WebControls.GridView, "Select$" + e.Row.RowIndex.ToString());
-            //e.Row.Attributes.Add("selected", e.Row.RowIndex.ToString());//执行选择行GridView1_SelectedIndexChanged事件
+            e.Row.Attributes.Add("onmouseover", "if(this!=prevselitem){this.style.backgroundColor='#Efefef'}");
+            e.Row.Attributes.Add("onmouseout", "if(this!=prevselitem){this.style.backgroundColor='#ffffff'}");
+            e.Row.Attributes.Add("onclick", e.Row.ClientID.ToString() + ".checked=true;selectx(this)");
         }
     }
 

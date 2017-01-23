@@ -13,7 +13,7 @@ public partial class ApproveDiscrepancy : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //string userId = (string)Session["user"];
-        string userId = "54188";
+        string userId = "54213";
         work = new Work();
         if (!IsPostBack)
         {

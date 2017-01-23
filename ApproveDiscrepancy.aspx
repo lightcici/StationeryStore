@@ -13,7 +13,7 @@
             <br />
             <asp:GridView ID="GridView1" runat="server" OnRowCommand="GridView1_RowCommand" OnRowCreated="GridView1_RowCreated" DataKeyNames="DiscrepancyID">
                 <Columns>
-                    
+
                     <asp:TemplateField>
                         <ItemTemplate>
                             <asp:Button ID="btn11" CommandName="Approved" CommandArgument='<%#Eval("DiscrepancyID") %>' runat="server" Text="Approve" />
@@ -29,17 +29,18 @@
             <br />
             <asp:Label ID="Label3" runat="server" Font-Bold="True" Font-Italic="True" Font-Underline="True" Text="Discrepancy History"></asp:Label>
             <br />
-            <asp:GridView ID="GridView2" runat="server" AllowPaging="True" AutoGenerateColumns="False" DataKeyNames="DiscrepancyID" DataSourceID="SqlDataSource1" OnPageIndexChanging="GridView2_PageIndexChanging">
+            <asp:GridView ID="GridView2" runat="server" AllowPaging="True" AutoGenerateColumns="False" DataKeyNames="DiscrepancyID" DataSourceID="SqlDataSource1">
                 <Columns>
                     <asp:BoundField DataField="DiscrepancyID" HeaderText="DiscrepancyID" ReadOnly="True" SortExpression="DiscrepancyID" />
+                    <asp:BoundField DataField="UserID" HeaderText="Requester" SortExpression="UserID" />
                     <asp:BoundField DataField="ItemID" HeaderText="ItemID" SortExpression="ItemID" />
                     <asp:BoundField DataField="Quantity" HeaderText="Quantity" SortExpression="Quantity" />
                     <asp:BoundField DataField="Reason" HeaderText="Reason" SortExpression="Reason" />
                     <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" />
                 </Columns>
             </asp:GridView>
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:Team5ADProjectConnectionString %>" SelectCommand="SELECT DiscrepancyID, UserID, ItemID, Quantity, Reason, Status FROM Discrepancy AS d WHERE (Status = 'Approved') OR (Status = 'Rejected')"></asp:SqlDataSource>
             <br />
-            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:Team5ADProjectConnectionString %>" SelectCommand="SELECT DiscrepancyID, ItemID, Quantity, Reason, Status FROM Discrepancy AS d WHERE (Status = 'Approved') OR (Status = 'Rejected')"></asp:SqlDataSource>
 
         </div>
     </form>

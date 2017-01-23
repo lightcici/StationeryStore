@@ -9,6 +9,7 @@ using System.Web;
 public class DiscrepancySupplyDetailsModel
 {
     private string discrepancyId;
+    private string requester;
     private string itemCode;
     private string description;
     private int quantity;
@@ -23,6 +24,11 @@ public class DiscrepancySupplyDetailsModel
     {
         get { return discrepancyId; }
         set { discrepancyId = value; }
+    }
+    public string Requester
+    {
+        get { return requester; }
+        set { requester = value; }
     }
     public string ItemCode
     {
