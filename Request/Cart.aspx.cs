@@ -10,7 +10,6 @@ public partial class Cart : System.Web.UI.Page
 {
     Dictionary<string, int> cart;
     List<CartItem> cartItemList;
-    string userId;
     class CartItem
     {
         public String cat { get; set; }
@@ -29,7 +28,7 @@ public partial class Cart : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        userId = (string)Session["user"];
+        string userId = (string)Session["user"];
         if (userId == null)
         {
             Response.Redirect("~/login.aspx");
@@ -132,12 +131,20 @@ public partial class Cart : System.Web.UI.Page
 
         }
         Session["cart"] = null;
-        string headID = Work.getDeptHeadId(Work.getUser(userId).DepartmentID);
-        string subject = "Request " + newId + " for approval";
-        string body= "Dear Sir/ Madam,<br />"+"<br />Request "+ newId + " is pending your approval.Please click <a href = 'http://localhost/StationeryStore/Request/ViewSubmission.aspx'>here</a> to see more details.<br />"+"<br />Thanks & regards.";
-        SendEmail sm = new SendEmail(headID, subject, body);
-        sm.initEmail();
-        sm.sendEmail();
 
+        MailMessage mail = new MailMessage("e0046825@u.nus.edu", "e0046825@u.nus.edu");
+        SmtpClient client = new SmtpClient();
+        client.EnableSsl = true;
+        client.Port = 25;
+        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+        client.UseDefaultCredentials = false;
+        client.Host = "lynx.class.iss.nus.edu.sg";
+        client.UseDefaultCredentials = false;
+        client.Credentials = new System.Net.NetworkCredential("e0046825@u.nus.edu", "");
+        mail.Subject = "this is a test email.";
+        mail.Body = "this is my test email body";
+        client.Send(mail);
+
+        Response.Redirect("RequestHistory.aspx");
     }
 }

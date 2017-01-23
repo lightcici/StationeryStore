@@ -7,60 +7,15 @@ using System.Net.Mail;
 /// <summary>
 /// Summary description for testclass
 /// </summary>
-public class SendEmail
+public class testclass
 {
     public MailMessage Message;
     public SmtpClient client;
-    private string subject;
-    private string body;
-    private string userid;
-    private string address;
-
-    public string Subject
+    public string subject;
+    public string body;
+    public testclass()
     {
-        get
-        {
-            return subject;
-        }
-
-        set
-        {
-            subject = value;
-        }
-    }
-
-    public string Body
-    {
-        get
-        {
-            return body;
-        }
-
-        set
-        {
-            body = value;
-        }
-    }
-
-    public string Userid
-    {
-        get
-        {
-            return userid;
-        }
-
-        set
-        {
-            userid = value;
-        }
-    }
-
-    public SendEmail(string userid,string subject, string body)
-    {
-        this.userid = userid;
-        this.subject = subject;
-        this.body = body;
-        this.address = Work.getUser(userid).Email;
+        
     }
     
     public void initEmail()
@@ -75,9 +30,8 @@ public class SendEmail
    
     public void sendEmail()
     {
-        Message.Subject = Subject;
-        Message.Body = Body;
-        Message.To.Add("e0046825@u.nus.edu");
+        Message.Subject = subject;
+        Message.Body = body;
         Message.SubjectEncoding = System.Text.Encoding.UTF8;
         Message.BodyEncoding = System.Text.Encoding.UTF8;
         Message.Priority = MailPriority.High;
@@ -85,18 +39,5 @@ public class SendEmail
         
         client.EnableSsl = true;
         client.Send(Message);
-        insertNotification();
-    }
-
-    public void insertNotification()
-    {
-        Notification n = new Notification();
-        n.UserID = userid;
-        n.Subject = subject;
-        n.Message = body;
-        n.Status = "Unread";
-        n.Date = DateTime.Now;
-        Work.insertNotification(n);
-
     }
 }
