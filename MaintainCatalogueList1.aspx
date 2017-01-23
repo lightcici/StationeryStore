@@ -28,7 +28,7 @@
               <%# Eval("Category")%> 
           </ItemTemplate>
           <EditItemTemplate>
-              <asp:TextBox runat="server" ID="txtCategory" Text='<%# Eval("Category")%>' />
+               <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True"></asp:DropDownList>
           </EditItemTemplate>
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Reorder Level">
@@ -37,6 +37,10 @@
           </ItemTemplate>
           <EditItemTemplate>
               <asp:TextBox runat="server" ID="txtReorderLevel" Text='<%# Eval("ReorderLevel")%>' />
+               <asp:RangeValidator ID="RangeValidator1" runat="server"
+ErrorMessage="RangeValidator" ControlToValidate="txtReorderLevel"
+ForeColor="Red" Type="Integer"
+MaximumValue="999" MinimumValue="1">please input positive integer!</asp:RangeValidator>
           </EditItemTemplate>
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Reorder Qty">
@@ -45,6 +49,10 @@
           </ItemTemplate>
           <EditItemTemplate>
               <asp:TextBox runat="server" ID="txtReorderQty" Text='<%# Eval("ReorderQty")%>' />
+              <asp:RangeValidator ID="RangeValidator2" runat="server"
+ErrorMessage="RangeValidator" ControlToValidate="txtReorderQty"
+ForeColor="Red" Type="Integer"
+MaximumValue="999" MinimumValue="1">please input positive integer!</asp:RangeValidator>
           </EditItemTemplate>
       </asp:TemplateField>
                 <asp:TemplateField HeaderText="Unit of Measure">
@@ -52,7 +60,8 @@
               <%# Eval("UOM")%>
           </ItemTemplate>
           <EditItemTemplate>
-              <asp:TextBox runat="server" ID="txtUOM" Text='<%# Eval("UOM")%>' />
+             
+              <asp:DropDownList ID="DropDownList2" runat="server" AutoPostBack="True"></asp:DropDownList>
           </EditItemTemplate>
       </asp:TemplateField>
                 

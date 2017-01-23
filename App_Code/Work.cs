@@ -817,4 +817,21 @@ public class Work
         return returnMessage;
     }
 
+    public static List<Item> GetUOM()
+    {
+
+        List<Item> itemlist = new List<Item>();
+        ////foreach(Supplier sup in model.Supplier)
+        ////{
+
+        ////    supplierlist.Add(sup);
+        ////}
+
+        itemlist = ctx.Items.GroupBy(x => new { x.UOM }).Select(x => x.FirstOrDefault()).ToList<Item>();
+
+        return itemlist;
+
+
+    }
+
 }

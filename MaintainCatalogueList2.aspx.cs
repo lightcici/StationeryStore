@@ -16,7 +16,12 @@ public partial class MaintainCatalogueList2 : System.Web.UI.Page
             DropDownList1.DataValueField = "Category";
 
             DropDownList1.DataBind();
-            string chosenCategory = DropDownList1.SelectedValue;
+            DropDownList2.DataSource = Work.GetUOM();
+            DropDownList2.DataTextField = "UOM";
+            DropDownList2.DataValueField = "UOM";
+
+            DropDownList2.DataBind();
+            
 
         }
     }
@@ -27,7 +32,7 @@ public partial class MaintainCatalogueList2 : System.Web.UI.Page
         string description = TextBox3.Text;
         string reorderlevel = TextBox4.Text;
         string reorderQty = TextBox5.Text;
-        string uom = TextBox6.Text;
+        string uom = DropDownList2.SelectedValue;
         string binNo = TextBox7.Text;
 
         Work.CreateItem(itemID, description, category, reorderlevel, reorderQty, uom, binNo);

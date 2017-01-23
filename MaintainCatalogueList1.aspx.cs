@@ -22,7 +22,18 @@ public partial class MaintainCatalogueList1 : System.Web.UI.Page
         GridView1.DataSource = Work.GetItems();
 
         GridView1.DataBind();
+        GridViewRow row = GridView1.Rows[e.NewEditIndex];
+        DropDownList dropdownlist1 = (DropDownList)row.FindControl("DropDownList1");
+        dropdownlist1.DataSource = Work.GetCategory();
+        dropdownlist1.DataTextField = "Category";
+        dropdownlist1.DataValueField = "Category";
+        dropdownlist1.DataBind();
 
+        DropDownList dropdownlist2 = (DropDownList)row.FindControl("DropDownList2");
+        dropdownlist2.DataSource = Work.GetUOM();
+        dropdownlist2.DataTextField = "UOM";
+        dropdownlist2.DataValueField = "UOM";
+        dropdownlist2.DataBind();
 
     }
 
@@ -43,19 +54,20 @@ public partial class MaintainCatalogueList1 : System.Web.UI.Page
 
 
         TextBox txtDescription = (TextBox)row.FindControl("txtDescription");
-        TextBox txtCategory = (TextBox)row.FindControl("txtCategory");
+        DropDownList dropdownlist1 = (DropDownList)row.FindControl("DropDownList1");
         TextBox txtReorderLevel = (TextBox)row.FindControl("txtReorderLevel");
         TextBox txtReorderQty = (TextBox)row.FindControl("txtReorderQty");
         TextBox txtUOM = (TextBox)row.FindControl("txtUOM");
-
+        DropDownList dropdownlist2 = (DropDownList)row.FindControl("DropDownList2");
         string Description = txtDescription.Text;
-        string Category = txtCategory.Text;
+        string Category = dropdownlist1.SelectedValue;
         string ReorderLevel = txtReorderLevel.Text;
         string ReorderQty = txtReorderQty.Text;
-        string UOM = txtUOM.Text;
+        string UOM = dropdownlist2.SelectedValue;
 
         //string SupplierCode = GridView1.DataKeys[e.RowIndex].Value.ToString();
         string itemCode = row.Cells[0].Text;
+
 
 
 
@@ -64,7 +76,6 @@ public partial class MaintainCatalogueList1 : System.Web.UI.Page
         GridView1.DataSource = Work.GetItems();
 
         GridView1.DataBind();
-
 
         //UpdateSupplier(SupplierCode,SupplierName,GSTRegistrationNo,ContactName,Phone,Fax,Address);
         //method name: UpdateSupplier

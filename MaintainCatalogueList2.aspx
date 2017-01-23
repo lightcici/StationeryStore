@@ -12,6 +12,10 @@
     Item Code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
       <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="RequiredFieldValidator">
           please enter item code</asp:RequiredFieldValidator> 
+        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server"
+ErrorMessage="RegularExpressionValidator" ControlToValidate="TextBox1"
+ValidationExpression="[C,E,F,H,P,S,T]{1,1}[0-9][0-9][0-9]"
+ForeColor="Red">please enter correct format! start with letter, then 3 digits!</asp:RegularExpressionValidator>
         <br />
         Category:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:DropDownList ID="DropDownList1" runat="server"
             AutoPostBack="True" ViewStateMode="Enabled"></asp:DropDownList>
@@ -24,14 +28,20 @@
         ReorderLevel:&nbsp;&nbsp;&nbsp;&nbsp; <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="TextBox4" ErrorMessage="RequiredFieldValidator">
             please enter reorder level</asp:RequiredFieldValidator>
+         <asp:RangeValidator ID="RangeValidator1" runat="server"
+ErrorMessage="RangeValidator" ControlToValidate="TextBox4"
+ForeColor="Red" Type="Integer"
+MaximumValue="999" MinimumValue="1">please input positive integer!</asp:RangeValidator>
         <br />
         Reorder Qty:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" 
             ControlToValidate="TextBox5" ErrorMessage="RequiredFieldValidator">please enter reorder qty</asp:RequiredFieldValidator>
+        <asp:RangeValidator ID="RangeValidator2" runat="server"
+ErrorMessage="RangeValidator" ControlToValidate="TextBox5"
+ForeColor="Red" Type="Integer"
+MaximumValue="999" MinimumValue="1">please input positive integer!</asp:RangeValidator>
         <br />
-        Unit of Measure: <asp:TextBox ID="TextBox6" runat="server"></asp:TextBox>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" 
-            ControlToValidate="TextBox6" ErrorMessage="RequiredFieldValidator">please enter unit of measure</asp:RequiredFieldValidator>
+        Unit of Measure: <asp:DropDownList ID="DropDownList2" runat="server" AutoPostBack="True"></asp:DropDownList>
         <br />
          Bin No: <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
