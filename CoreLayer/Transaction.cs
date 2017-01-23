@@ -366,49 +366,53 @@ namespace UnitTestForCoreLogic.CoreLayer
         /// </returns>
         public HistoryDisbursement View(DateTime start, DateTime end)
         {
-            ctx = new Team5ADProjectEntities();
-
-            //List<DisbursementLog> log = ctx.DisbursementLogs.Where(x => x.DateTime.CompareTo(start).Equals(1)).ToList();
-            var qry = from x in ctx.DisbursementLogs where x.DateTime >= start && x.DateTime <= end select x;
-            List<DisbursementLog> logList = qry.ToList();
-            HistoryDisbursement result = new HistoryDisbursement();
-            foreach (DisbursementLog log in logList)
-                // if both GivenNumber and RetrievedNumber are < 0 (one is -1 while another is -100)
-                // it means that this is a tempory Log that waiting for update and should not show in History
-                // if both GivenNumber and RetrievedNumber are > 0
-                // it means that you are facing a fake database
-                if ((log.GivenNumber > 0) ^ (log.RetrivedNumber > 0))
-                {
-                    // check if value of this key is null, and instanciate new one if null
-                    result.checkKey(log.ItemID, log.DepartmentID);
-                    // record log
-                    result.LogByItem[log.ItemID].Add(log);
-                    result.LogByDepartment[log.DepartmentID].Add(log);
-                    result.GroupLogByDepartment[log.DepartmentID][log.ItemID].Add(log);
-
-                    // summary
-                    // Because it calculate with start and end instead of one deal, so accumulating
-                    if (log.RetrivedNumber < 0)        
-                    {
-                        // Give
-                        // By Item
-                        result.SummaryByItem[log.ItemID].GivenNumber += log.GivenNumber;
-                        // By Department and Item
-                        result.SummaryByDepartment[log.DepartmentID][log.ItemID].GivenNumber += log.GivenNumber;
-                    }
-                    else
-                    {
-                        // Retrieve
-                        // By Item
-                        result.SummaryByItem[log.ItemID].NeededNumber += log.NeededNumber;
-                        result.SummaryByItem[log.ItemID].RetrivedNumber += log.RetrivedNumber;
-                        // By Department and Item
-                        result.SummaryByDepartment[log.DepartmentID][log.ItemID].NeededNumber += log.NeededNumber;
-                        result.SummaryByDepartment[log.DepartmentID][log.ItemID].RetrivedNumber += log.RetrivedNumber;
-                    }
-                }
-
-            return result;
+            return new HistoryDisbursement(start, end);
         }
+        //public HistoryDisbursement View(DateTime start, DateTime end)
+        //{
+        //    ctx = new Team5ADProjectEntities();
+
+        //    //List<DisbursementLog> log = ctx.DisbursementLogs.Where(x => x.DateTime.CompareTo(start).Equals(1)).ToList();
+        //    var qry = from x in ctx.DisbursementLogs where x.DateTime >= start && x.DateTime <= end select x;
+        //    List<DisbursementLog> logList = qry.ToList();
+        //    HistoryDisbursement result = new HistoryDisbursement();
+        //    foreach (DisbursementLog log in logList)
+        //        // if both GivenNumber and RetrievedNumber are < 0 (one is -1 while another is -100)
+        //        // it means that this is a tempory Log that waiting for update and should not show in History
+        //        // if both GivenNumber and RetrievedNumber are > 0
+        //        // it means that you are facing a fake database
+        //        if ((log.GivenNumber > 0) ^ (log.RetrivedNumber > 0))
+        //        {
+        //            // check if value of this key is null, and instanciate new one if null
+        //            result.checkKey(log.ItemID, log.DepartmentID);
+        //            // record log
+        //            result.LogByItem[log.ItemID].Add(log);
+        //            result.LogByDepartment[log.DepartmentID].Add(log);
+        //            result.GroupLogByDepartment[log.DepartmentID][log.ItemID].Add(log);
+
+        //            // summary
+        //            // Because it calculate with start and end instead of one deal, so accumulating
+        //            if (log.RetrivedNumber < 0)        
+        //            {
+        //                // Give
+        //                // By Item
+        //                result.SummaryByItem[log.ItemID].GivenNumber += log.GivenNumber;
+        //                // By Department and Item
+        //                result.SummaryByDepartment[log.DepartmentID][log.ItemID].GivenNumber += log.GivenNumber;
+        //            }
+        //            else
+        //            {
+        //                // Retrieve
+        //                // By Item
+        //                result.SummaryByItem[log.ItemID].NeededNumber += log.NeededNumber;
+        //                result.SummaryByItem[log.ItemID].RetrivedNumber += log.RetrivedNumber;
+        //                // By Department and Item
+        //                result.SummaryByDepartment[log.DepartmentID][log.ItemID].NeededNumber += log.NeededNumber;
+        //                result.SummaryByDepartment[log.DepartmentID][log.ItemID].RetrivedNumber += log.RetrivedNumber;
+        //            }
+        //        }
+
+        //    return result;
+        //}
     }
 }

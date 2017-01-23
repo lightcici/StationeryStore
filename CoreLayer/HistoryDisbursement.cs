@@ -30,6 +30,17 @@ namespace UnitTestForCoreLogic.CoreLayer
             groupLogByDepartment = new Dictionary<string, Dictionary<string, List<DisbursementLog>>>();
         }
 
+        public HistoryDisbursement(DateTime start, DateTime end)
+        {
+            summaryByItem = new Dictionary<string, DisbursementLog>();
+            summaryByDepartment = new Dictionary<string, Dictionary<string, DisbursementLog>>();
+            logByItem = new Dictionary<string, List<DisbursementLog>>();
+            logByDepartment = new Dictionary<string, List<DisbursementLog>>();
+            groupLogByDepartment = new Dictionary<string, Dictionary<string, List<DisbursementLog>>>();
+
+            GetHistory(start, end);
+        }
+
         public Dictionary<string, DisbursementLog> SummaryByItem
         {
             get { return summaryByItem; }
@@ -102,6 +113,53 @@ namespace UnitTestForCoreLogic.CoreLayer
                 log.GivenNumber = 0;
                 summaryByDepartment[departmentID].Add(itemID, log);
             }
+
+            return 0;
+        }
+
+        public int GetHistory(DateTime start, DateTime end)
+        {
+            Team5ADProjectEntities ctx = new Team5ADProjectEntities();
+
+            var qry = from x in ctx.DisbursementLogs where x.DateTime >= start && x.DateTime <= end select x;
+            List<DisbursementLog> logList = qry.ToList();
+            foreach (DisbursementLog log in logList)
+                // if both GivenNumber and RetrievedNumber are < 0 (one is -1 while another is -100)
+                // it means that this is a tempory Log that waiting for update and should not show in History
+                // if both GivenNumber and RetrievedNumber are > 0
+                // it means that you are facing a fake database
+
+                // * TODO Here we can use Flag to decide whether to show or not (hide Waiting and Confirmed)
+                if ((log.GivenNumber > 0) ^ (log.RetrivedNumber > 0))
+                {
+                    // check if value of this key is null, and instanciate new one if null
+                    this.checkKey(log.ItemID, log.DepartmentID);
+                    // record log
+                    this.LogByItem[log.ItemID].Add(log);
+                    this.LogByDepartment[log.DepartmentID].Add(log);
+                    this.GroupLogByDepartment[log.DepartmentID][log.ItemID].Add(log);
+
+                    // summary
+                    // Because it calculate with start and end instead of one deal, so accumulating
+                    if (log.RetrivedNumber < 0)
+                    {
+                        // Give
+                        // By Item
+                        this.SummaryByItem[log.ItemID].GivenNumber += log.GivenNumber;
+                        // By Department and Item
+                        this.SummaryByDepartment[log.DepartmentID][log.ItemID].GivenNumber += log.GivenNumber;
+                    }
+                    else
+                    {
+                        // Retrieve
+                        // By Item
+                        this.SummaryByItem[log.ItemID].NeededNumber += log.NeededNumber;
+                        this.SummaryByItem[log.ItemID].RetrivedNumber += log.RetrivedNumber;
+                        // By Department and Item
+                        this.SummaryByDepartment[log.DepartmentID][log.ItemID].NeededNumber += log.NeededNumber;
+                        this.SummaryByDepartment[log.DepartmentID][log.ItemID].RetrivedNumber += log.RetrivedNumber;
+                    }
+                }
 
             return 0;
         }
