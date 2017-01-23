@@ -13,7 +13,6 @@ public partial class Login : System.Web.UI.Page
 
     }
 
-
     protected void Button1_Click(object sender, EventArgs e)
     {
         string userId = TextBox1.Text;
@@ -22,8 +21,9 @@ public partial class Login : System.Web.UI.Page
         if (isMatch)
         {
             Session["user"] = userId;
+
             FormsAuthentication.SetAuthCookie(userId, false);
-            Response.Redirect("");
+            Response.Redirect("Request/MakeRequest.aspx");
         }
         else
         {

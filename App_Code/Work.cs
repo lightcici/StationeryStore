@@ -31,6 +31,25 @@ public class Work
         else return false;
     }
 
+    public static bool delegated(string userId)
+    {
+        Delegation de = ctx.Delegations.Where(x => x.CoveringHeadID == userId && x.StartDate <= DateTime.Today && x.EndDate >= DateTime.Today).ToList().FirstOrDefault();
+        if (de != null)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public static bool delegateTo(string userId)
+    {
+        Delegation de = ctx.Delegations.Where(x => x.DepartmentHeadID == userId && x.StartDate <= DateTime.Today && x.EndDate >= DateTime.Today).ToList().FirstOrDefault();
+        if (de != null)
+        {
+            return true;
+        }
+        else return false;
+    }
     public static string getDeptHeadId(string deptId)
     {
         return ctx.Staffs.Where(x => x.DepartmentID == deptId && x.Role == "DeptHead").ToList().FirstOrDefault().UserID;
