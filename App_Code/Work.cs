@@ -30,6 +30,16 @@ public class Work
         }
         else return false;
     }
+
+    public static string getDeptHeadId(string deptId)
+    {
+        return ctx.Staffs.Where(x => x.DepartmentID == deptId && x.Role == "DeptHead").ToList().FirstOrDefault().UserID;
+    }
+
+    public static Request getRequestById(string id)
+    {
+        return ctx.Requests.Where(x => x.RequestID == id).ToList().FirstOrDefault();
+    }
     public static List<Item> getAllItems()
     {
         return ctx.Items.ToList();
@@ -832,6 +842,12 @@ public class Work
         return itemlist;
 
 
+    }
+
+    public static void insertNotification(Notification n)
+    {
+        ctx.Notifications.Add(n);
+        ctx.SaveChanges();
     }
 
 }

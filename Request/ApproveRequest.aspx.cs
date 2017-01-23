@@ -59,6 +59,12 @@ public partial class RequestDetailPage : System.Web.UI.Page
             comment = "NA";
         }
         Work.ApproveRequest(rqId,comment);
+        string to = Work.getRequestById(rqId).UserID;
+        string subject = "Your request " + rqId + " has been approved.";
+        string body = "Dear Sir/ Madam,<br />" + "<br />Your request " + rqId + " has been approved. Please click <a href = 'http://localhost/StationeryStore/Request/RequestHistory.aspx'>here</a> to see more details.<br />" + "<br />Thanks & regards.";
+        SendEmail sm = new SendEmail(to, subject, body);
+        sm.initEmail();
+        sm.sendEmail();
         Response.Redirect("ViewSubmission.aspx");
     }
 
@@ -70,6 +76,12 @@ public partial class RequestDetailPage : System.Web.UI.Page
             comment = "NA";
         }
         Work.RejecteRequest(rqId, comment);
+        string to = Work.getRequestById(rqId).UserID;
+        string subject = "Your request " + rqId + " has been rejected.";
+        string body = "Dear Sir/ Madam,<br />" + "<br />Your request " + rqId + " has been rejected. Please click <a href = 'http://localhost/StationeryStore/Request/RequestHistory.aspx'>here</a> to see more details.<br />" + "<br />Thanks & regards.";
+        SendEmail sm = new SendEmail(to, subject, body);
+        sm.initEmail();
+        sm.sendEmail();
         Response.Redirect("ViewSubmission.aspx");
     }
 }

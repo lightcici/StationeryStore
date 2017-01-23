@@ -34,9 +34,10 @@ public partial class RequestDetailPage : System.Web.UI.Page
     }
     string rqId;
     List<RqDeatail> deList;
+    string userId;
     protected void Page_Load(object sender, EventArgs e)
     {
-        string userId = (string)Session["user"];
+        userId = (string)Session["user"];
         if (userId == null)
         {
             Response.Redirect("~/login.aspx");
@@ -90,6 +91,12 @@ public partial class RequestDetailPage : System.Web.UI.Page
     protected void ButtonCancel_Click(object sender, EventArgs e)
     {
         Work.CancelRequest(rqId);
+        string headID = Work.getDeptHeadId(Work.getUser(userId).DepartmentID);
+        string subject = "Request " + rqId + " cancelled ";
+        string body = "Dear Sir/ Madam,<br />" + "<br />Request " + rqId + " has been cancelled by requester. No approval is required now.<br />" + "<br />Thanks & regards.";
+        SendEmail sm = new SendEmail(headID, subject, body);
+        sm.initEmail();
+        sm.sendEmail();
         Response.Redirect("RequestHistory.aspx");
     }
 
