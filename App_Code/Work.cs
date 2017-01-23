@@ -505,7 +505,7 @@ public class Work
     //return type: void
 
     public static void CreateDepartment(string DepartmentCode, string departmentname, string contact,
-        string telephone, string headname, string collectionPoint, string repName)
+        string telephone, string collectionPoint)
     {
 
         //List<Supplier> currentList = GetSupplier();
@@ -525,10 +525,9 @@ public class Work
         toAddDepartment.DepartmentName = departmentname;
         toAddDepartment.ContactName = contact;
         toAddDepartment.Telephone = telephone;
-
-        toAddDepartment.HeadName = headname;
+        
         toAddDepartment.Collection_Point = collectionPoint;
-        toAddDepartment.RepresentativeName = repName;
+   
 
         ctx.Departments.Add(toAddDepartment);
         try
