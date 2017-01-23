@@ -872,14 +872,15 @@ public class Work
             if (userId.Equals(li1[j].CoveringHeadID) && li1[j].StartDate < now && li1[j].EndDate > now)
             {
                 var sql3 = from d in ctx.Discrepancies
+                           join st in ctx.Staffs on d.UserID equals st.UserID
                            join i in ctx.Items on d.ItemID equals i.ItemID
                            join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
                            where d.Status == "Pending Approval"
-                           group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.UserID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                           group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, st.Name, d.ItemID, i.Description, d.Quantity, d.Reason } into a
                            select new DiscrepancySupplyDetailsModel
                            {
                                DiscrepancyId = a.Key.DiscrepancyID,
-                               Requester = a.Key.UserID,
+                               Requester = a.Key.Name,
                                ItemCode = a.Key.ItemID,
                                Description = a.Key.Description,
                                Quantity = a.Key.Quantity,
@@ -895,14 +896,15 @@ public class Work
         {
             //DialogResult dr = MessageBox.Show("Manager", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
             var sql3 = from d in ctx.Discrepancies
+                       join st in ctx.Staffs on d.UserID equals st.UserID
                        join i in ctx.Items on d.ItemID equals i.ItemID
                        join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
                        where s.Price >= 250 && d.Status == "Pending Approval"
-                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.UserID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, st.Name, d.ItemID, i.Description, d.Quantity, d.Reason } into a
                        select new DiscrepancySupplyDetailsModel
                        {
                            DiscrepancyId = a.Key.DiscrepancyID,
-                           Requester = a.Key.UserID,
+                           Requester = a.Key.Name,
                            ItemCode = a.Key.ItemID,
                            Description = a.Key.Description,
                            Quantity = a.Key.Quantity,
@@ -915,14 +917,15 @@ public class Work
         {
             //DialogResult dr = MessageBox.Show("Supervisor", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
             var sql3 = from d in ctx.Discrepancies
+                       join st in ctx.Staffs on d.UserID equals st.UserID
                        join i in ctx.Items on d.ItemID equals i.ItemID
                        join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
                        where s.Price < 250 && d.Status == "Pending Approval"
-                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.UserID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, st.Name, d.ItemID, i.Description, d.Quantity, d.Reason } into a
                        select new DiscrepancySupplyDetailsModel
                        {
                            DiscrepancyId = a.Key.DiscrepancyID,
-                           Requester = a.Key.UserID,
+                           Requester = a.Key.Name,
                            ItemCode = a.Key.ItemID,
                            Description = a.Key.Description,
                            Quantity = a.Key.Quantity,

@@ -19,7 +19,7 @@ public class GetInfo
         }
         public Staff getLoginUserInfo()
         {
-            Staff s = ctx.Staff.Where(x => x.UserID == "99562").First();
+            Staff s = ctx.Staffs.Where(x => x.UserID == "99562").First();
 
 
             return s;
@@ -29,14 +29,14 @@ public class GetInfo
         {
             Delegation lastdlgt = new Delegation(); 
             string a = getLoginUserInfo().UserID;  //headID
-            int b = ctx.Delegation.Count(x=>x.DepartmentHeadID==a);//if there are info about delegation
+            int b = ctx.Delegations.Count(x=>x.DepartmentHeadID==a);//if there are info about delegation
 
             if(b!=0)
             {
              List<Delegation> d = new List<Delegation>();
-             d = ctx.Delegation.Where(x => x.DepartmentHeadID == a ).ToList(); //get dept delegation list
+             d = ctx.Delegations.Where(x => x.DepartmentHeadID == a ).ToList(); //get dept delegation list
             string c = d.Max(x => x.DelegationID).ToString();//the max delegationID in list
-            lastdlgt = ctx.Delegation.Where(x=>x.DelegationID==c).First();
+            lastdlgt = ctx.Delegations.Where(x=>x.DelegationID==c).First();
             }
            return lastdlgt;
         }
@@ -46,7 +46,7 @@ public class GetInfo
        {
         string a = getLoginUserInfo().DepartmentID;
         List<Staff> st1 = new List<Staff>();
-        st1 = ctx.Staff.Where(x => x.DepartmentID == a).ToList();
+        st1 = ctx.Staffs.Where(x => x.DepartmentID == a).ToList();
         return st1;
 
     }
@@ -61,7 +61,7 @@ public class GetInfo
             if (d.DelegationID != null)
             {
                 string ch = d.CoveringHeadID;
-                s1 = ctx.Staff.Where(x => x.UserID == ch).First(); //选择出已经有的临时head的信息
+                s1 = ctx.Staffs.Where(x => x.UserID == ch).First(); //选择出已经有的临时head的信息
             }
 
         }
