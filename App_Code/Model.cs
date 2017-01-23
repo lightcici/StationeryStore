@@ -37,8 +37,6 @@ public partial class Department
     public string DepartmentName { get; set; }
     public string ContactName { get; set; }
     public string Telephone { get; set; }
-    public string HeadName { get; set; }
-    public string RepresentativeName { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<DisbursementLog> DisbursementLogs { get; set; }
@@ -58,8 +56,8 @@ public partial class DisbursementLog
     public int RetrivedNumber { get; set; }
     public int GivenNumber { get; set; }
 
-    public virtual Department Department { get; set; }
     public virtual Item Item { get; set; }
+    public virtual Department Department { get; set; }
 }
 
 public partial class Discrepancy
@@ -113,7 +111,7 @@ public partial class Item
 
 public partial class Notification
 {
-    public string NotificationID { get; set; }
+    public int NotificationID { get; set; }
     public string UserID { get; set; }
     public string Subject { get; set; }
     public string Message { get; set; }
@@ -165,8 +163,8 @@ public partial class OutstandingRequest
     public string DepartmentID { get; set; }
     public int OutstandingQty { get; set; }
 
-    public virtual Department Department { get; set; }
     public virtual Item Item { get; set; }
+    public virtual Department Department { get; set; }
 }
 
 public partial class Request
@@ -207,9 +205,9 @@ public partial class Staff
     {
         this.Delegations = new HashSet<Delegation>();
         this.Delegations1 = new HashSet<Delegation>();
-        this.Notifications = new HashSet<Notification>();
         this.Orders = new HashSet<Order>();
         this.Requests = new HashSet<Request>();
+        this.Notifications = new HashSet<Notification>();
     }
 
     public string UserID { get; set; }
@@ -223,13 +221,13 @@ public partial class Staff
     public virtual ICollection<Delegation> Delegations { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Delegation> Delegations1 { get; set; }
-    public virtual Department Department { get; set; }
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-    public virtual ICollection<Notification> Notifications { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Order> Orders { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<Request> Requests { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<Notification> Notifications { get; set; }
+    public virtual Department Department { get; set; }
 }
 
 public partial class Supplier

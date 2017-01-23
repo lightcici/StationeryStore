@@ -6,11 +6,9 @@
     <edmx:Diagrams>
       <Diagram DiagramId="7976725f3a614a2598e0c242d8d54395" Name="Diagram1">
         <EntityTypeShape EntityType="Team5ADProjectModel.Delegation" Width="1.5" PointX="5.25" PointY="13.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Team5ADProjectModel.Department" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.DisbursementLog" Width="1.5" PointX="3" PointY="9.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Discrepancy" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Item" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Team5ADProjectModel.Notification" Width="1.5" PointX="5.25" PointY="16.25" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Order" Width="1.5" PointX="8.25" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.OrderDetail" Width="1.5" PointX="10.5" PointY="16.25" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.OutstandingRequest" Width="1.5" PointX="6" PointY="10.25" IsExpanded="true" />
@@ -21,22 +19,24 @@
         <EntityTypeShape EntityType="Team5ADProjectModel.SupplyDetail" Width="1.5" PointX="10.5" PointY="8.5" IsExpanded="true" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Delegation_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Delegation_Staff1" ManuallyRouted="false" />
-        <AssociationConnector Association="Team5ADProjectModel.FK_DisbursementLog_Department" ManuallyRouted="false" />
-        <AssociationConnector Association="Team5ADProjectModel.FK_OutstandingRequest_Department" ManuallyRouted="false" />
-        <AssociationConnector Association="Team5ADProjectModel.FK_Staff_Department" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_DisbursementLog_DisbursementLog" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Discrepancy_Item" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Order_Item" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_OutstandingRequest_OutstandingRequest" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_RequestDetails_Item" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_SupplyDetails_Item" ManuallyRouted="false" />
-        <AssociationConnector Association="Team5ADProjectModel.FK_Notification_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Order_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_OrderDetails_Order" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_OrderDetails_Supplier" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Request_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_RequestDetails_Request" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_SupplyDetails_Supplier" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Notification" Width="1.5" PointX="5.25" PointY="17.25" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_Notification_Staff" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Department" Width="1.5" PointX="0.75" PointY="13.25" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_DisbursementLog_Department" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_OutstandingRequest_Department" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_Staff_Department" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
