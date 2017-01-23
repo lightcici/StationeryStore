@@ -16,7 +16,7 @@
             <asp:ListItem Value="ShowAll">ShowAll</asp:ListItem>
             <asp:ListItem>Approved</asp:ListItem>
             <asp:ListItem>Rejected</asp:ListItem>
-            <asp:ListItem Value="Pending Approval">PendingApproval</asp:ListItem>
+            <asp:ListItem Value="PendingApproval">PendingApproval</asp:ListItem>
         </asp:DropDownList>
         <br />
         <asp:GridView ID="GridView1" runat="server" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging">

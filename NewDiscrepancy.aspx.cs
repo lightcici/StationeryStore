@@ -46,7 +46,7 @@ public partial class NewDiscrepancy : System.Web.UI.Page
                 DialogResult dr = MessageBox.Show("Updated Successfully!", "New Discrepancy", MessageBoxButtons.OK, MessageBoxIcon.Question);
                 if (dr == DialogResult.OK)
                 {
-                    Response.Redirect("/ViewDiscrepancy.aspx");
+                    Response.Redirect("ViewDiscrepancy.aspx");
                 }
             }
         }

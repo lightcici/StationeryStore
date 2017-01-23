@@ -468,19 +468,19 @@ public class Work
     {
 
 
-        List<Department> departmentlist = new List<Department>();
-        departmentlist = ctx.Departments.Where(department => department.DepartmentID == DepartmentCode).ToList<Department>();
-        foreach (Department dept in departmentlist)
-        {
-            dept.DepartmentName = departmentname;
-            dept.ContactName = contact;
-            dept.Telephone = telephone;
-            dept.HeadName = headname;
-            dept.Collection_Point = collectionPoint;
-            dept.RepresentativeName = repName;
+        //List<Department> departmentlist = new List<Department>();
+        //departmentlist = ctx.Departments.Where(department => department.DepartmentID == DepartmentCode).ToList<Department>();
+        //foreach (Department dept in departmentlist)
+        //{
+        //    dept.DepartmentName = departmentname;
+        //    dept.ContactName = contact;
+        //    dept.Telephone = telephone;
+        //    dept.HeadName = headname;
+        //    dept.Collection_Point = collectionPoint;
+        //    dept.RepresentativeName = repName;
 
-        }
-        ctx.SaveChanges();
+        //}
+        //ctx.SaveChanges();
     }
 
     public static void DeleteDepartment(string departmentCode)
@@ -518,29 +518,29 @@ public class Work
         //    }
 
 
-        Department toAddDepartment = new Department();
+        //Department toAddDepartment = new Department();
 
 
-        toAddDepartment.DepartmentID = DepartmentCode;
-        toAddDepartment.DepartmentName = departmentname;
-        toAddDepartment.ContactName = contact;
-        toAddDepartment.Telephone = telephone;
+        //toAddDepartment.DepartmentID = DepartmentCode;
+        //toAddDepartment.DepartmentName = departmentname;
+        //toAddDepartment.ContactName = contact;
+        //toAddDepartment.Telephone = telephone;
 
-        toAddDepartment.HeadName = headname;
-        toAddDepartment.Collection_Point = collectionPoint;
-        toAddDepartment.RepresentativeName = repName;
+        //toAddDepartment.HeadName = headname;
+        //toAddDepartment.Collection_Point = collectionPoint;
+        //toAddDepartment.RepresentativeName = repName;
 
-        ctx.Departments.Add(toAddDepartment);
-        try
-        {
-            ctx.SaveChanges();
-        }
+        //ctx.Departments.Add(toAddDepartment);
+        //try
+        //{
+        //    ctx.SaveChanges();
+        //}
 
-        catch (DbEntityValidationException ex)
-        {
-            string errorMessages = string.Join("; ", ex.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage));
-            throw new DbEntityValidationException(errorMessages);
-        }
+        //catch (DbEntityValidationException ex)
+        //{
+        //    string errorMessages = string.Join("; ", ex.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage));
+        //    throw new DbEntityValidationException(errorMessages);
+        //}
 
     }
     //method
