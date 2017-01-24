@@ -416,7 +416,19 @@ public class Work
         }
         return ctx.SaveChanges();
     }
-
+    public int saveDiscrepancy(string discrepancyId, int quantity, string reason, string status, Item item, Staff staff, DateTime now)
+    {
+        Discrepancy discrepancy = new Discrepancy();
+        discrepancy.DiscrepancyID = discrepancyId;
+        discrepancy.Quantity = quantity;
+        discrepancy.Reason = reason;
+        discrepancy.Status = status;
+        discrepancy.Item = item;
+        discrepancy.Staff = staff;
+        discrepancy.Date = now;
+        ctx.Discrepancies.Add(discrepancy);
+        return ctx.SaveChanges();
+    }
     public List<Discrepancy> getSpecificDiscrepancies()
     {
         var sql = from d in ctx.Discrepancies
@@ -427,6 +439,24 @@ public class Work
         return sql.ToList();
     }
 
+    public Staff getSpecificStaff(string staffId)
+    {
+        var sql = from s in ctx.Staffs where s.UserID == staffId select s;
+        return sql.FirstOrDefault();
+    }
+    public string getEmailToPersonId(string itemPrice)
+    {
+        string emailId = "";
+        if (Convert.ToDecimal(itemPrice) >= 250)
+        {
+            emailId = "54213";
+        }
+        else
+        {
+            emailId = "54188";
+        }
+        return emailId;
+    }
     //method
     public static List<Department> GetDepartment()
     {
