@@ -47,13 +47,13 @@
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Retrieved">
                 <ItemTemplate>
-                    <asp:TextBox ID="Retrieved" runat="server" TextMode="Number" min="0"></asp:TextBox>
+                    <asp:TextBox ID="Retrieved" runat="server" TextMode="Number" min="0" Text='<%#Eval("RetrivedNumber") %>'></asp:TextBox>
                 </ItemTemplate>
                 <HeaderStyle HorizontalAlign="Center" />
             </asp:TemplateField>
         </Columns>
         </asp:GridView>
-        <asp:Button ID="ButtonSummary" runat="server" Text="Submit" />
+        <asp:Button ID="ButtonSummary" runat="server" Text="Submit" OnClick="ButtonSummary_Click" />
     </asp:Panel>
     <asp:Panel ID="PanelDept" runat="server">
         
@@ -95,13 +95,13 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Retrieved">
                                 <ItemTemplate>
-                                    <asp:TextBox ID="retrieved" runat="server" min="0" TextMode="Number"></asp:TextBox>
+                                    <asp:TextBox ID="retrieved" runat="server" min="0" TextMode="Number" Text='<%#Eval("RetrivedNumber") %>'></asp:TextBox>
                                 </ItemTemplate>
                                 <HeaderStyle HorizontalAlign="Center" />
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="ActualGiven">
                                 <ItemTemplate>
-                                    <asp:TextBox ID="given" runat="server" min="0" TextMode="Number"></asp:TextBox>
+                                    <asp:TextBox ID="given" runat="server" min="0" TextMode="Number" Text='<%#Eval("GivenNumber") %>'></asp:TextBox>
                                 </ItemTemplate>
                                 <HeaderStyle HorizontalAlign="Center" />
                             </asp:TemplateField>
@@ -116,7 +116,7 @@
             </tr>
             <tr>
                 <td>
-                    <asp:Button ID="ButtonDept0" runat="server" Text="Submit" />
+                    <asp:Button ID="ButtonDept0" runat="server" Text="Submit" OnClick="ButtonDept0_Click" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
