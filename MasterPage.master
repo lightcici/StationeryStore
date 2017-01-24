@@ -103,37 +103,17 @@
             </tr>
 
             <tr>
-                <td class="auto-style2">
-                    
-
-           <asp:Menu ID="Menu1" runat="server" Visible="false">
-                <Items>
-                    <asp:MenuItem Text="Manager" Value="File">
-                        <asp:MenuItem Text="New" Value="New"></asp:MenuItem>
-                        <asp:MenuItem Text="Open" Value="Open"></asp:MenuItem>
-                    </asp:MenuItem>
-                </Items>
-            </asp:Menu>
-            <asp:Menu ID="Menu2" runat="server" Visible="false">
-                <Items>
-                    <asp:MenuItem Text="Staff" Value="File">
-                        <asp:MenuItem Text="New" Value="New"></asp:MenuItem>
-                        <asp:MenuItem Text="Open" Value="Open"></asp:MenuItem>
-                    </asp:MenuItem>
-                </Items>
-            </asp:Menu>
-            <asp:Menu ID="Menu3" runat="server" Visible="false">
-                <Items>
-                    <asp:MenuItem Text="Admin" Value="File">
-                        <asp:MenuItem Text="New" Value="New"></asp:MenuItem>
-                        <asp:MenuItem Text="Open" Value="Open"></asp:MenuItem>
-                    </asp:MenuItem>
-                </Items>
-            </asp:Menu>
-
-
-
-
+                <td class="auto-style2" valign="top">
+                    <asp:Panel ID="Panel1" runat="server">
+                    </asp:Panel>
+<%--                   <asp:Menu ID="Menu1" runat="server" Visible="true">
+                        <Items>
+                            <asp:MenuItem Text="Manager" Value="File">
+                                <asp:MenuItem Text="New" Value="New"></asp:MenuItem>
+                                <asp:MenuItem Text="Open" Value="Open"></asp:MenuItem>
+                            </asp:MenuItem>
+                        </Items>
+                    </asp:Menu>--%>
                 </td>
                 <td class="auto-style6" colspan="3">
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
