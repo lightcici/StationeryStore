@@ -139,5 +139,6 @@ public partial class Cart : System.Web.UI.Page
         SendEmail sm = new SendEmail(headID, subject, body);
         sm.initEmail();
         sm.sendEmail();
+        Response.Redirect("RequestHistory.aspx");
     }
 }

@@ -53,15 +53,43 @@ public class Work
 
     public static Delegation getDlgtInfo(string userId)
     {
-        return ctx.Delegations.Where(x => x.DepartmentHeadID == userId && x.StartDate <= DateTime.Today && x.EndDate >= DateTime.Today).ToList().FirstOrDefault();
+        return ctx.Delegations.Where(x => x.DepartmentHeadID == userId && (x.StartDate <= DateTime.Today && x.EndDate >= DateTime.Today) || (x.StartDate>=DateTime.Today)).ToList().LastOrDefault();
     }
 
-    public List<Staff> getDptSfInfo(string userId)
+    public static List<Staff> getDptSfInfo(string userId)
     {
         string deptId = Work.getUser(userId).DepartmentID;
         List<Staff> st1 = new List<Staff>();
         st1 = ctx.Staffs.Where(x => x.DepartmentID == deptId).ToList();
         return st1;
+    }
+
+    public static void addDelegation (Delegation de)
+    {
+        ctx.Delegations.Add(de);
+        ctx.SaveChanges();
+    }
+
+    public static void deleteDelegation(Delegation de)
+    {
+        ctx.Delegations.Remove(de);
+        ctx.SaveChanges();
+    }
+
+    public static void revokeDelegation(Delegation de)
+    {
+        Delegation d = ctx.Delegations.Where(x => x.DelegationID == de.DelegationID).ToList().FirstOrDefault();
+        d.EndDate = DateTime.Now;
+        ctx.SaveChanges();
+    }
+
+    public static void ChangRep(string dropdown)
+    {
+        Staff newrep = ctx.Staffs.Where(x => x.Name == dropdown).First();
+        Staff oldrep = ctx.Staffs.Where(x => x.DepartmentID == newrep.DepartmentID && x.Role == "DeptRep").First();
+        oldrep.Role = "Employee";
+        newrep.Role = "DeptRep";
+        ctx.SaveChanges();
     }
     public static string getDeptHeadId(string deptId)
     {

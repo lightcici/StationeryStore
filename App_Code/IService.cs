@@ -5,7 +5,8 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.ServiceModel.Web;
-
+using System.Web.UI;
+using System.Web.Script.Services;
 
 [ServiceContract]
 public interface IService
@@ -67,10 +68,12 @@ public interface IService
     void ApproveRequest(string id,string comment,string status);
 
     [OperationContract]
-    [WebGet(UriTemplate = "/ViewNotificationByUserID?id={id})", ResponseFormat =WebMessageFormat.Json)]
+    [WebGet(UriTemplate = "/ViewNotificationByUserID?id={id}", ResponseFormat =WebMessageFormat.Json)]
     List <WCFNotification> ViewNotificationByUserID(string id);
 
 }
+
+
 [DataContract]
 public class WCFUser
 {
