@@ -12,11 +12,13 @@ using System.Collections.Generic;
 
 public partial class Delegation
 {
-    public string DelegationID { get; set; }
+    public int DelegationID { get; set; }
     public string DepartmentHeadID { get; set; }
     public string CoveringHeadID { get; set; }
     public System.DateTime StartDate { get; set; }
     public System.DateTime EndDate { get; set; }
+
+    public virtual Staff Staff { get; set; }
 }
 
 public partial class Department
@@ -51,10 +53,10 @@ public partial class DisbursementLog
     public int DisbursementID { get; set; }
     public string ItemID { get; set; }
     public string DepartmentID { get; set; }
-    public System.DateTime DateTime { get; set; }
-    public int NeededNumber { get; set; }
-    public int RetrivedNumber { get; set; }
-    public int GivenNumber { get; set; }
+    public Nullable<System.DateTime> DateTime { get; set; }
+    public Nullable<int> NeededNumber { get; set; }
+    public Nullable<int> RetrivedNumber { get; set; }
+    public Nullable<int> GivenNumber { get; set; }
     public string Flag { get; set; }
     public string ClerkID { get; set; }
 
@@ -212,6 +214,7 @@ public partial class Staff
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
     public Staff()
     {
+        this.Delegations = new HashSet<Delegation>();
         this.DisbursementLogs = new HashSet<DisbursementLog>();
         this.Discrepancies = new HashSet<Discrepancy>();
         this.Notifications = new HashSet<Notification>();
@@ -226,6 +229,8 @@ public partial class Staff
     public string Password { get; set; }
     public string Role { get; set; }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<Delegation> Delegations { get; set; }
     public virtual Department Department { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<DisbursementLog> DisbursementLogs { get; set; }

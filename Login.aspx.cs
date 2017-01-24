@@ -23,7 +23,27 @@ public partial class Login : System.Web.UI.Page
             Session["user"] = userId;
 
             FormsAuthentication.SetAuthCookie(userId, false);
-            Response.Redirect("Request/MakeRequest.aspx");
+            string role = Work.getUser(userId).Role;
+            if (role == "Employee")
+            {
+                Response.Redirect("Request/MakeRequest.aspx");
+            }else if (role == "DeptRep")
+            {
+                Response.Redirect("Request/MakeRequest.aspx");
+            }
+            else if (role == "DeptHead")
+            {
+                Response.Redirect("Request/ViewSubmission.aspx");
+            }else if (role == "Clerk")
+            {
+                Response.Redirect("LowInStock.aspx");
+            }
+            else if (role == "Manager" || role== "Supervisor")
+            {
+                Response.Redirect("Order/OrderList.aspx");
+            }
+
+
         }
         else
         {

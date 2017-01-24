@@ -11,6 +11,11 @@ public partial class ShowItemList : System.Web.UI.Page
     List<ItemModel> ilist;
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         work = new Work();
         if (ViewState["category"] == null)
         {

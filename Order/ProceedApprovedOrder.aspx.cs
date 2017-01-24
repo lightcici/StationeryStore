@@ -13,6 +13,10 @@ public partial class Order_ProceedApprovedOrder : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         userid = (string)Session["user"];
+        if (userid == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         if (!IsPostBack)
         {
             OrderIDLbl.Text = Request.QueryString["Order"];

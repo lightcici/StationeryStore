@@ -10,6 +10,11 @@ public partial class MaintainDepartmentList2 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         if (!IsPostBack)
         {
             DropDownList1.DataSource = Work.GetCollectionPoint();

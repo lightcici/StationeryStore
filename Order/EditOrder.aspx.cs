@@ -9,6 +9,11 @@ public partial class Order_EditOrder : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         if (!IsPostBack)
         {
             OrderIDLbl.Text = Request.QueryString["Order"];

@@ -14,6 +14,10 @@ public partial class Order_AcknowledgeOrder : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         userid = (string)Session["user"];
+        if (userid == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         orderID = Request.QueryString["OrderID"];
         if (!IsPostBack)
         {

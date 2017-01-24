@@ -9,6 +9,11 @@ public partial class MaintainPurchaseList3 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         TextBox1.Text = Request.QueryString["field1"];
         TextBox2.Text = Request.QueryString["field2"];
         TextBox4.Text = Request.QueryString["field3"];

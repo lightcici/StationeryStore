@@ -4,12 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Team5ADProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Team5ADProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Delegation">
           <Key>
             <PropertyRef Name="DelegationID" />
           </Key>
-          <Property Name="DelegationID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DelegationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DepartmentHeadID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CoveringHeadID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="StartDate" Type="datetime" Nullable="false" />
@@ -34,10 +34,10 @@
           <Property Name="DisbursementID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ItemID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DepartmentID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="DateTime" Type="datetime" Nullable="false" />
-          <Property Name="NeededNumber" Type="int" Nullable="false" />
-          <Property Name="RetrivedNumber" Type="int" Nullable="false" />
-          <Property Name="GivenNumber" Type="int" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" />
+          <Property Name="NeededNumber" Type="int" />
+          <Property Name="RetrivedNumber" Type="int" />
+          <Property Name="GivenNumber" Type="int" />
           <Property Name="Flag" Type="nvarchar" MaxLength="50" />
           <Property Name="ClerkID" Type="nvarchar" MaxLength="50" />
         </EntityType>
@@ -182,6 +182,20 @@
           <Property Name="ReceiveQty" Type="int" />
           <Property Name="Flag" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK_Delegation_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Delegation" Type="Self.Delegation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Delegation">
+              <PropertyRef Name="DepartmentHeadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DisbursementLog_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -472,6 +486,10 @@
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SupplyDetails" EntityType="Self.SupplyDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TransactionLog" EntityType="Self.TransactionLog" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Delegation_Staff" Association="Self.FK_Delegation_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Delegation" EntitySet="Delegation" />
+          </AssociationSet>
           <AssociationSet Name="FK_DisbursementLog_Department" Association="Self.FK_DisbursementLog_Department">
             <End Role="Department" EntitySet="Department" />
             <End Role="DisbursementLog" EntitySet="DisbursementLog" />
@@ -553,10 +571,22 @@
             <End Role="TransactionLog" EntitySet="TransactionLog" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Team5ADProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Delegation">
+          <Key>
+            <PropertyRef Name="DelegationID" />
+          </Key>
+          <Property Name="DelegationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentHeadID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CoveringHeadID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK_Delegation_Staff" FromRole="Delegation" ToRole="Staff" />
+        </EntityType>
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="DepartmentID" />
@@ -580,10 +610,10 @@
           <Property Name="DisbursementID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ItemID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DepartmentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="NeededNumber" Type="Int32" Nullable="false" />
-          <Property Name="RetrivedNumber" Type="Int32" Nullable="false" />
-          <Property Name="GivenNumber" Type="Int32" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="NeededNumber" Type="Int32" />
+          <Property Name="RetrivedNumber" Type="Int32" />
+          <Property Name="GivenNumber" Type="Int32" />
           <Property Name="Flag" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ClerkID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Department" Relationship="Self.FK_DisbursementLog_Department" FromRole="DisbursementLog" ToRole="Department" />
@@ -714,6 +744,7 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Delegations" Relationship="Self.FK_Delegation_Staff" FromRole="Staff" ToRole="Delegation" />
           <NavigationProperty Name="Department" Relationship="Self.FK_Staff_Department" FromRole="Staff" ToRole="Department" />
           <NavigationProperty Name="DisbursementLogs" Relationship="Self.FK_DisbursementLog_Staff" FromRole="Staff" ToRole="DisbursementLog" />
           <NavigationProperty Name="Discrepancies" Relationship="Self.FK_Discrepancy_Staff" FromRole="Staff" ToRole="Discrepancy" />
@@ -754,7 +785,7 @@
             <PropertyRef Name="DepartmentID" />
             <PropertyRef Name="ItemID" />
           </Key>
-          <Property Name="TransactionID" Type="Int32" Nullable="false" />
+          <Property Name="TransactionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DepartmentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ItemID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DateTime" Type="DateTime" Precision="3" />
@@ -764,6 +795,20 @@
           <NavigationProperty Name="Department" Relationship="Self.FK_TransactionLog_Department" FromRole="TransactionLog" ToRole="Department" />
           <NavigationProperty Name="Item" Relationship="Self.FK_TransactionLog_Item" FromRole="TransactionLog" ToRole="Item" />
         </EntityType>
+        <Association Name="FK_Delegation_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Delegation" Type="Self.Delegation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Delegation">
+              <PropertyRef Name="DepartmentHeadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DisbursementLog_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1039,6 +1084,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Team5ADProjectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Delegations" EntityType="Self.Delegation" />
           <EntitySet Name="Departments" EntityType="Self.Department" />
           <EntitySet Name="DisbursementLogs" EntityType="Self.DisbursementLog" />
           <EntitySet Name="Discrepancies" EntityType="Self.Discrepancy" />
@@ -1053,6 +1099,10 @@
           <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
           <EntitySet Name="SupplyDetails" EntityType="Self.SupplyDetail" />
           <EntitySet Name="TransactionLogs" EntityType="Self.TransactionLog" />
+          <AssociationSet Name="FK_Delegation_Staff" Association="Self.FK_Delegation_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Delegation" EntitySet="Delegations" />
+          </AssociationSet>
           <AssociationSet Name="FK_DisbursementLog_Department" Association="Self.FK_DisbursementLog_Department">
             <End Role="Department" EntitySet="Departments" />
             <End Role="DisbursementLog" EntitySet="DisbursementLogs" />
@@ -1133,24 +1183,24 @@
             <End Role="Supplier" EntitySet="Suppliers" />
             <End Role="SupplyDetails" EntitySet="SupplyDetails" />
           </AssociationSet>
-          <EntitySet Name="Delegations" EntityType="Team5ADProjectModel.Delegation" />
         </EntityContainer>
-        <EntityType Name="Delegation">
-          <Key>
-            <PropertyRef Name="DelegationID" />
-          </Key>
-          <Property Name="DelegationID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DepartmentHeadID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CoveringHeadID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Team5ADProjectModelStoreContainer" CdmEntityContainer="Team5ADProjectEntities">
+          <EntitySetMapping Name="Delegations">
+            <EntityTypeMapping TypeName="Team5ADProjectModel.Delegation">
+              <MappingFragment StoreEntitySet="Delegation">
+                <ScalarProperty Name="DelegationID" ColumnName="DelegationID" />
+                <ScalarProperty Name="DepartmentHeadID" ColumnName="DepartmentHeadID" />
+                <ScalarProperty Name="CoveringHeadID" ColumnName="CoveringHeadID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Departments">
             <EntityTypeMapping TypeName="Team5ADProjectModel.Department">
               <MappingFragment StoreEntitySet="Department">
@@ -1321,17 +1371,6 @@
                 <ScalarProperty Name="RequestQty" ColumnName="RequestQty" />
                 <ScalarProperty Name="ReceiveQty" ColumnName="ReceiveQty" />
                 <ScalarProperty Name="Flag" ColumnName="Flag" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Delegations">
-            <EntityTypeMapping TypeName="Team5ADProjectModel.Delegation">
-              <MappingFragment StoreEntitySet="Delegation">
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="CoveringHeadID" ColumnName="CoveringHeadID" />
-                <ScalarProperty Name="DepartmentHeadID" ColumnName="DepartmentHeadID" />
-                <ScalarProperty Name="DelegationID" ColumnName="DelegationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

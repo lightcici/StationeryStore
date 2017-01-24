@@ -31,6 +31,21 @@ public class Work
         else return false;
     }
 
+    public static List<Item> lowInStock()
+    {
+        List<Item> result = new List<Item>();
+        List<Item> all = ctx.Items.ToList();
+        foreach(Item i in all)
+        {
+            if (i.InStock <= i.ReorderLevel)
+            {
+                result.Add(i);
+            }
+            
+
+        }
+        return result;
+    }
     public static bool delegated(string userId)
     {
         Delegation de = ctx.Delegations.Where(x => x.CoveringHeadID == userId && x.StartDate <= DateTime.Today && x.EndDate >= DateTime.Today).ToList().FirstOrDefault();
@@ -53,7 +68,7 @@ public class Work
 
     public static Delegation getDlgtInfo(string userId)
     {
-        return ctx.Delegations.Where(x => x.DepartmentHeadID == userId && (x.StartDate <= DateTime.Today && x.EndDate >= DateTime.Today) || (x.StartDate>=DateTime.Today)).ToList().LastOrDefault();
+        return ctx.Delegations.Where(x => x.DepartmentHeadID == userId && (x.StartDate <= DateTime.Today && x.EndDate >= DateTime.Today) || (x.StartDate >= DateTime.Today)).ToList().LastOrDefault();
     }
 
     public static List<Staff> getDptSfInfo(string userId)
@@ -64,7 +79,7 @@ public class Work
         return st1;
     }
 
-    public static void addDelegation (Delegation de)
+    public static void addDelegation(Delegation de)
     {
         ctx.Delegations.Add(de);
         ctx.SaveChanges();
@@ -83,12 +98,25 @@ public class Work
         ctx.SaveChanges();
     }
 
-    public static void ChangRep(string dropdown)
+    public static string getDeptRep(string userId)
     {
-        Staff newrep = ctx.Staffs.Where(x => x.Name == dropdown).First();
-        Staff oldrep = ctx.Staffs.Where(x => x.DepartmentID == newrep.DepartmentID && x.Role == "DeptRep").First();
+        string deptId = Work.getUser(userId).DepartmentID;
+        return ctx.Staffs.Where(x => x.DepartmentID == deptId && x.Role == "DeptRep").FirstOrDefault().UserID;
+
+    }
+    public static void ChangeRep(string oldRep, string newRep)
+    {
+        Staff newrep = ctx.Staffs.Where(x => x.Name == newRep).First();
+        Staff oldrep = ctx.Staffs.Where(x => x.Name == oldRep).First();
         oldrep.Role = "Employee";
         newrep.Role = "DeptRep";
+        ctx.SaveChanges();
+    }
+
+    public static void changeCollectionPoint(string userId,string point)
+    {
+        Department d = Work.getUser(userId).Department;
+        d.Collection_Point = point;
         ctx.SaveChanges();
     }
     public static string getDeptHeadId(string deptId)
@@ -302,71 +330,7 @@ public class Work
         rd.RetrievedQty = result;
         ctx.SaveChanges();
     }
-    /// <summary>
-    /// the param will be added with retrievenumber
-    /// first param is bySummary, second param is byDepartment
-    /// the result will be number of retrieveLog
-    /// </summary>
-    /// <param name="bySummary"></param>
-    /// <param name="byDepartment"></param>
-    /// <returns></returns>
-    public static int GetRetrieveLog(List<DisbursementModel> bySummary, List<DisbursementModel> byDepartment)
-    {
-        HistoryDisbursement finder = new HistoryDisbursement();
-        int result = finder.GetProgressingLog();
-        if (result != 0)
-        {
-            foreach (DisbursementModel dm in bySummary)
-                if (finder.SummaryByItem.ContainsKey(dm.ItemID))
-                    dm.RetrivedNumber = finder.SummaryByItem[dm.ItemID].RetrivedNumber;
-            foreach (DisbursementModel dm in byDepartment)
-                if (finder.SummaryByDepartment.ContainsKey(dm.DepartmentID))
-                    if (finder.SummaryByDepartment[dm.DepartmentID].ContainsKey(dm.ItemID))
-                    {
-                        dm.RetrivedNumber = finder.SummaryByDepartment[dm.DepartmentID][dm.ItemID].RetrivedNumber;
-                        dm.GivenNumber = finder.SummaryByDepartment[dm.DepartmentID][dm.ItemID].GivenNumber;
-                    }
-        }
-        return result;
-    }
 
-    //public int GetRetrieveLogBySummary(List<DisbursementModel> bySummary)
-    //{
-    //    var qry = from x in ctx.DisbursementLogs where x.Flag.Contains("Progressing Retrieve") select x;
-    //    Dictionary<string, DisbursementLog> dic = new Dictionary<string, DisbursementLog>();
-    //    // group by item
-    //    foreach (DisbursementLog log in qry.ToList())
-    //    {
-    //        if (!dic.ContainsKey(log.ItemID))
-    //            dic.Add(log.ItemID, log);
-    //        else
-    //            dic[log.ItemID].RetrivedNumber += log.RetrivedNumber;
-    //    }
-    //    int result = dic.Values.Count();
-    //    if (result != 0)
-    //    {
-    //        foreach (DisbursementModel dm in bySummary)
-    //        {
-    //            dm.RetrivedNumber = dic[dm.ItemID].RetrivedNumber;
-    //        }
-    //    }
-    //    return result;
-    //}
-    //public static List<DisbursementModel> GetRetrieveLogByDepartment(List<DisbursementModel> byDepartment)
-    //{
-    //    List<DisbursementModel> result = new List<DisbursementModel>();
-    //    var qry = from x in ctx.DisbursementLogs where x.Flag.Contains("Progressing Retrieve") select x;
-    //    // for every department and item, should be only one log in "Progressing"
-
-    //    foreach (DisbursementLog log in qry.ToList())
-    //    {
-    //        DisbursementModel dm = new DisbursementModel(log.DepartmentID, log.Department.DepartmentName, log.ItemID, log.Item.Description, log.NeededNumber);
-    //        dm.RetrivedNumber = log.RetrivedNumber;
-    //        result.Add(dm);
-    //    }
-    //    return result;
-    //}
-	
     public static List<DisbursementModel> viewRequestSummary()
     {
         List<DisbursementModel> list = new List<DisbursementModel>();
@@ -505,13 +469,7 @@ public class Work
         return newli.Max().ToString();
     }
 
-    public Staff getSpecificStaff(string staffId)
-    {
-        var sql = from s in ctx.Staffs where s.UserID == staffId select s;
-        return sql.FirstOrDefault();
-    }
-
-    public int saveDiscrepancy(string discrepancyId, int quantity, string reason, string status, Item item, Staff staff, DateTime now)
+    public int saveDiscrepancy(string discrepancyId, int quantity, string reason, string status, Item item)
     {
         Discrepancy discrepancy = new Discrepancy();
         discrepancy.DiscrepancyID = discrepancyId;
@@ -519,8 +477,6 @@ public class Work
         discrepancy.Reason = reason;
         discrepancy.Status = status;
         discrepancy.Item = item;
-        discrepancy.Staff = staff;
-        discrepancy.Date = now;
         ctx.Discrepancies.Add(discrepancy);
         return ctx.SaveChanges();
     }
@@ -548,7 +504,19 @@ public class Work
         }
         return ctx.SaveChanges();
     }
-
+    public int saveDiscrepancy(string discrepancyId, int quantity, string reason, string status, Item item, Staff staff, DateTime now)
+    {
+        Discrepancy discrepancy = new Discrepancy();
+        discrepancy.DiscrepancyID = discrepancyId;
+        discrepancy.Quantity = quantity;
+        discrepancy.Reason = reason;
+        discrepancy.Status = status;
+        discrepancy.Item = item;
+        discrepancy.Staff = staff;
+        discrepancy.Date = now;
+        ctx.Discrepancies.Add(discrepancy);
+        return ctx.SaveChanges();
+    }
     public List<Discrepancy> getSpecificDiscrepancies()
     {
         var sql = from d in ctx.Discrepancies
@@ -558,7 +526,24 @@ public class Work
                   select d;
         return sql.ToList();
     }
-
+    public Staff getSpecificStaff(string staffId)
+    {
+        var sql = from s in ctx.Staffs where s.UserID == staffId select s;
+        return sql.FirstOrDefault();
+    }
+    public string getEmailToPersonId(string itemPrice)
+    {
+        string emailId = "";
+        if (Convert.ToDecimal(itemPrice) >= 250)
+        {
+            emailId = "54213";
+        }
+        else
+        {
+            emailId = "54188";
+        }
+        return emailId;
+    }
     //method
     public static List<Department> GetDepartment()
     {
@@ -990,225 +975,74 @@ public class Work
         var sql2 = from s in ctx.Staffs where s.UserID == userId select s.Role;
         List<string> role = sql2.ToList();
         List<Delegation> li1 = sql1.ToList();
-        List<string> headId = new List<string>();
         List<DiscrepancySupplyDetailsModel> li2 = new List<DiscrepancySupplyDetailsModel>();
-        //DialogResult dr = MessageBox.Show("list", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
-        if (role[0].Equals("Employee"))
+        for (int j = 0; j < li1.Count; j++)
         {
-            //DialogResult dr1 = MessageBox.Show("Employee", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
-            for (int m = 0; m < li1.Count; m++)
+            if (userId.Equals(li1[j].CoveringHeadID) && li1[j].StartDate < now && li1[j].EndDate > now)
             {
-                if (li1[m].CoveringHeadID.Equals(userId))
-                {
-                    headId.Add(li1[m].DepartmentHeadID);
-                }
-            }
-            if (headId.Count == 2)
-            {
-                return listAllDiscrepancies(userId);
-            }
-            else if (headId[0].Equals("54213"))
-            {
-                return listManagerDiscrepancy(userId);
-            }
-            else if (headId[0].Equals("54188"))
-            {
-                return listSupervisorDiscrepancy(userId);
+                var sql3 = from d in ctx.Discrepancies
+                           join i in ctx.Items on d.ItemID equals i.ItemID
+                           join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
+                           where d.Status == "Pending Approval"
+                           group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.UserID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                           select new DiscrepancySupplyDetailsModel
+                           {
+                               DiscrepancyId = a.Key.DiscrepancyID,
+                               Requester = a.Key.UserID,
+                               ItemCode = a.Key.ItemID,
+                               Description = a.Key.Description,
+                               Quantity = a.Key.Quantity,
+                               Reason = a.Key.Reason,
+                               Price = a.Max(s => s.Price),
+                           };
+                return sql3.ToList();
+
+                // && li1[j].EndDate >= time && time >= li1[j].StartDate
             }
         }
-        else
+        if (role[0].Equals("Manager"))
         {
-            //DialogResult dr1 = MessageBox.Show("Others", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
-            for (int j = 0; j < li1.Count; j++)
-            {
-                if (userId.Equals(li1[j].CoveringHeadID) && li1[j].StartDate < now && li1[j].EndDate > now)
-                {
-                    return listAllDiscrepancies();
-                }
-            }
-            if (role[0].Equals("Manager"))
-            {
-                //DialogResult dr2 = MessageBox.Show("Manager", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
-                li2 = listManagerDiscrepancy();
-            }
-            else if (role[0].Equals("Supervisor"))
-            {
-                //DialogResult dr2 = MessageBox.Show("Supervisor", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
-                li2 = listSupervisorDiscrepancy();
-            }
+            //DialogResult dr = MessageBox.Show("Manager", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
+            var sql3 = from d in ctx.Discrepancies
+                       join i in ctx.Items on d.ItemID equals i.ItemID
+                       join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
+                       where s.Price >= 250 && d.Status == "Pending Approval"
+                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.UserID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                       select new DiscrepancySupplyDetailsModel
+                       {
+                           DiscrepancyId = a.Key.DiscrepancyID,
+                           Requester = a.Key.UserID,
+                           ItemCode = a.Key.ItemID,
+                           Description = a.Key.Description,
+                           Quantity = a.Key.Quantity,
+                           Reason = a.Key.Reason,
+                           Price = a.Max(s => s.Price),
+                       };
+            li2 = sql3.ToList();
+        }
+        else if (role[0].Equals("Supervisor"))
+        {
+            //DialogResult dr = MessageBox.Show("Supervisor", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
+            var sql3 = from d in ctx.Discrepancies
+                       join i in ctx.Items on d.ItemID equals i.ItemID
+                       join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
+                       where s.Price < 250 && d.Status == "Pending Approval"
+                       group new { d.DiscrepancyID, s.Price } by new { d.DiscrepancyID, d.UserID, d.ItemID, i.Description, d.Quantity, d.Reason } into a
+                       select new DiscrepancySupplyDetailsModel
+                       {
+                           DiscrepancyId = a.Key.DiscrepancyID,
+                           Requester = a.Key.UserID,
+                           ItemCode = a.Key.ItemID,
+                           Description = a.Key.Description,
+                           Quantity = a.Key.Quantity,
+                           Reason = a.Key.Reason,
+                           Price = a.Max(s => s.Price),
+                       };
+            li2 = sql3.ToList();
         }
         return li2;
     }
 
-    private List<DiscrepancySupplyDetailsModel> listSupervisorDiscrepancy(string userId)
-    {
-        //getMaxPrice(string itemId);
-        var sql = from d in ctx.Discrepancies
-                  join st in ctx.Staffs on d.UserID equals st.UserID
-                  join i in ctx.Items on d.ItemID equals i.ItemID
-                  join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
-                  where d.UserID != userId && s.Priority == 1 && s.Price < 250 && d.Status == "Pending Approval"
-                  group new { d.DiscrepancyID } by new { d.DiscrepancyID, st.Name, d.ItemID, i.Description, d.Quantity, d.Reason, s.Price } into a
-                  select new DiscrepancySupplyDetailsModel
-                  {
-                      DiscrepancyId = a.Key.DiscrepancyID,
-                      Requester = a.Key.Name,
-                      ItemCode = a.Key.ItemID,
-                      Description = a.Key.Description,
-                      Quantity = a.Key.Quantity,
-                      Reason = a.Key.Reason,
-                      Price = a.Key.Price,
-                  };
-        return sql.ToList();
-    }
-
-    private List<DiscrepancySupplyDetailsModel> listManagerDiscrepancy(string userId)
-    {
-        var sql = from d in ctx.Discrepancies
-                  join st in ctx.Staffs on d.UserID equals st.UserID
-                  join i in ctx.Items on d.ItemID equals i.ItemID
-                  join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
-                  where d.UserID != userId && s.Priority == 1 && s.Price >= 250 && d.Status == "Pending Approval"
-                  group new { d.DiscrepancyID } by new { d.DiscrepancyID, st.Name, d.ItemID, i.Description, d.Quantity, d.Reason, s.Price } into a
-                  select new DiscrepancySupplyDetailsModel
-                  {
-                      DiscrepancyId = a.Key.DiscrepancyID,
-                      Requester = a.Key.Name,
-                      ItemCode = a.Key.ItemID,
-                      Description = a.Key.Description,
-                      Quantity = a.Key.Quantity,
-                      Reason = a.Key.Reason,
-                      Price = a.Key.Price,
-                  };
-        return sql.ToList();
-    }
-
-    private List<DiscrepancySupplyDetailsModel> listAllDiscrepancies(string userId)
-    {
-        var sql = from d in ctx.Discrepancies
-                  join st in ctx.Staffs on d.UserID equals st.UserID
-                  join i in ctx.Items on d.ItemID equals i.ItemID
-                  join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
-                  where d.UserID != userId && s.Priority == 1 && d.Status == "Pending Approval"
-                  group new { d.DiscrepancyID } by new { d.DiscrepancyID, st.Name, d.ItemID, i.Description, d.Quantity, d.Reason, s.Price } into a
-                  select new DiscrepancySupplyDetailsModel
-                  {
-                      DiscrepancyId = a.Key.DiscrepancyID,
-                      Requester = a.Key.Name,
-                      ItemCode = a.Key.ItemID,
-                      Description = a.Key.Description,
-                      Quantity = a.Key.Quantity,
-                      Reason = a.Key.Reason,
-                      Price = a.Key.Price,
-                  };
-        return sql.ToList();
-    }
-
-    public List<DiscrepancySupplyDetailsModel> listAllDiscrepancies()
-    {
-        var sql = from d in ctx.Discrepancies
-                  join st in ctx.Staffs on d.UserID equals st.UserID
-                  join i in ctx.Items on d.ItemID equals i.ItemID
-                  join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
-                  where s.Priority == 1 && d.Status == "Pending Approval"
-                  group new { d.DiscrepancyID } by new { d.DiscrepancyID, st.Name, d.ItemID, i.Description, d.Quantity, d.Reason, s.Price } into a
-                  select new DiscrepancySupplyDetailsModel
-                  {
-                      DiscrepancyId = a.Key.DiscrepancyID,
-                      Requester = a.Key.Name,
-                      ItemCode = a.Key.ItemID,
-                      Description = a.Key.Description,
-                      Quantity = a.Key.Quantity,
-                      Reason = a.Key.Reason,
-                      Price = a.Key.Price,
-                  };
-        return sql.ToList();
-    }
-
-    public List<DiscrepancySupplyDetailsModel> listManagerDiscrepancy()
-    {
-        var sql = from d in ctx.Discrepancies
-                  join st in ctx.Staffs on d.UserID equals st.UserID
-                  join i in ctx.Items on d.ItemID equals i.ItemID
-                  join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
-                  where s.Priority == 1 && s.Price >= 250 && d.Status == "Pending Approval"
-                  group new { d.DiscrepancyID } by new { d.DiscrepancyID, st.Name, d.ItemID, i.Description, d.Quantity, d.Reason, s.Price } into a
-                  select new DiscrepancySupplyDetailsModel
-                  {
-                      DiscrepancyId = a.Key.DiscrepancyID,
-                      Requester = a.Key.Name,
-                      ItemCode = a.Key.ItemID,
-                      Description = a.Key.Description,
-                      Quantity = a.Key.Quantity,
-                      Reason = a.Key.Reason,
-                      Price = a.Key.Price,
-                  };
-        return sql.ToList();
-    }
-
-    public List<DiscrepancySupplyDetailsModel> listSupervisorDiscrepancy()
-    {
-        var sql = from d in ctx.Discrepancies
-                  join st in ctx.Staffs on d.UserID equals st.UserID
-                  join i in ctx.Items on d.ItemID equals i.ItemID
-                  join s in ctx.SupplyDetails on i.ItemID equals s.ItemID
-                  where s.Priority == 1 && s.Price < 250 && d.Status == "Pending Approval"
-                  group new { d.DiscrepancyID } by new { d.DiscrepancyID, st.Name, d.ItemID, i.Description, d.Quantity, d.Reason, s.Price } into a
-                  select new DiscrepancySupplyDetailsModel
-                  {
-                      DiscrepancyId = a.Key.DiscrepancyID,
-                      Requester = a.Key.Name,
-                      ItemCode = a.Key.ItemID,
-                      Description = a.Key.Description,
-                      Quantity = a.Key.Quantity,
-                      Reason = a.Key.Reason,
-                      Price = a.Key.Price,
-                  };
-        return sql.ToList();
-    }
-
-
-
-    public string getEmailToPersonId(string itemPrice)
-    {
-        string emailId = "";
-        if (Convert.ToDecimal(itemPrice) >= 250)
-        {
-            emailId = "54213";
-        }
-        else
-        {
-            emailId = "54188";
-        }
-        return emailId;
-    }
-    public static string InsertOrderDetails(string supplier, string qty, string orderid)
-    {
-        OrderDetail o = new OrderDetail();
-        OrderDetail od = ctx.OrderDetails.OrderByDescending(x => x.PurchaseOrderID).FirstOrDefault();
-        if (od == null)
-        {
-            o.PurchaseOrderID = "PO0000001";
-        }
-        else
-        {
-            string a = od.PurchaseOrderID.Substring(0, 2);
-            int b = Convert.ToInt32(od.PurchaseOrderID.Substring(2, 7));
-            int x = b + 1;
-            string newID = String.Format("{0:0000000}", x);
-            newID = newID.Insert(0, a);
-            o.PurchaseOrderID = newID;
-        }
-        o.OrderID = orderid;
-        o.SupplierID = supplier;
-        o.OrderQty = Convert.ToInt32(qty);
-        o.ReceivedQty = 0;
-
-        ctx.OrderDetails.Add(o);
-        ctx.SaveChanges();
-
-        return o.PurchaseOrderID;
-    }
 
     public static string GetSupplierDetails(decimal price, string supplierLabel)
     {
@@ -1242,13 +1076,105 @@ public class Work
         return cmt;
     }
 
+    public static Order InsertNewOrder(string itemid, string quantity, string justification)
+    {
+        Order o = new Order();
+        Order od = ctx.Orders.OrderByDescending(x => x.OrderID).FirstOrDefault();
+        if (od == null)
+        {
+            o.OrderID = "DO0000001";
+        }
+        else
+        {
+            string a = od.OrderID.Substring(0, 2);
+            int b = Convert.ToInt32(od.OrderID.Substring(2, 7));
+            int x = b + 1;
+            string newID = String.Format("{0:0000000}", x);
+            newID = newID.Insert(0, a);
+            o.OrderID = newID;
+        }
+        o.ItemID = itemid;
+        o.TotalQty = Convert.ToInt32(quantity);
+        o.Justification = justification;
+        o.Status = "PendingApproval";
+        o.OrderDate = DateTime.Now;
+        o.UserID = "00242"; //temporarily hardcode
+
+        return o;
+    }
+
+    public static void UpdateOrder(string orderid, string qty, string justification)
+    {
+        Order o = ctx.Orders.Where(x => x.OrderID == orderid).First();
+        o.TotalQty = Convert.ToInt32(qty);
+        if (justification != String.Empty)
+        {
+            o.Justification = justification;
+        }
+        ctx.SaveChanges();
+    }
+
+    public static void UpdateOrderStatus(string orderid, string stt)
+    {
+        Order o = ctx.Orders.Where(x => x.OrderID == orderid).First();
+        o.Status = stt;
+        ctx.SaveChanges();
+    }
+
+    public static void UpdateComment(string orderID, string comment)
+    {
+        Order o = ctx.Orders.Where(x => x.OrderID == orderID).First();
+        o.Comment = comment;
+        ctx.SaveChanges();
+    }
+
+    public static void UpdateOrderDetails(string poNumber)
+    {
+        OrderDetail od = ctx.OrderDetails.Where(x => x.PurchaseOrderID == poNumber).First();
+        od.ReceivedQty = od.OrderQty;
+        ctx.SaveChanges();
+    }
+
+    public static void UpdateItemStock(string orderID, string itemID)
+    {
+        Order o = ctx.Orders.Where(x => x.OrderID == orderID).First();
+        Item i = ctx.Items.Where(x => x.ItemID == itemID).First();
+        int updatedStock = i.InStock + o.TotalQty;
+        i.InStock = updatedStock;
+        ctx.SaveChanges();
+    }
+
+    public static List<WCFNotification> ViewNotificationByUserID(string userID)
+    {
+        List<Notification> nList = ctx.Notifications.Where(x => x.UserID == userID).ToList();
+
+        List<WCFNotification> wcfnList = new List<WCFNotification>();
+        foreach (Notification notification in nList)
+        {
+
+            WCFNotification wn = new WCFNotification(notification.NotificationID, userID, notification.Subject, notification.Message, notification.Status, notification.Date);
+            wcfnList.Add(wn);
+
+        }
+        return wcfnList;
+    }
+
+
+
+    public static Order getOrderById(string id)
+    {
+        return ctx.Orders.Where(x => x.OrderID == id).ToList().FirstOrDefault();
+    }
+
+   
+
     public static List<OrderList> listPendingOrder()
     {
         List<OrderList> list = new List<OrderList>();
         var q = from x in ctx.Orders
-                 where x.Status == "PendingApproval"
-                 orderby x.OrderDate
-                 select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification };
+                where x.Status == "PendingApproval"
+                orderby x.OrderDate
+                select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification };
 
         foreach (var a in q.ToList())
         {
@@ -1371,69 +1297,61 @@ public class Work
         return o.OrderID;
     }
 
-    public static void UpdateOrder(string orderid, string qty, string justification)
+
+
+
+
+
+    public static List<OrderDetail> getOrderDetailsList(string orderID)
     {
-        Order o = ctx.Orders.Where(x => x.OrderID == orderid).First();
-        o.TotalQty = Convert.ToInt32(qty);
-        if (justification != String.Empty)
+        return ctx.OrderDetails.Where(x => x.OrderID == orderID).ToList();
+    }
+
+    public static string InsertOrderDetails(string supplier, string qty, string orderid)
+    {
+        OrderDetail o = new OrderDetail();
+        OrderDetail od = ctx.OrderDetails.OrderByDescending(x => x.PurchaseOrderID).FirstOrDefault();
+        if (od == null)
         {
-            o.Justification = justification;
+            o.PurchaseOrderID = "PO0000001";
         }
-        ctx.SaveChanges();
-    }
-
-    public static void UpdateOrderStatus(string orderid, string stt)
-    {
-        Order o = ctx.Orders.Where(x => x.OrderID == orderid).First();
-        o.Status = stt;
-        ctx.SaveChanges();
-    }
-
-    public static void UpdateComment(string orderID, string comment)
-    {
-        Order o = ctx.Orders.Where(x => x.OrderID == orderID).First();
-        o.Comment = comment;
-        ctx.SaveChanges();
-    }
-
-    public static void UpdateOrderDetails(string poNumber)
-    {
-        OrderDetail od = ctx.OrderDetails.Where(x => x.PurchaseOrderID == poNumber).First();
-        od.ReceivedQty = od.OrderQty;
-        ctx.SaveChanges();
-    }
-
-    public static void UpdateItemStock(string orderID, string itemID)
-    {
-        Order o = ctx.Orders.Where(x => x.OrderID == orderID).First();
-        Item i = ctx.Items.Where(x => x.ItemID == itemID).First();
-        int updatedStock = i.InStock + o.TotalQty;
-        i.InStock = updatedStock;
-        ctx.SaveChanges();
-    }
-
-    public static List<WCFNotification> ViewNotificationByUserID(string userID)
-    {
-        List<Notification> nList = ctx.Notifications.Where(x => x.UserID == userID).ToList();
-
-        List<WCFNotification> wcfnList = new List<WCFNotification>();
-        foreach (Notification notification in nList)
+        else
         {
-
-            WCFNotification wn = new WCFNotification(notification.NotificationID, userID, notification.Subject, notification.Message, notification.Status, notification.Date);
-            wcfnList.Add(wn);
-
+            string a = od.PurchaseOrderID.Substring(0, 2);
+            int b = Convert.ToInt32(od.PurchaseOrderID.Substring(2, 7));
+            int x = b + 1;
+            string newID = String.Format("{0:0000000}", x);
+            newID = newID.Insert(0, a);
+            o.PurchaseOrderID = newID;
         }
-        return wcfnList;
+        o.OrderID = orderid;
+        o.SupplierID = supplier;
+        o.OrderQty = Convert.ToInt32(qty);
+        o.ReceivedQty = 0;
+
+        ctx.OrderDetails.Add(o);
+        ctx.SaveChanges();
+
+        return o.PurchaseOrderID;
     }
 
-
-   
-
-
-
-    public static Order getOrderById(string id)
+    public static int GetRetrieveLog(List<DisbursementModel> bySummary, List<DisbursementModel> byDepartment)
     {
-        return ctx.Orders.Where(x => x.OrderID == id).ToList().FirstOrDefault();
+        HistoryDisbursement finder = new HistoryDisbursement();
+        int result = finder.GetProgressingLog();
+        if (result != 0)
+        {
+            foreach (DisbursementModel dm in bySummary)
+                if (finder.SummaryByItem.ContainsKey(dm.ItemID))
+                    dm.RetrivedNumber = Convert.ToInt32(finder.SummaryByItem[dm.ItemID].RetrivedNumber);
+            foreach (DisbursementModel dm in byDepartment)
+                if (finder.SummaryByDepartment.ContainsKey(dm.DepartmentID))
+                    if (finder.SummaryByDepartment[dm.DepartmentID].ContainsKey(dm.ItemID))
+                    {
+                        dm.RetrivedNumber = Convert.ToInt32(finder.SummaryByDepartment[dm.DepartmentID][dm.ItemID].RetrivedNumber);
+                        dm.GivenNumber = Convert.ToInt32(finder.SummaryByDepartment[dm.DepartmentID][dm.ItemID].GivenNumber);
+                    }
+        }
+        return result;
     }
 }

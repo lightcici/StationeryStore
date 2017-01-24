@@ -38,11 +38,11 @@ public class Service : IService
         return work.getMaxPrice(id);
     }
 
-    public void saveDiscrepancy(Discrepancy dis)
-    {
-        //*******************************
-        work.saveDiscrepancy(dis.DiscrepancyID, dis.Quantity, dis.Reason, dis.Status, dis.Item, dis.Staff, dis.Date);
-    }
+    //public void saveDiscrepancy(Discrepancy dis)
+    //{
+    //    *******************************
+    //    work.saveDiscrepancy(dis.DiscrepancyID, dis.Quantity, dis.Reason, dis.Status, dis.Item, dis.Staff, dis.Date);
+    //}
 
     public string GetMaxDiscrepancyId()
     {

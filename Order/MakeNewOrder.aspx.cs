@@ -10,6 +10,11 @@ public partial class Order_MakeNewOrder : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         if (!IsPostBack)
         {
             ItemIDLbl.Text = Request.QueryString["ItemID"];

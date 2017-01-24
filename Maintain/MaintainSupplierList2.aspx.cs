@@ -9,7 +9,11 @@ public partial class MaintainSupplierList2 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
     }
 
     protected void Button1_Click(object sender, EventArgs e)

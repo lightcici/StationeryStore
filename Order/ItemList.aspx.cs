@@ -11,6 +11,11 @@ public partial class Order_ItemList : System.Web.UI.Page
     Team5ADProjectEntities context;
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
         Label2.Text = "";
         context = new Team5ADProjectEntities();
         if (!IsPostBack)

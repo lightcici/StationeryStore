@@ -12,8 +12,12 @@ public partial class ApproveDiscrepancy : System.Web.UI.Page
     List<DiscrepancySupplyDetailsModel> li;
     protected void Page_Load(object sender, EventArgs e)
     {
-        //string userId = (string)Session["user"];
-        string userId = "10101";
+        string userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
+        //string userId = "10101";
         work = new Work();
         if (!IsPostBack)
         {

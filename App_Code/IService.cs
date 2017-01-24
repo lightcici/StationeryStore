@@ -37,11 +37,11 @@ public interface IService
     [WebGet(UriTemplate = "/GetMaxDiscrepancyId", ResponseFormat = WebMessageFormat.Json)]
     string GetMaxDiscrepancyId();
 
-    [OperationContract]
-    [WebInvoke(UriTemplate = "/SaveDiscrepancy", Method = "POST",
-    RequestFormat = WebMessageFormat.Json,
-    ResponseFormat = WebMessageFormat.Json)]
-    void saveDiscrepancy(Discrepancy dis);
+    //[OperationContract]
+    //[WebInvoke(UriTemplate = "/SaveDiscrepancy", Method = "POST",
+    //RequestFormat = WebMessageFormat.Json,
+    //ResponseFormat = WebMessageFormat.Json)]
+    //void saveDiscrepancy(Discrepancy dis);
 
     [OperationContract]
     [WebGet(UriTemplate = "/GetDiscrepancy/{id}", ResponseFormat = WebMessageFormat.Json)]
