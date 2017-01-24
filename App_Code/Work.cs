@@ -1050,4 +1050,19 @@ public class Work
         i.InStock = updatedStock;
         ctx.SaveChanges();
     }
+
+    public static List<WCFNotification> ViewNotificationByUserID(string userID)
+    {
+        List<Notification> nList = ctx.Notifications.Where(x => x.UserID == userID).ToList();
+
+        List<WCFNotification> wcfnList = new List<WCFNotification>();
+        foreach (Notification notification in nList)
+        {
+
+            WCFNotification wn = new WCFNotification(notification.NotificationID, userID, notification.Subject, notification.Message, notification.Status, notification.Date);
+            wcfnList.Add(wn);
+
+        }
+        return wcfnList;
+    }
 }
