@@ -34,12 +34,12 @@ public partial class NewDiscrepancy : System.Web.UI.Page
             int i = work.saveDiscrepancy(String.Format("{0:d5}", (Convert.ToInt32(work.getMaxDiscrepancyId()) + 1)), Convert.ToInt32(TextBox4.Text), TextBox5.Text, "Pending Approval", Work.getItem(TextBox1.Text), staff, DateTime.Now);
             if (i > 0)
             {
-                //Email.SendEmail("New Message", "Hello");
-                //bool flag = SendMail();
-                //if (flag)
-                //{
-                //    Response.Write("<script>alert('Success !');</script>");
-                //}
+                string emailToId = work.getEmailToPersonId(TextBox3.Text);
+                string subject = "Request " + work.getMaxDiscrepancyId() + " for approval";
+                string body = "Dear Sir/ Madam,<br />" + "<br />Request " + work.getMaxDiscrepancyId() + " is pending your approval.Please click <a href = 'http://localhost/StationeryStore/Discrepancy/ApproveDiscrepancy.aspx'>here</a> to see more details.<br />" + "<br />Thanks & regards.";
+                SendEmail sm = new SendEmail(emailToId, subject, body);
+                sm.initEmail();
+                sm.sendEmail();
                 DialogResult dr = MessageBox.Show("Updated Successfully!", "New Discrepancy", MessageBoxButtons.OK, MessageBoxIcon.Question);
                 if (dr == DialogResult.OK)
                 {
