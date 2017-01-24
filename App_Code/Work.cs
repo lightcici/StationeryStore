@@ -274,7 +274,71 @@ public class Work
         rd.RetrievedQty = result;
         ctx.SaveChanges();
     }
+    /// <summary>
+    /// the param will be added with retrievenumber
+    /// first param is bySummary, second param is byDepartment
+    /// the result will be number of retrieveLog
+    /// </summary>
+    /// <param name="bySummary"></param>
+    /// <param name="byDepartment"></param>
+    /// <returns></returns>
+    public static int GetRetrieveLog(List<DisbursementModel> bySummary, List<DisbursementModel> byDepartment)
+    {
+        HistoryDisbursement finder = new HistoryDisbursement();
+        int result = finder.GetProgressingLog();
+        if (result != 0)
+        {
+            foreach (DisbursementModel dm in bySummary)
+                if (finder.SummaryByItem.ContainsKey(dm.ItemID))
+                    dm.RetrivedNumber = finder.SummaryByItem[dm.ItemID].RetrivedNumber;
+            foreach (DisbursementModel dm in byDepartment)
+                if (finder.SummaryByDepartment.ContainsKey(dm.DepartmentID))
+                    if (finder.SummaryByDepartment[dm.DepartmentID].ContainsKey(dm.ItemID))
+                    {
+                        dm.RetrivedNumber = finder.SummaryByDepartment[dm.DepartmentID][dm.ItemID].RetrivedNumber;
+                        dm.GivenNumber = finder.SummaryByDepartment[dm.DepartmentID][dm.ItemID].GivenNumber;
+                    }
+        }
+        return result;
+    }
 
+    //public int GetRetrieveLogBySummary(List<DisbursementModel> bySummary)
+    //{
+    //    var qry = from x in ctx.DisbursementLogs where x.Flag.Contains("Progressing Retrieve") select x;
+    //    Dictionary<string, DisbursementLog> dic = new Dictionary<string, DisbursementLog>();
+    //    // group by item
+    //    foreach (DisbursementLog log in qry.ToList())
+    //    {
+    //        if (!dic.ContainsKey(log.ItemID))
+    //            dic.Add(log.ItemID, log);
+    //        else
+    //            dic[log.ItemID].RetrivedNumber += log.RetrivedNumber;
+    //    }
+    //    int result = dic.Values.Count();
+    //    if (result != 0)
+    //    {
+    //        foreach (DisbursementModel dm in bySummary)
+    //        {
+    //            dm.RetrivedNumber = dic[dm.ItemID].RetrivedNumber;
+    //        }
+    //    }
+    //    return result;
+    //}
+    //public static List<DisbursementModel> GetRetrieveLogByDepartment(List<DisbursementModel> byDepartment)
+    //{
+    //    List<DisbursementModel> result = new List<DisbursementModel>();
+    //    var qry = from x in ctx.DisbursementLogs where x.Flag.Contains("Progressing Retrieve") select x;
+    //    // for every department and item, should be only one log in "Progressing"
+
+    //    foreach (DisbursementLog log in qry.ToList())
+    //    {
+    //        DisbursementModel dm = new DisbursementModel(log.DepartmentID, log.Department.DepartmentName, log.ItemID, log.Item.Description, log.NeededNumber);
+    //        dm.RetrivedNumber = log.RetrivedNumber;
+    //        result.Add(dm);
+    //    }
+    //    return result;
+    //}
+	
     public static List<DisbursementModel> viewRequestSummary()
     {
         List<DisbursementModel> list = new List<DisbursementModel>();
@@ -1074,8 +1138,25 @@ public class Work
                   };
         return sql.ToList();
     }
+<<<<<<< HEAD
 
+    public static string InsertOrderDetails(string supplier, string qty, string orderid)
+=======
+    //public string getEmailToPersonId(string itemPrice)
+    //{
+    //    string emailId;
+    //    if (Convert.ToInt32(itemPrice) >= 250)
+    //    {
+    //        emailId = "54213";
+    //    }
+    //    else
+    //    {
+    //        emailId = "54188";
+    //    }
+    //    return emailId;
+    //}
     public static OrderDetail InsertOrderDetails(string supplier, string qty, string orderid)
+>>>>>>> origin/master
     {
         OrderDetail o = new OrderDetail();
         OrderDetail od = ctx.OrderDetails.OrderByDescending(x => x.PurchaseOrderID).FirstOrDefault();
@@ -1097,7 +1178,10 @@ public class Work
         o.OrderQty = Convert.ToInt32(qty);
         o.ReceivedQty = 0;
 
-        return o;
+        ctx.OrderDetails.Add(o);
+        ctx.SaveChanges();
+
+        return o.PurchaseOrderID;
     }
 
     public static string GetSupplierDetails(decimal price, string supplierLabel)
@@ -1132,7 +1216,106 @@ public class Work
         return cmt;
     }
 
-    public static Order InsertNewOrder(string itemid, string quantity, string justification)
+    public static List<OrderList> listPendingOrder()
+    {
+        List<OrderList> list = new List<OrderList>();
+        var q = from x in ctx.Orders
+                 where x.Status == "PendingApproval"
+                 orderby x.OrderDate
+                 select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification };
+
+        foreach (var a in q.ToList())
+        {
+            OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Category, a.Description, a.TotalQty, a.Justification);
+            list.Add(ol);
+        }
+        return list;
+    }
+
+    public static List<String> getOrderStatus()
+    {
+        var list = ctx.Orders.GroupBy(y => y.Status).Select(x => x.FirstOrDefault()).ToList();
+        return list.Select(o => o.Status).ToList();
+    }
+
+    public static List<OrderList> getOrderList()
+    {
+        List<OrderList> oList = new List<OrderList>();
+        var q = from x in ctx.Orders
+                orderby x.OrderDate descending
+                select new { x.OrderID, x.ItemID, x.Item.Description, x.TotalQty, x.Justification, x.Status };
+
+        foreach (var a in q.ToList())
+        {
+            OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Description, a.TotalQty, a.Justification, a.Status);
+            oList.Add(ol);
+        }
+        return oList;
+    }
+
+    public static List<OrderList> getOrderHistory()
+    {
+        List<OrderList> oList = new List<OrderList>();
+        var q = from x in ctx.Orders
+                where x.Status != "PendingApproval"
+                orderby x.OrderDate descending
+                select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification, x.Status, x.OrderDate, x.Comment };
+
+        foreach (var a in q.ToList())
+        {
+            OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Category, a.Description, a.TotalQty, a.Justification, a.Status, a.OrderDate, a.Comment);
+            oList.Add(ol);
+        }
+        return oList;
+    }
+
+    public static List<OrderList> getOrderList(string stt)
+    {
+        List<OrderList> list = new List<OrderList>();
+        if (!stt.Equals("Show All"))
+        {
+            var q = from x in ctx.Orders
+                    where x.Status == stt
+                    orderby x.OrderDate descending
+                    select new { x.OrderID, x.ItemID, x.Item.Description, x.TotalQty, x.Justification, x.Status };
+
+            foreach (var a in q.ToList())
+            {
+                OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Description, a.TotalQty, a.Justification, a.Status);
+                list.Add(ol);
+            }
+        }
+        else
+        {
+            list = getOrderList();
+        }
+        return list;
+    }
+
+    public static List<OrderList> getOrderHistory(string stt)
+    {
+        List<OrderList> list = new List<OrderList>();
+        if (!stt.Equals("Show All"))
+        {
+            var q = from x in ctx.Orders
+                    where x.Status == stt
+                    orderby x.OrderDate descending
+                    select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification, x.Status, x.OrderDate, x.Comment };
+
+            foreach (var a in q.ToList())
+            {
+                OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Category, a.Description, a.TotalQty, a.Justification, a.Status, a.OrderDate, a.Comment);
+                list.Add(ol);
+            }
+        }
+        else
+        {
+            list = getOrderHistory();
+        }
+        return list;
+    }
+
+    public static string InsertNewOrder(string itemid, string quantity, string justification, string userId)
     {
         Order o = new Order();
         Order od = ctx.Orders.OrderByDescending(x => x.OrderID).FirstOrDefault();
@@ -1154,9 +1337,12 @@ public class Work
         o.Justification = justification;
         o.Status = "PendingApproval";
         o.OrderDate = DateTime.Now;
-        o.UserID = "00242"; //temporarily hardcode
+        o.UserID = userId;
 
-        return o;
+        ctx.Orders.Add(o);
+        ctx.SaveChanges();
+
+        return o.OrderID;
     }
 
     public static void UpdateOrder(string orderid, string qty, string justification)

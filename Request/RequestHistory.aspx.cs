@@ -43,7 +43,6 @@ public partial class RequestHistory : System.Web.UI.Page
 
         if (!IsPostBack)
         {
-
             var list = Work.getRequestSatus();
             list.Insert(0, ALL);
             DropDownList1.DataSource = list;

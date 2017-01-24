@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 
 public partial class Order_EditOrder : System.Web.UI.Page
 {
-    Team5ADProjectEntities context;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
