@@ -174,7 +174,7 @@
             <PropertyRef Name="DepartmentID" />
             <PropertyRef Name="ItemID" />
           </Key>
-          <Property Name="TransactionID" Type="int" Nullable="false" />
+          <Property Name="TransactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DepartmentID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ItemID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DateTime" Type="datetime" />

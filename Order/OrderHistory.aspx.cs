@@ -7,64 +7,63 @@ using System.Web.UI.WebControls;
 
 public partial class Order_OrderHistory : System.Web.UI.Page
 {
-    Team5ADProjectEntities context;
+    string userId;
+    static string all = "Show All";
     protected void Page_Load(object sender, EventArgs e)
     {
-        context = new Team5ADProjectEntities();
+        userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
+
         if (!IsPostBack)
         {
-            ShowData();
-        }
-        // Label1.Text = "";
-    }
+            var list = Work.getOrderStatus();
+            list.Insert(0, all);
+            SearchDDL.DataSource = list;
+            SearchDDL.DataBind();
 
-    void ShowData()
-    {
-        var q = from x in context.Orders
-                where x.Status != "PendingApproval"
-                orderby x.OrderDate descending
-                select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification, x.Status, x.OrderDate, x.Comment };
-        HistoryGV.DataSource = q.ToList();
-        HistoryGV.DataBind();
-        Label1.Text = "There are totally " + q.Count() + " orders.";
+            List<OrderList> oList = Work.getOrderHistory();
+            HistoryGV.DataSource = oList;
+            HistoryGV.DataBind();
+            if (HistoryGV.Rows.Count == 0)
+            {
+                Label2.Text = "No order!";
+            }
+            else if (HistoryGV.Rows.Count > 1)
+            {
+                Label1.Text = "There are totally " + HistoryGV.Rows.Count + " orders.";
+            }
+            else
+            {
+                Label1.Text = "There is only " + HistoryGV.Rows.Count + " order.";
+            }
+        }
     }
 
     protected void SearchDDL_SelectedIndexChanged(object sender, EventArgs e)
     {
-        context = new Team5ADProjectEntities();
-        if (SearchDDL.SelectedIndex != 1)
+        ViewState["status"] = SearchDDL.SelectedValue;
+        List<OrderList> list = Work.getOrderHistory((string)ViewState["status"]);
+        HistoryGV.DataSource = list;
+        HistoryGV.DataBind();
+
+        if (!list.Any())
         {
-            var q = from x in context.Orders
-                    where x.Status == SearchDDL.SelectedItem.Text
-                    orderby x.OrderDate descending
-                    select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification, x.Status, x.OrderDate, x.Comment };
-            if (!q.Any())
-            {
-                Label1.Text = "No item!";
-            }
-            else
-            {
-                Label1.Text = "There are " + q.Count() + " orders.";
-            }
-            HistoryGV.DataSource = q.ToList();
+            Label1.Text = "No item found!";
         }
         else
         {
-            var q = from x in context.Orders
-                    where x.Status != "PendingApproval"
-                    orderby x.OrderDate descending
-                    select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification, x.Status, x.OrderDate, x.Comment };
-            if (!q.Any())
+            if (HistoryGV.Rows.Count > 1)
             {
-                Label1.Text = "No item!";
+                Label1.Text = "There are totally " + HistoryGV.Rows.Count + " orders.";
             }
             else
             {
-                Label1.Text = "There are totally " + q.Count() + " orders.";
+                Label1.Text = "There is only " + HistoryGV.Rows.Count + " order.";
             }
-            HistoryGV.DataSource = q.ToList();
-        }
 
-        HistoryGV.DataBind();
+        }
     }
 }
