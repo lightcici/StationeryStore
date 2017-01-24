@@ -15,42 +15,42 @@
             <Columns>
              <asp:TemplateField HeaderText="OrderID">
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%#Eval("orderId") %>'></asp:Label>
+                    <asp:Label ID="orderid" runat="server" Text='<%#Eval("orderId") %>'></asp:Label>
                 </ItemTemplate>
                 <HeaderStyle HorizontalAlign="Center" />
             </asp:TemplateField>
 
             <asp:TemplateField HeaderText="ItemID">
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%#Eval("itemId") %>'></asp:Label>
+                    <asp:Label ID="itemid" runat="server" Text='<%#Eval("itemId") %>'></asp:Label>
                 </ItemTemplate>
                 <HeaderStyle HorizontalAlign="Center" />
             </asp:TemplateField>
 
         <asp:TemplateField HeaderText="Description">
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%#Eval("description") %>'></asp:Label>
+                    <asp:Label ID="desc" runat="server" Text='<%#Eval("description") %>'></asp:Label>
                 </ItemTemplate>
                 <HeaderStyle HorizontalAlign="Center" />
             </asp:TemplateField>
 
             <asp:TemplateField HeaderText="Quantity">
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%#Eval("quantity ") %>'></asp:Label>
+                    <asp:Label ID="qty" runat="server" Text='<%#Eval("quantity") %>'></asp:Label>
                 </ItemTemplate>
                 <HeaderStyle HorizontalAlign="Center" />
             </asp:TemplateField>
 
             <asp:TemplateField HeaderText="Justification">
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%#Eval("justification") %>'></asp:Label>
+                    <asp:Label ID="justification" runat="server" Text='<%#Eval("justification") %>'></asp:Label>
                 </ItemTemplate>
                 <HeaderStyle HorizontalAlign="Center" />
             </asp:TemplateField>
 
             <asp:TemplateField HeaderText="Status">
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%#Eval("Status") %>'></asp:Label>
+                    <asp:Label ID="stt" runat="server" Text='<%#Eval("Status") %>'></asp:Label>
                 </ItemTemplate>
                 <HeaderStyle HorizontalAlign="Center" />
             </asp:TemplateField>

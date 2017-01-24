@@ -102,13 +102,21 @@ public partial class Order_OrderList : System.Web.UI.Page
     protected void OrderListGV_SelectedIndexChanged(object sender, EventArgs e)
     {
         StringBuilder x;
-        GridViewRow row = OrderListGV.SelectedRow;
+        /*GridViewRow row = OrderListGV.SelectedRow;
         string stt = row.Cells[5].Text;
         string orderID = row.Cells[0].Text;
         string itemID = row.Cells[1].Text;
         string description = row.Cells[2].Text;
         string quantity = row.Cells[3].Text;
-        string justification = row.Cells[4].Text;
+        string justification = row.Cells[4].Text;*/
+
+        GridViewRow row = OrderListGV.SelectedRow;
+        string stt = ((Label)row.FindControl("stt")).Text;
+        string orderID = ((Label)row.FindControl("orderid")).Text;
+        string itemID = ((Label)row.FindControl("itemid")).Text;
+        string description = ((Label)row.FindControl("desc")).Text;
+        string quantity = ((Label)row.FindControl("qty")).Text;
+        string justification = ((Label)row.FindControl("justification")).Text;
 
         if ((stt == "Cancelled") || (stt == "Completed"))
         {
@@ -120,7 +128,7 @@ public partial class Order_OrderList : System.Web.UI.Page
             x.Append("The order <b>" + orderID + "</b> is <b>" + stt.ToLower() + "</b>.");
 
             string cmt = Work.ShowComment(orderID);
-            if (cmt != null)
+            if ((cmt != null) && (cmt != ""))
             {
                 x.Append(" The reason is " + cmt + ".");
             }

@@ -1453,4 +1453,9 @@ public class Work
         oldrep.Role = "Employee";
         ctx.SaveChanges();
     }
+
+    public static Order getOrderById(string id)
+    {
+        return ctx.Orders.Where(x => x.OrderID == id).ToList().FirstOrDefault();
+    }
 }

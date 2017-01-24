@@ -83,7 +83,14 @@ public partial class Order_ApproveOrder : System.Web.UI.Page
             string stt = "Approved";
             Work.UpdateOrderStatus(orderID, stt);
 
-            string message = "The order " + orderID + " is approved successfully.";
+            string to = Work.getOrderById(orderID).UserID;
+            string subject = "Approved Order " + orderID;
+            string body = "Dear Sir/ Madam,<br />" + "<br />Order " + orderID + " has been approved. Please click <a href = 'http://localhost/StationeryStore/Order/OrderList.aspx'>here</a> to see more details.<br />" + "<br />Thanks & regards.";
+            SendEmail sm = new SendEmail(to, subject, body);
+            sm.initEmail();
+            sm.sendEmail();
+
+            string message = "You have successfully send email for order approval. The order " + orderID + " is approved successfully.";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "message", "alert('" + message + "');window.location='ApproveOrder.aspx'", true);
         }
         else
@@ -109,7 +116,15 @@ public partial class Order_ApproveOrder : System.Web.UI.Page
         {
             Work.UpdateComment(orderID, ReasonTextBox.Text);
         }
-        string message = "The order " + orderID + " is rejected.";
+
+        string to = Work.getOrderById(orderID).UserID;
+        string subject = "Rejected Order " + orderID;
+        string body = "Dear Sir/ Madam,<br />" + "<br />Order " + orderID + " has been rejected. Please click <a href = 'http://localhost/StationeryStore/Order/OrderList.aspx'>here</a> to see more details.<br />" + "<br />Thanks & regards.";
+        SendEmail sm = new SendEmail(to, subject, body);
+        sm.initEmail();
+        sm.sendEmail();
+
+        string message = "You have successfully send email for order rejection. The order " + orderID + " is rejected.";
         ScriptManager.RegisterStartupScript(this, this.GetType(), "message", "alert('" + message + "');window.location='ApproveOrder.aspx'", true);
     }
 }
