@@ -122,7 +122,7 @@ public partial class Item
 
 public partial class Notification
 {
-    public string NotificationID { get; set; }
+    public int NotificationID { get; set; }
     public string UserID { get; set; }
     public string Subject { get; set; }
     public string Message { get; set; }

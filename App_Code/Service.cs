@@ -118,4 +118,10 @@ public class Service : IService
         }
     }
 
+    public List<WCFNotification> ViewNotificationByUserID(string userID)
+    {
+        return Work.ViewNotificationByUserID(userID);
+    }
+    
+
 }

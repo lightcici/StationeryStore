@@ -66,6 +66,9 @@ public interface IService
     [WebGet(UriTemplate = "/ApproveRequest?id={id}&comment={comment}&status={status}", ResponseFormat = WebMessageFormat.Json)]
     void ApproveRequest(string id,string comment,string status);
 
+    [OperationContract]
+    [WebGet(UriTemplate = "/ViewNotificationByUserID?id={id})", ResponseFormat =WebMessageFormat.Json)]
+    List <WCFNotification> ViewNotificationByUserID(string id);
 
 }
 [DataContract]

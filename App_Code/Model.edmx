@@ -72,12 +72,12 @@
           <Key>
             <PropertyRef Name="NotificationID" />
           </Key>
-          <Property Name="NotificationID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Subject" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="NotificationID" Nullable="false" MaxLength="50" Type="nvarchar" />
+          <Property Name="UserID" Nullable="false" MaxLength="50" Type="nvarchar" />
+          <Property Name="Subject" Nullable="false" MaxLength="50" Type="nvarchar" />
+          <Property Name="Message" Nullable="false" Type="nvarchar(max)" />
+          <Property Name="Status" Nullable="false" MaxLength="50" Type="nvarchar" />
+          <Property Name="Date" Nullable="false" Type="datetime" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -265,10 +265,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notification_Staff">
-          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
+          <End Type="Self.Staff" Multiplicity="1" Role="Staff">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <End Type="Self.Notification" Multiplicity="*" Role="Notification" />
           <ReferentialConstraint>
             <Principal Role="Staff">
               <PropertyRef Name="UserID" />
@@ -511,8 +511,8 @@
             <End Role="Discrepancy" EntitySet="Discrepancy" />
           </AssociationSet>
           <AssociationSet Name="FK_Notification_Staff" Association="Self.FK_Notification_Staff">
-            <End Role="Staff" EntitySet="Staff" />
-            <End Role="Notification" EntitySet="Notification" />
+            <End EntitySet="Staff" Role="Staff" />
+            <End EntitySet="Notification" Role="Notification" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_Item" Association="Self.FK_Order_Item">
             <End Role="Item" EntitySet="Item" />
@@ -660,12 +660,12 @@
           <Key>
             <PropertyRef Name="NotificationID" />
           </Key>
-          <Property Name="NotificationID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NotificationID" Nullable="false" Type="Int32" />
+          <Property Name="UserID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Subject" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Message" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Status" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Date" Nullable="false" Precision="3" Type="DateTime" />
           <NavigationProperty Name="Staff" Relationship="Self.FK_Notification_Staff" FromRole="Notification" ToRole="Staff" />
         </EntityType>
         <EntityType Name="Order">
@@ -986,10 +986,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notification_Staff">
-          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
+          <End Type="Self.Staff" Multiplicity="1" Role="Staff">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <End Type="Self.Notification" Multiplicity="*" Role="Notification" />
           <ReferentialConstraint>
             <Principal Role="Staff">
               <PropertyRef Name="UserID" />
@@ -1156,8 +1156,8 @@
             <End Role="TransactionLog" EntitySet="TransactionLogs" />
           </AssociationSet>
           <AssociationSet Name="FK_Notification_Staff" Association="Self.FK_Notification_Staff">
-            <End Role="Staff" EntitySet="Staffs" />
-            <End Role="Notification" EntitySet="Notifications" />
+            <End EntitySet="Staffs" Role="Staff" />
+            <End EntitySet="Notifications" Role="Notification" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_Staff" Association="Self.FK_Order_Staff">
             <End Role="Staff" EntitySet="Staffs" />
