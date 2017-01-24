@@ -31,7 +31,7 @@
                     <asp:TemplateField>
 
                         <ItemTemplate>
-                            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# string.Format("~/NewDiscrepancy.aspx?id={0}&description={1}", Eval("ItemID"),Eval("Description"))%>'>New Discrepancy</asp:HyperLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# string.Format("NewDiscrepancy.aspx?id={0}&description={1}", Eval("ItemID"),Eval("Description"))%>'>New Discrepancy</asp:HyperLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         
                         </ItemTemplate>
                     </asp:TemplateField>
