@@ -274,7 +274,71 @@ public class Work
         rd.RetrievedQty = result;
         ctx.SaveChanges();
     }
+    /// <summary>
+    /// the param will be added with retrievenumber
+    /// first param is bySummary, second param is byDepartment
+    /// the result will be number of retrieveLog
+    /// </summary>
+    /// <param name="bySummary"></param>
+    /// <param name="byDepartment"></param>
+    /// <returns></returns>
+    public static int GetRetrieveLog(List<DisbursementModel> bySummary, List<DisbursementModel> byDepartment)
+    {
+        HistoryDisbursement finder = new HistoryDisbursement();
+        int result = finder.GetProgressingLog();
+        if (result != 0)
+        {
+            foreach (DisbursementModel dm in bySummary)
+                if (finder.SummaryByItem.ContainsKey(dm.ItemID))
+                    dm.RetrivedNumber = finder.SummaryByItem[dm.ItemID].RetrivedNumber;
+            foreach (DisbursementModel dm in byDepartment)
+                if (finder.SummaryByDepartment.ContainsKey(dm.DepartmentID))
+                    if (finder.SummaryByDepartment[dm.DepartmentID].ContainsKey(dm.ItemID))
+                    {
+                        dm.RetrivedNumber = finder.SummaryByDepartment[dm.DepartmentID][dm.ItemID].RetrivedNumber;
+                        dm.GivenNumber = finder.SummaryByDepartment[dm.DepartmentID][dm.ItemID].GivenNumber;
+                    }
+        }
+        return result;
+    }
 
+    //public int GetRetrieveLogBySummary(List<DisbursementModel> bySummary)
+    //{
+    //    var qry = from x in ctx.DisbursementLogs where x.Flag.Contains("Progressing Retrieve") select x;
+    //    Dictionary<string, DisbursementLog> dic = new Dictionary<string, DisbursementLog>();
+    //    // group by item
+    //    foreach (DisbursementLog log in qry.ToList())
+    //    {
+    //        if (!dic.ContainsKey(log.ItemID))
+    //            dic.Add(log.ItemID, log);
+    //        else
+    //            dic[log.ItemID].RetrivedNumber += log.RetrivedNumber;
+    //    }
+    //    int result = dic.Values.Count();
+    //    if (result != 0)
+    //    {
+    //        foreach (DisbursementModel dm in bySummary)
+    //        {
+    //            dm.RetrivedNumber = dic[dm.ItemID].RetrivedNumber;
+    //        }
+    //    }
+    //    return result;
+    //}
+    //public static List<DisbursementModel> GetRetrieveLogByDepartment(List<DisbursementModel> byDepartment)
+    //{
+    //    List<DisbursementModel> result = new List<DisbursementModel>();
+    //    var qry = from x in ctx.DisbursementLogs where x.Flag.Contains("Progressing Retrieve") select x;
+    //    // for every department and item, should be only one log in "Progressing"
+
+    //    foreach (DisbursementLog log in qry.ToList())
+    //    {
+    //        DisbursementModel dm = new DisbursementModel(log.DepartmentID, log.Department.DepartmentName, log.ItemID, log.Item.Description, log.NeededNumber);
+    //        dm.RetrivedNumber = log.RetrivedNumber;
+    //        result.Add(dm);
+    //    }
+    //    return result;
+    //}
+	
     public static List<DisbursementModel> viewRequestSummary()
     {
         List<DisbursementModel> list = new List<DisbursementModel>();
