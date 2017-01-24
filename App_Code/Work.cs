@@ -1139,6 +1139,21 @@ public class Work
         return sql.ToList();
     }
 
+
+
+    public string getEmailToPersonId(string itemPrice)
+    {
+        string emailId = "";
+        if (Convert.ToDecimal(itemPrice) >= 250)
+        {
+            emailId = "54213";
+        }
+        else
+        {
+            emailId = "54188";
+        }
+        return emailId;
+    }
     public static string InsertOrderDetails(string supplier, string qty, string orderid)
     {
         OrderDetail o = new OrderDetail();
