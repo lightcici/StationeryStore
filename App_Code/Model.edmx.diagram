@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="Team5ADProjectModel.DisbursementLog" Width="1.5" PointX="8.25" PointY="17.375" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Discrepancy" Width="1.5" PointX="8.25" PointY="21.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Item" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Team5ADProjectModel.Notification" Width="1.5" PointX="5.25" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Notification" PointX="5.25" PointY="21" Width="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Order" Width="1.5" PointX="8.25" PointY="25.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.OrderDetail" Width="1.5" PointX="10.5" PointY="26.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.OutstandingRequest" Width="1.5" PointX="3" PointY="14.5" IsExpanded="true" />
@@ -34,7 +34,7 @@
         <AssociationConnector Association="Team5ADProjectModel.FK_RequestDetails_Item" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_SupplyDetails_Item" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_TransactionLog_Item" ManuallyRouted="false" />
-        <AssociationConnector Association="Team5ADProjectModel.FK_Notification_Staff" ManuallyRouted="false" />
+        <AssociationConnector ManuallyRouted="false" Association="Team5ADProjectModel.FK_Notification_Staff" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Order_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_OrderDetails_Order" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_OrderDetails_Supplier" ManuallyRouted="false" />

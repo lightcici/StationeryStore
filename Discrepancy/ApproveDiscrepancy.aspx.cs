@@ -13,7 +13,7 @@ public partial class ApproveDiscrepancy : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //string userId = (string)Session["user"];
-        string userId = "54213";
+        string userId = "10101";
         work = new Work();
         if (!IsPostBack)
         {
@@ -24,7 +24,9 @@ public partial class ApproveDiscrepancy : System.Web.UI.Page
             }
             else
             {
+                
                 li = work.listPendingDiscrepancies(userId);
+                //DialogResult dr = MessageBox.Show("First", "Message", MessageBoxButtons.OK, MessageBoxIcon.Question);
                 GridView1.DataSource = li;
                 GridView1.DataBind();
             }
