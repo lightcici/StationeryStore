@@ -29,7 +29,7 @@ public partial class Order_MakeNewOrder : System.Web.UI.Page
         sm.initEmail();
         sm.sendEmail();
 
-        string message = "Your order id is " + orderID + ".";
+        string message = "You have successfully send email for order approval. Your order id is " + orderID + ".";
         ScriptManager.RegisterStartupScript(this, this.GetType(), "message", "alert('" + message + "');window.location='OrderList.aspx'", true);
     }
 }

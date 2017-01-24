@@ -11,8 +11,51 @@
     </div>
         <asp:Label ID="Label2" runat="server" Font-Size="Small" ForeColor="Black" Text="Label" Font-Bold="True"></asp:Label>
         <br />
-        <asp:GridView ID="OrderListGV" runat="server" OnRowCreated="OrderListGV_RowCreated" OnSelectedIndexChanged="OrderListGV_SelectedIndexChanged" Width="320px" CssClass="auto-style1">
+        <asp:GridView ID="OrderListGV" runat="server" OnRowCreated="OrderListGV_RowCreated" OnSelectedIndexChanged="OrderListGV_SelectedIndexChanged" Width="320px" CssClass="auto-style1" AutoGenerateColumns="False">
             <Columns>
+             <asp:TemplateField HeaderText="OrderID">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("orderId") %>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+
+            <asp:TemplateField HeaderText="ItemID">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("itemId") %>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+
+        <asp:TemplateField HeaderText="Description">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("description") %>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+
+            <asp:TemplateField HeaderText="Quantity">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("quantity ") %>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+
+            <asp:TemplateField HeaderText="Justification">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("justification") %>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+
+            <asp:TemplateField HeaderText="Status">
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%#Eval("Status") %>'></asp:Label>
+                </ItemTemplate>
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:TemplateField>
+
+    
                 <asp:ButtonField CommandName="Select" Text="Proceed" />
             </Columns>
         </asp:GridView>

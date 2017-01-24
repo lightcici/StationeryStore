@@ -1138,25 +1138,8 @@ public class Work
                   };
         return sql.ToList();
     }
-<<<<<<< HEAD
 
     public static string InsertOrderDetails(string supplier, string qty, string orderid)
-=======
-    //public string getEmailToPersonId(string itemPrice)
-    //{
-    //    string emailId;
-    //    if (Convert.ToInt32(itemPrice) >= 250)
-    //    {
-    //        emailId = "54213";
-    //    }
-    //    else
-    //    {
-    //        emailId = "54188";
-    //    }
-    //    return emailId;
-    //}
-    public static OrderDetail InsertOrderDetails(string supplier, string qty, string orderid)
->>>>>>> origin/master
     {
         OrderDetail o = new OrderDetail();
         OrderDetail od = ctx.OrderDetails.OrderByDescending(x => x.PurchaseOrderID).FirstOrDefault();
