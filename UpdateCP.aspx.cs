@@ -12,7 +12,7 @@ public partial class UpdateCP : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            Department d = ctx.Department.Where(x => x.DepartmentID == "CPSC").First();
+            Department d = ctx.Departments.Where(x => x.DepartmentID == "CPSC").First();
             TextBox1.Text = d.Collection_Point.ToString();
         }
     }
@@ -21,7 +21,7 @@ public partial class UpdateCP : System.Web.UI.Page
     {
         Team5ADProjectEntities ctx = new Team5ADProjectEntities();
         TextBox1.Text = RadioButtonList1.Text.ToString();
-        Department d = ctx.Department.Where(x => x.DepartmentID == "CPSC").First();
+        Department d = ctx.Departments.Where(x => x.DepartmentID == "CPSC").First();
         if (RadioButtonList1.SelectedValue !="")
         {
             d.Collection_Point = RadioButtonList1.Text;

@@ -26,10 +26,10 @@ public partial class ChangeRep : System.Web.UI.Page
     {
         Team5ADProjectEntities ctx = new Team5ADProjectEntities();
         TextBox1.Text = DropDownList1.Text;
-        Staff newrep = ctx.Staff.Where(x => x.Name == DropDownList1.Text).First();
+        Staff newrep = ctx.Staffs.Where(x => x.Name == DropDownList1.Text).First();
         newrep.Role = "DeptRep";
         string oldrepid = getInfo.someInfo("oldrep").UserID;
-        Staff oldrep = ctx.Staff.Where(x => x.UserID == oldrepid).First();
+        Staff oldrep = ctx.Staffs.Where(x => x.UserID == oldrepid).First();
         oldrep.Role = "Employee";
         ctx.SaveChanges();
     }

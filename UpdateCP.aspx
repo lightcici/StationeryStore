@@ -10,7 +10,7 @@
     <form id="form1" runat="server">
     <div>
     
-        Current Collection Point:<asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+        Current Collection Point:<asp:TextBox ID="TextBox1" runat="server" ReadOnly="true" Width="342px"></asp:TextBox>
         <br />
         <br />
         Select Collection Point:<br />

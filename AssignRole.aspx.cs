@@ -8,20 +8,23 @@ using System.Data;
 
 public partial class AssignRole : System.Web.UI.Page
 {
-    GetInfo getInfo = new GetInfo();
-    Team5ADProjectEntities ctx = new Team5ADProjectEntities();
+
+    string userId;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        userId = (string) Session["user"];
         if (!IsPostBack)
-        {
+        { Delegation de = null;
+            if (Work.delegateTo(userId)){
+                de = Work.getDlgtInfo(userId);
+                TextBox1.Text = Work.getUser(de.CoveringHeadID).Name;
+                TextBox2.Text = de.StartDate.ToString();
+                TextBox3.Text = de.EndDate.ToString();
+            }
 
-            TextBox1.Text = getInfo.someInfo("stf").Name;
-            TextBox2.Text = getInfo.getDlgtInfo().StartDate.ToString();
-            TextBox3.Text = getInfo.getDlgtInfo().EndDate.ToString();
             DropDownList1.Text = TextBox1.Text;
-            DropDownList1.DataSource = getInfo.getDptSfInfo().Select(x => x.Name).ToList();
+            //DropDownList1.DataSource = Work.getDptSfInfo("userid").Select(x => x.Name).ToList();
             DropDownList1.DataBind();
             DropDownList1.Items.Insert(0, new ListItem(""));
             if (TextBox1.Text == "")

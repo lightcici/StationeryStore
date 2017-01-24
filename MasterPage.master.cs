@@ -46,6 +46,9 @@ public partial class MasterPage : System.Web.UI.MasterPage
         MenuItem m18 = new MenuItem("Approve Order");
         m18.NavigateUrl = "Approve Order.aspx";
 
+        MenuItem m19 = new MenuItem("Approve Discrepancy");
+        m19.NavigateUrl = "ManagerApproveDiscrepancy.aspx";
+
 
         string userId = (string)Session["user"];
         string role = Work.getUser(userId).Role;

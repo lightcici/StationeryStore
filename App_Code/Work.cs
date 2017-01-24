@@ -50,6 +50,19 @@ public class Work
         }
         else return false;
     }
+
+    public static Delegation getDlgtInfo(string userId)
+    {
+        return ctx.Delegations.Where(x => x.DepartmentHeadID == userId && x.StartDate <= DateTime.Today && x.EndDate >= DateTime.Today).ToList().FirstOrDefault();
+    }
+
+    public List<Staff> getDptSfInfo(string userId)
+    {
+        string deptId = Work.getUser(userId).DepartmentID;
+        List<Staff> st1 = new List<Staff>();
+        st1 = ctx.Staffs.Where(x => x.DepartmentID == deptId).ToList();
+        return st1;
+    }
     public static string getDeptHeadId(string deptId)
     {
         return ctx.Staffs.Where(x => x.DepartmentID == deptId && x.Role == "DeptHead").ToList().FirstOrDefault().UserID;
