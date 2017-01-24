@@ -19,7 +19,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Label ID="Label2" runat="server" Text="Item List"></asp:Label>
+            <asp:Label ID="Label2" runat="server" Text="Item List" Font-Bold="True" Font-Italic="True" Font-Underline="True"></asp:Label>
 
         </div>
         <asp:Label ID="Label3" runat="server" Text="Categoty:"></asp:Label>
