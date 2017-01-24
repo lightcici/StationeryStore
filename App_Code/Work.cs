@@ -1214,4 +1214,74 @@ public class Work
         }
         return wcfnList;
     }
+
+
+    
+    public static Staff getLoginUserInfo()
+    {
+        Staff s = ctx.Staffs.Where(x => x.UserID == "98040").First();
+        return s;
+    }
+
+    public static Delegation getDlgtInfo()   //select exsting delegationg info
+    {
+        Delegation lastdlgt = new Delegation();
+        string a = getLoginUserInfo().UserID;  //headID
+        int b = ctx.Delegations.Count(x => x.DepartmentHeadID == a);//if there are info about delegation
+
+        if (b != 0)
+        {
+            List<Delegation> d = new List<Delegation>();
+            d = ctx.Delegations.Where(x => x.DepartmentHeadID == a).ToList(); //get dept delegation list
+            string c = d.Max(x => x.DelegationID).ToString();//the max delegationID in list
+            lastdlgt = ctx.Delegations.Where(x => x.DelegationID == c).First();
+        }
+        return lastdlgt;
+    }
+
+
+    public static List<Staff> getDptSfInfo()
+    {
+        string a = getLoginUserInfo().DepartmentID;
+        List<Staff> st1 = new List<Staff>();
+        st1 = ctx.Staffs.Where(x => x.DepartmentID == a).ToList();
+        return st1;
+
+    }
+
+    public static Staff someInfo(string z)
+    {
+        Delegation d = getDlgtInfo();
+        Staff s1 = new Staff();
+
+        if (z == "stf")
+        {
+            if (d.DelegationID != null)
+            {
+                string ch = d.CoveringHeadID;
+                s1 = ctx.Staffs.Where(x => x.UserID == ch).First();
+            }
+           
+
+        }
+        else if (z == "oldrep")
+        {
+            s1 = getDptSfInfo().Where(x => x.Role == "DeptRep").First();
+        }
+        else if (z == "manager")
+        {
+            s1 = getDptSfInfo().Where(x => x.Role == "Manager").First();
+        }
+        return s1;
+    }
+    public static void ChangeRep(string DropDownList1)
+    {
+        GetInfo getInfo = new GetInfo();
+        Staff newrep = ctx.Staffs.Where(x => x.Name == DropDownList1).First();
+        newrep.Role = "DeptRep";
+        string oldrepid = someInfo("oldrep").UserID;
+        Staff oldrep = ctx.Staffs.Where(x => x.UserID == oldrepid).First();
+        oldrep.Role = "Employee";
+        ctx.SaveChanges();
+    }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Team5ADProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Team5ADProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Delegation">
           <Key>
             <PropertyRef Name="DelegationID" />
@@ -72,12 +72,12 @@
           <Key>
             <PropertyRef Name="NotificationID" />
           </Key>
-          <Property Name="NotificationID" Nullable="false" MaxLength="50" Type="nvarchar" />
-          <Property Name="UserID" Nullable="false" MaxLength="50" Type="nvarchar" />
-          <Property Name="Subject" Nullable="false" MaxLength="50" Type="nvarchar" />
-          <Property Name="Message" Nullable="false" Type="nvarchar(max)" />
-          <Property Name="Status" Nullable="false" MaxLength="50" Type="nvarchar" />
-          <Property Name="Date" Nullable="false" Type="datetime" />
+          <Property Name="NotificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -174,7 +174,7 @@
             <PropertyRef Name="DepartmentID" />
             <PropertyRef Name="ItemID" />
           </Key>
-          <Property Name="TransactionID" Type="int" Nullable="false" />
+          <Property Name="TransactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DepartmentID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ItemID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DateTime" Type="datetime" />
@@ -265,10 +265,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notification_Staff">
-          <End Type="Self.Staff" Multiplicity="1" Role="Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="Self.Notification" Multiplicity="*" Role="Notification" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Staff">
               <PropertyRef Name="UserID" />
@@ -511,8 +511,8 @@
             <End Role="Discrepancy" EntitySet="Discrepancy" />
           </AssociationSet>
           <AssociationSet Name="FK_Notification_Staff" Association="Self.FK_Notification_Staff">
-            <End EntitySet="Staff" Role="Staff" />
-            <End EntitySet="Notification" Role="Notification" />
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Notification" EntitySet="Notification" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_Item" Association="Self.FK_Order_Item">
             <End Role="Item" EntitySet="Item" />
@@ -571,8 +571,7 @@
             <End Role="TransactionLog" EntitySet="TransactionLog" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Team5ADProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
