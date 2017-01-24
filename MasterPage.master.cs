@@ -32,7 +32,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
         MenuItem m11 = new MenuItem("Order");
         m11.NavigateUrl = "Order/OrderList.aspx";
         MenuItem m12 = new MenuItem("Report Discrepancy");
-        m12.NavigateUrl = "ViewDiscrepancy.aspx";
+        m12.NavigateUrl = "Discrepancy/ViewDiscrepancy.aspx";
         MenuItem m13 = new MenuItem("Maintain Supplier List");
         m13.NavigateUrl = "Maintain/MaintainSupplierList1.aspx";
         MenuItem m14 = new MenuItem("Maintain Purchase List");
@@ -42,12 +42,12 @@ public partial class MasterPage : System.Web.UI.MasterPage
         MenuItem m16 = new MenuItem("Maintain Department List");
         m16.NavigateUrl = "Maintain/MaintainDepartmentList1.aspx";
         MenuItem m17 = new MenuItem("Approve Discrepancy");
-        m17.NavigateUrl = "ApproveDiscrepancy.aspx";
+        m17.NavigateUrl = "Discrepancy/ApproveDiscrepancy.aspx";
         MenuItem m18 = new MenuItem("Approve Order");
         m18.NavigateUrl = "Approve Order.aspx";
 
         MenuItem m19 = new MenuItem("Approve Discrepancy");
-        m19.NavigateUrl = "ManagerApproveDiscrepancy.aspx";
+        m19.NavigateUrl = "Discrepancy/ApproveDiscrepancy.aspx";
 
 
         string userId = (string)Session["user"];
