@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Team5ADProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Team5ADProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Delegation">
           <Key>
             <PropertyRef Name="DelegationID" />
@@ -72,12 +72,12 @@
           <Key>
             <PropertyRef Name="NotificationID" />
           </Key>
-          <Property Name="NotificationID" Nullable="false" MaxLength="50" Type="nvarchar" />
-          <Property Name="UserID" Nullable="false" MaxLength="50" Type="nvarchar" />
-          <Property Name="Subject" Nullable="false" MaxLength="50" Type="nvarchar" />
-          <Property Name="Message" Nullable="false" Type="nvarchar(max)" />
-          <Property Name="Status" Nullable="false" MaxLength="50" Type="nvarchar" />
-          <Property Name="Date" Nullable="false" Type="datetime" />
+          <Property Name="NotificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -182,20 +182,6 @@
           <Property Name="ReceiveQty" Type="int" />
           <Property Name="Flag" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK_Delegation_Staff">
-          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Delegation" Type="Self.Delegation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Staff">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Delegation">
-              <PropertyRef Name="DepartmentHeadID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DisbursementLog_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -265,10 +251,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notification_Staff">
-          <End Type="Self.Staff" Multiplicity="1" Role="Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="Self.Notification" Multiplicity="*" Role="Notification" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Staff">
               <PropertyRef Name="UserID" />
@@ -486,10 +472,6 @@
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SupplyDetails" EntityType="Self.SupplyDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TransactionLog" EntityType="Self.TransactionLog" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Delegation_Staff" Association="Self.FK_Delegation_Staff">
-            <End Role="Staff" EntitySet="Staff" />
-            <End Role="Delegation" EntitySet="Delegation" />
-          </AssociationSet>
           <AssociationSet Name="FK_DisbursementLog_Department" Association="Self.FK_DisbursementLog_Department">
             <End Role="Department" EntitySet="Department" />
             <End Role="DisbursementLog" EntitySet="DisbursementLog" />
@@ -511,8 +493,8 @@
             <End Role="Discrepancy" EntitySet="Discrepancy" />
           </AssociationSet>
           <AssociationSet Name="FK_Notification_Staff" Association="Self.FK_Notification_Staff">
-            <End EntitySet="Staff" Role="Staff" />
-            <End EntitySet="Notification" Role="Notification" />
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Notification" EntitySet="Notification" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_Item" Association="Self.FK_Order_Item">
             <End Role="Item" EntitySet="Item" />
@@ -571,22 +553,10 @@
             <End Role="TransactionLog" EntitySet="TransactionLog" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Team5ADProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Delegation">
-          <Key>
-            <PropertyRef Name="DelegationID" />
-          </Key>
-          <Property Name="DelegationID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DepartmentHeadID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CoveringHeadID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Staff" Relationship="Self.FK_Delegation_Staff" FromRole="Delegation" ToRole="Staff" />
-        </EntityType>
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="DepartmentID" />
@@ -660,12 +630,12 @@
           <Key>
             <PropertyRef Name="NotificationID" />
           </Key>
-          <Property Name="NotificationID" Nullable="false" Type="Int32" />
-          <Property Name="UserID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
-          <Property Name="Subject" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
-          <Property Name="Message" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
-          <Property Name="Status" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
-          <Property Name="Date" Nullable="false" Precision="3" Type="DateTime" />
+          <Property Name="NotificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Staff" Relationship="Self.FK_Notification_Staff" FromRole="Notification" ToRole="Staff" />
         </EntityType>
         <EntityType Name="Order">
@@ -744,7 +714,6 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Delegations" Relationship="Self.FK_Delegation_Staff" FromRole="Staff" ToRole="Delegation" />
           <NavigationProperty Name="Department" Relationship="Self.FK_Staff_Department" FromRole="Staff" ToRole="Department" />
           <NavigationProperty Name="DisbursementLogs" Relationship="Self.FK_DisbursementLog_Staff" FromRole="Staff" ToRole="DisbursementLog" />
           <NavigationProperty Name="Discrepancies" Relationship="Self.FK_Discrepancy_Staff" FromRole="Staff" ToRole="Discrepancy" />
@@ -795,20 +764,6 @@
           <NavigationProperty Name="Department" Relationship="Self.FK_TransactionLog_Department" FromRole="TransactionLog" ToRole="Department" />
           <NavigationProperty Name="Item" Relationship="Self.FK_TransactionLog_Item" FromRole="TransactionLog" ToRole="Item" />
         </EntityType>
-        <Association Name="FK_Delegation_Staff">
-          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Delegation" Type="Self.Delegation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Staff">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Delegation">
-              <PropertyRef Name="DepartmentHeadID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DisbursementLog_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -986,10 +941,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notification_Staff">
-          <End Type="Self.Staff" Multiplicity="1" Role="Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="Self.Notification" Multiplicity="*" Role="Notification" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Staff">
               <PropertyRef Name="UserID" />
@@ -1084,7 +1039,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Team5ADProjectEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Delegations" EntityType="Self.Delegation" />
           <EntitySet Name="Departments" EntityType="Self.Department" />
           <EntitySet Name="DisbursementLogs" EntityType="Self.DisbursementLog" />
           <EntitySet Name="Discrepancies" EntityType="Self.Discrepancy" />
@@ -1099,10 +1053,6 @@
           <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
           <EntitySet Name="SupplyDetails" EntityType="Self.SupplyDetail" />
           <EntitySet Name="TransactionLogs" EntityType="Self.TransactionLog" />
-          <AssociationSet Name="FK_Delegation_Staff" Association="Self.FK_Delegation_Staff">
-            <End Role="Staff" EntitySet="Staffs" />
-            <End Role="Delegation" EntitySet="Delegations" />
-          </AssociationSet>
           <AssociationSet Name="FK_DisbursementLog_Department" Association="Self.FK_DisbursementLog_Department">
             <End Role="Department" EntitySet="Departments" />
             <End Role="DisbursementLog" EntitySet="DisbursementLogs" />
@@ -1156,8 +1106,8 @@
             <End Role="TransactionLog" EntitySet="TransactionLogs" />
           </AssociationSet>
           <AssociationSet Name="FK_Notification_Staff" Association="Self.FK_Notification_Staff">
-            <End EntitySet="Staffs" Role="Staff" />
-            <End EntitySet="Notifications" Role="Notification" />
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_Staff" Association="Self.FK_Order_Staff">
             <End Role="Staff" EntitySet="Staffs" />
@@ -1183,24 +1133,24 @@
             <End Role="Supplier" EntitySet="Suppliers" />
             <End Role="SupplyDetails" EntitySet="SupplyDetails" />
           </AssociationSet>
+          <EntitySet Name="Delegations" EntityType="Team5ADProjectModel.Delegation" />
         </EntityContainer>
+        <EntityType Name="Delegation">
+          <Key>
+            <PropertyRef Name="DelegationID" />
+          </Key>
+          <Property Name="DelegationID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DepartmentHeadID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CoveringHeadID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Team5ADProjectModelStoreContainer" CdmEntityContainer="Team5ADProjectEntities">
-          <EntitySetMapping Name="Delegations">
-            <EntityTypeMapping TypeName="Team5ADProjectModel.Delegation">
-              <MappingFragment StoreEntitySet="Delegation">
-                <ScalarProperty Name="DelegationID" ColumnName="DelegationID" />
-                <ScalarProperty Name="DepartmentHeadID" ColumnName="DepartmentHeadID" />
-                <ScalarProperty Name="CoveringHeadID" ColumnName="CoveringHeadID" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Departments">
             <EntityTypeMapping TypeName="Team5ADProjectModel.Department">
               <MappingFragment StoreEntitySet="Department">
@@ -1371,6 +1321,17 @@
                 <ScalarProperty Name="RequestQty" ColumnName="RequestQty" />
                 <ScalarProperty Name="ReceiveQty" ColumnName="ReceiveQty" />
                 <ScalarProperty Name="Flag" ColumnName="Flag" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Delegations">
+            <EntityTypeMapping TypeName="Team5ADProjectModel.Delegation">
+              <MappingFragment StoreEntitySet="Delegation">
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="CoveringHeadID" ColumnName="CoveringHeadID" />
+                <ScalarProperty Name="DepartmentHeadID" ColumnName="DepartmentHeadID" />
+                <ScalarProperty Name="DelegationID" ColumnName="DelegationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

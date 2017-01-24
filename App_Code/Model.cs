@@ -17,8 +17,6 @@ public partial class Delegation
     public string CoveringHeadID { get; set; }
     public System.DateTime StartDate { get; set; }
     public System.DateTime EndDate { get; set; }
-
-    public virtual Staff Staff { get; set; }
 }
 
 public partial class Department
@@ -214,7 +212,6 @@ public partial class Staff
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
     public Staff()
     {
-        this.Delegations = new HashSet<Delegation>();
         this.DisbursementLogs = new HashSet<DisbursementLog>();
         this.Discrepancies = new HashSet<Discrepancy>();
         this.Notifications = new HashSet<Notification>();
@@ -229,8 +226,6 @@ public partial class Staff
     public string Password { get; set; }
     public string Role { get; set; }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-    public virtual ICollection<Delegation> Delegations { get; set; }
     public virtual Department Department { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<DisbursementLog> DisbursementLogs { get; set; }

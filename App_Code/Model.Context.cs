@@ -23,7 +23,6 @@ public partial class Team5ADProjectEntities : DbContext
         throw new UnintentionalCodeFirstException();
     }
 
-    public virtual DbSet<Delegation> Delegations { get; set; }
     public virtual DbSet<Department> Departments { get; set; }
     public virtual DbSet<DisbursementLog> DisbursementLogs { get; set; }
     public virtual DbSet<Discrepancy> Discrepancies { get; set; }
@@ -38,4 +37,5 @@ public partial class Team5ADProjectEntities : DbContext
     public virtual DbSet<Supplier> Suppliers { get; set; }
     public virtual DbSet<SupplyDetail> SupplyDetails { get; set; }
     public virtual DbSet<TransactionLog> TransactionLogs { get; set; }
+    public virtual DbSet<Delegation> Delegations { get; set; }
 }

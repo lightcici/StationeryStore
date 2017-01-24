@@ -4,13 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b2fbe06e02de4bbcaa75bb91de4db7f2" Name="Diagram1" ZoomLevel="93">
-        <EntityTypeShape EntityType="Team5ADProjectModel.Delegation" Width="1.5" PointX="5.25" PointY="18.125" IsExpanded="true" />
+      <Diagram DiagramId="81a4d938f8734e2da32e5811661103db" Name="Diagram1" ZoomLevel="93">
         <EntityTypeShape EntityType="Team5ADProjectModel.Department" Width="1.5" PointX="0.75" PointY="14.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.DisbursementLog" Width="1.5" PointX="8.25" PointY="17.375" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Discrepancy" Width="1.5" PointX="8.25" PointY="21.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Item" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Team5ADProjectModel.Notification" PointX="5.25" PointY="21" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Notification" Width="1.5" PointX="5.25" PointY="24.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.Order" Width="1.5" PointX="8.25" PointY="25.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.OrderDetail" Width="1.5" PointX="10.5" PointY="26.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.OutstandingRequest" Width="1.5" PointX="3" PointY="14.5" IsExpanded="true" />
@@ -20,7 +19,6 @@
         <EntityTypeShape EntityType="Team5ADProjectModel.Supplier" Width="1.5" PointX="8.25" PointY="35.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.SupplyDetail" Width="1.5" PointX="10.5" PointY="22.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Team5ADProjectModel.TransactionLog" Width="1.5" PointX="6" PointY="14.125" IsExpanded="true" />
-        <AssociationConnector Association="Team5ADProjectModel.FK_Delegation_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_DisbursementLog_Department" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_OutstandingRequest_Department" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Staff_Department" ManuallyRouted="false" />
@@ -34,13 +32,14 @@
         <AssociationConnector Association="Team5ADProjectModel.FK_RequestDetails_Item" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_SupplyDetails_Item" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_TransactionLog_Item" ManuallyRouted="false" />
-        <AssociationConnector ManuallyRouted="false" Association="Team5ADProjectModel.FK_Notification_Staff" />
+        <AssociationConnector Association="Team5ADProjectModel.FK_Notification_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Order_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_OrderDetails_Order" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_OrderDetails_Supplier" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_Request_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_RequestDetails_Request" ManuallyRouted="false" />
         <AssociationConnector Association="Team5ADProjectModel.FK_SupplyDetails_Supplier" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Team5ADProjectModel.Delegation" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
