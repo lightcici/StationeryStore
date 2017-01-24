@@ -10,27 +10,43 @@ using System.Web.UI.WebControls;
 
 public partial class Order_OrderList : System.Web.UI.Page
 {
-    Team5ADProjectEntities context;
-
+    string userId;
+    static string all = "Show All";
     protected void Page_Load(object sender, EventArgs e)
     {
-        context = new Team5ADProjectEntities();
+        userId = (string)Session["user"];
+        if (userId == null)
+        {
+            Response.Redirect("~/login.aspx");
+        }
+
         if (!IsPostBack)
         {
-            ShowOrderList();
+            var list = Work.getOrderStatus();
+            list.Insert(0, all);
+            SearchDDL.DataSource = list;
+            SearchDDL.DataBind();
+
+            List<OrderList> oList = Work.getOrderList();
+            OrderListGV.DataSource = oList;
+            OrderListGV.DataBind();
+            if (OrderListGV.Rows.Count == 0)
+            {
+                Label2.Text = "No order!";
+            }
+           else if (OrderListGV.Rows.Count > 1)
+            {
+                Label2.Text = "There are totally " + OrderListGV.Rows.Count + " orders.";
+            }
+            else
+            {
+                Label2.Text = "There is only " + OrderListGV.Rows.Count + " order.";
+            }
         }
-        Label1.Text = "";
+        Label1.Text = "";        
     }
 
-    void ShowOrderList()
-    {
-        var q = from x in context.Orders
-                orderby x.OrderDate descending
-                select new { x.OrderID, x.ItemID, x.Item.Description, x.TotalQty, x.Justification, x.Status };
-        OrderListGV.DataSource = q.ToList();
-        OrderListGV.DataBind();
-        Label2.Text = "There are totally " + q.Count() + " orders.";
-    }
+
 
     protected void OrderBtn_Click(object sender, EventArgs e)
     {
@@ -39,39 +55,27 @@ public partial class Order_OrderList : System.Web.UI.Page
 
     protected void SearchDDL_SelectedIndexChanged(object sender, EventArgs e)
     {
-        context = new Team5ADProjectEntities();
-        if (SearchDDL.SelectedIndex != 1)
+        ViewState["status"] = SearchDDL.SelectedValue;
+        List<OrderList> list = Work.getOrderList((string)ViewState["status"]);
+        OrderListGV.DataSource = list;
+        OrderListGV.DataBind();
+
+        if (!list.Any())
         {
-            var q = from x in context.Orders
-                    where x.Status == SearchDDL.SelectedItem.Text
-                    orderby x.OrderDate descending
-                    select new { x.OrderID, x.ItemID, x.Item.Description, x.TotalQty, x.Justification, x.Status };
-            if (!q.Any())
-            {
-                Label2.Text = "No item found!";
-            }
-            else
-            {
-                Label2.Text = "There are " + q.Count() + " orders.";
-            }
-            OrderListGV.DataSource = q.ToList();
+            Label2.Text = "No item found!";
         }
         else
         {
-            var q = from x in context.Orders
-                    orderby x.OrderDate descending
-                    select new { x.OrderID, x.ItemID, x.Item.Description, x.TotalQty, x.Justification, x.Status };
-            if (!q.Any())
+            if (OrderListGV.Rows.Count > 1)
             {
-                Label2.Text = "No item found!";
+                Label2.Text = "There are totally " + OrderListGV.Rows.Count + " orders.";
             }
             else
             {
-                Label2.Text = "There are " + q.Count() + " orders.";
+                Label2.Text = "There is only " + OrderListGV.Rows.Count + " order.";
             }
-            OrderListGV.DataSource = q.ToList();
+            
         }
-        OrderListGV.DataBind();
     }
 
 

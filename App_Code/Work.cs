@@ -1196,7 +1196,106 @@ public class Work
         return cmt;
     }
 
-    public static Order InsertNewOrder(string itemid, string quantity, string justification)
+    public static List<OrderList> listPendingOrder()
+    {
+        List<OrderList> list = new List<OrderList>();
+        var q = from x in ctx.Orders
+                 where x.Status == "PendingApproval"
+                 orderby x.OrderDate
+                 select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification };
+
+        foreach (var a in q.ToList())
+        {
+            OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Category, a.Description, a.TotalQty, a.Justification);
+            list.Add(ol);
+        }
+        return list;
+    }
+
+    public static List<String> getOrderStatus()
+    {
+        var list = ctx.Orders.GroupBy(y => y.Status).Select(x => x.FirstOrDefault()).ToList();
+        return list.Select(o => o.Status).ToList();
+    }
+
+    public static List<OrderList> getOrderList()
+    {
+        List<OrderList> oList = new List<OrderList>();
+        var q = from x in ctx.Orders
+                orderby x.OrderDate descending
+                select new { x.OrderID, x.ItemID, x.Item.Description, x.TotalQty, x.Justification, x.Status };
+
+        foreach (var a in q.ToList())
+        {
+            OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Description, a.TotalQty, a.Justification, a.Status);
+            oList.Add(ol);
+        }
+        return oList;
+    }
+
+    public static List<OrderList> getOrderHistory()
+    {
+        List<OrderList> oList = new List<OrderList>();
+        var q = from x in ctx.Orders
+                where x.Status != "PendingApproval"
+                orderby x.OrderDate descending
+                select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification, x.Status, x.OrderDate, x.Comment };
+
+        foreach (var a in q.ToList())
+        {
+            OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Category, a.Description, a.TotalQty, a.Justification, a.Status, a.OrderDate, a.Comment);
+            oList.Add(ol);
+        }
+        return oList;
+    }
+
+    public static List<OrderList> getOrderList(string stt)
+    {
+        List<OrderList> list = new List<OrderList>();
+        if (!stt.Equals("Show All"))
+        {
+            var q = from x in ctx.Orders
+                    where x.Status == stt
+                    orderby x.OrderDate descending
+                    select new { x.OrderID, x.ItemID, x.Item.Description, x.TotalQty, x.Justification, x.Status };
+
+            foreach (var a in q.ToList())
+            {
+                OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Description, a.TotalQty, a.Justification, a.Status);
+                list.Add(ol);
+            }
+        }
+        else
+        {
+            list = getOrderList();
+        }
+        return list;
+    }
+
+    public static List<OrderList> getOrderHistory(string stt)
+    {
+        List<OrderList> list = new List<OrderList>();
+        if (!stt.Equals("Show All"))
+        {
+            var q = from x in ctx.Orders
+                    where x.Status == stt
+                    orderby x.OrderDate descending
+                    select new { x.OrderID, x.ItemID, x.Item.Category, x.Item.Description, x.TotalQty, x.Justification, x.Status, x.OrderDate, x.Comment };
+
+            foreach (var a in q.ToList())
+            {
+                OrderList ol = new OrderList(a.OrderID, a.ItemID, a.Category, a.Description, a.TotalQty, a.Justification, a.Status, a.OrderDate, a.Comment);
+                list.Add(ol);
+            }
+        }
+        else
+        {
+            list = getOrderHistory();
+        }
+        return list;
+    }
+
+    public static string InsertNewOrder(string itemid, string quantity, string justification, string userId)
     {
         Order o = new Order();
         Order od = ctx.Orders.OrderByDescending(x => x.OrderID).FirstOrDefault();
@@ -1218,9 +1317,12 @@ public class Work
         o.Justification = justification;
         o.Status = "PendingApproval";
         o.OrderDate = DateTime.Now;
-        o.UserID = "00242"; //temporarily hardcode
+        o.UserID = userId;
 
-        return o;
+        ctx.Orders.Add(o);
+        ctx.SaveChanges();
+
+        return o.OrderID;
     }
 
     public static void UpdateOrder(string orderid, string qty, string justification)
