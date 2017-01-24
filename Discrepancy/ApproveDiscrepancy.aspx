@@ -32,14 +32,14 @@
             <asp:GridView ID="GridView2" runat="server" AllowPaging="True" AutoGenerateColumns="False" DataKeyNames="DiscrepancyID" DataSourceID="SqlDataSource1">
                 <Columns>
                     <asp:BoundField DataField="DiscrepancyID" HeaderText="DiscrepancyID" ReadOnly="True" SortExpression="DiscrepancyID" />
-                    <asp:BoundField DataField="UserID" HeaderText="Requester" SortExpression="UserID" />
+                    <asp:BoundField DataField="Name" HeaderText="Requester" SortExpression="Name" />
                     <asp:BoundField DataField="ItemID" HeaderText="ItemID" SortExpression="ItemID" />
                     <asp:BoundField DataField="Quantity" HeaderText="Quantity" SortExpression="Quantity" />
                     <asp:BoundField DataField="Reason" HeaderText="Reason" SortExpression="Reason" />
                     <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" />
                 </Columns>
             </asp:GridView>
-            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:Team5ADProjectConnectionString %>" SelectCommand="SELECT DiscrepancyID, UserID, ItemID, Quantity, Reason, Status FROM Discrepancy AS d WHERE (Status = 'Approved') OR (Status = 'Rejected')"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:Team5ADProjectConnectionString %>" SelectCommand="SELECT d.DiscrepancyID, s.Name, d.ItemID, d.Quantity, d.Reason, d.Status FROM Discrepancy AS d INNER JOIN Staff AS s ON d.UserID = s.UserID WHERE (d.Status = 'Approved') OR (d.Status = 'Rejected')"></asp:SqlDataSource>
             <br />
 
         </div>

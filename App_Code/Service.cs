@@ -17,7 +17,7 @@ public class Service : IService
 
     public List<ItemDiscrepancyModel> GetDiscrepancyList(string selected)
     {
-        
+
         var list = work.getAllDiscrepancies(selected);
         return list;
     }
@@ -41,7 +41,7 @@ public class Service : IService
     public void saveDiscrepancy(Discrepancy dis)
     {
         //*******************************
-        work.saveDiscrepancy(dis.DiscrepancyID, dis.Quantity, dis.Reason, dis.Status, dis.Item);
+        work.saveDiscrepancy(dis.DiscrepancyID, dis.Quantity, dis.Reason, dis.Status, dis.Item, dis.Staff, dis.Date);
     }
 
     public string GetMaxDiscrepancyId()
@@ -71,7 +71,7 @@ public class Service : IService
         return Work.getRqHistory(userId);
     }
 
-    public List<RqHistory> SearchSubmission(string userId,string status)
+    public List<RqHistory> SearchSubmission(string userId, string status)
     {
         List<RqHistory> list = new List<RqHistory>();
         List<RqHistory> hlist = Work.getRqHistory(userId);

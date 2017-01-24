@@ -47,7 +47,7 @@ public partial class ShowItemList : System.Web.UI.Page
 
     protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Response.Redirect("NewDiscrepancy.aspx?id=1&description=2");
+        Response.Redirect("/NewDiscrepancy.aspx?id=1&description=2");
     }
 
     protected void display()
