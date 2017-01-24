@@ -8,12 +8,13 @@ using System.Web.UI.WebControls;
 public partial class Order_AcknowledgeOrder : System.Web.UI.Page
 {
     Team5ADProjectEntities context;
+    string userid;
     string orderID;
     string itemID;
     protected void Page_Load(object sender, EventArgs e)
     {
+        userid = (string)Session["user"];
         orderID = Request.QueryString["OrderID"];
-        context = new Team5ADProjectEntities();
         if (!IsPostBack)
         {
             OrderIDLbl.Text = orderID;

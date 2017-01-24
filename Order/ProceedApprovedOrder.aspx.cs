@@ -8,13 +8,13 @@ using System.Text;
 
 public partial class Order_ProceedApprovedOrder : System.Web.UI.Page
 {
-    Team5ADProjectEntities context;
+    string userid;
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        userid = (string)Session["user"];
         if (!IsPostBack)
         {
-            context = new Team5ADProjectEntities();
             OrderIDLbl.Text = Request.QueryString["Order"];
             ItemIDLbl.Text = Request.QueryString["Item"];
             DescriptionLbl.Text = Request.QueryString["Description"];
@@ -78,7 +78,6 @@ public partial class Order_ProceedApprovedOrder : System.Web.UI.Page
     protected void OrderBtn_Click(object sender, EventArgs e)
     {
         StringBuilder message = new StringBuilder();
-        context = new Team5ADProjectEntities();
         int total = 0;
         if ((QuantityTextBox1.Enabled == true) && (QuantityTextBox1.Text != String.Empty))
         {
@@ -112,34 +111,24 @@ public partial class Order_ProceedApprovedOrder : System.Web.UI.Page
             {
                 if ((Supplier1CB.Checked) && (QuantityTextBox1.Text != String.Empty))
                 {
-                    OrderDetail o1 = Work.InsertOrderDetails(Supplier1Lbl.Text, QuantityTextBox1.Text, OrderIDLbl.Text);
-                    context.OrderDetails.Add(o1);
-                    context.SaveChanges();
-                    message.Append("Purchase Order ID for 1st Supplier is " + o1.PurchaseOrderID + ".");
-
+                    string po1 = Work.InsertOrderDetails(Supplier1Lbl.Text, QuantityTextBox1.Text, OrderIDLbl.Text);                 
+                    message.Append("Purchase Order ID for 1st Supplier is " + po1 + ".");
                 }
 
                 if ((Supplier2CB.Checked) && (QuantityTextBox2.Text != String.Empty))
                 {
-                    OrderDetail o2 = Work.InsertOrderDetails(Supplier2Lbl.Text, QuantityTextBox2.Text, OrderIDLbl.Text);
-                    context.OrderDetails.Add(o2);
-                    context.SaveChanges();
-                    message.Append("Purchase Order ID for 2nd Supplier is " + o2.PurchaseOrderID + ".");
+                    string po2 = Work.InsertOrderDetails(Supplier2Lbl.Text, QuantityTextBox2.Text, OrderIDLbl.Text);
+                    message.Append("Purchase Order ID for 2nd Supplier is " + po2 + ".");
                 }
 
                 if ((Supplier3CB.Checked) && (QuantityTextBox3.Text != String.Empty))
                 {
-                    OrderDetail o3 = Work.InsertOrderDetails(Supplier3Lbl.Text, QuantityTextBox3.Text, OrderIDLbl.Text);
-                    context.OrderDetails.Add(o3);
-                    context.SaveChanges();
-                    message.Append(" Purchase Order ID for 3rd Supplier is " + o3.PurchaseOrderID + ".");
+                    string po3 = Work.InsertOrderDetails(Supplier3Lbl.Text, QuantityTextBox3.Text, OrderIDLbl.Text);
+                    message.Append(" Purchase Order ID for 3rd Supplier is " + po3 + ".");
                 }
 
-                Order o = context.Orders.Where(x => x.OrderID == OrderIDLbl.Text).First();
-                o.Status = "Ordered";
-                context.SaveChanges();
-
-
+                string stt = "Ordered";
+                Work.UpdateOrderStatus(OrderIDLbl.Text, stt);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "message", "alert('" + message.ToString() + "');window.location='OrderList.aspx'", true);
             }
             else

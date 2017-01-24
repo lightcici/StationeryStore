@@ -1139,7 +1139,7 @@ public class Work
         return sql.ToList();
     }
 
-    public static OrderDetail InsertOrderDetails(string supplier, string qty, string orderid)
+    public static string InsertOrderDetails(string supplier, string qty, string orderid)
     {
         OrderDetail o = new OrderDetail();
         OrderDetail od = ctx.OrderDetails.OrderByDescending(x => x.PurchaseOrderID).FirstOrDefault();
@@ -1161,7 +1161,10 @@ public class Work
         o.OrderQty = Convert.ToInt32(qty);
         o.ReceivedQty = 0;
 
-        return o;
+        ctx.OrderDetails.Add(o);
+        ctx.SaveChanges();
+
+        return o.PurchaseOrderID;
     }
 
     public static string GetSupplierDetails(decimal price, string supplierLabel)
